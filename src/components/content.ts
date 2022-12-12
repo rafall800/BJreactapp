@@ -1,0 +1,2 @@
+export const whatIsCardCounting: string =
+  'Card counting is a way to beat casino in a standard black jack game. This method gives you small enaugh adventage to profit overtime. Contrary to popular opinion you do not have to be genius in math or have a extraordinary memory. Card counting is, in simplification, about adding or substracting 1 to a “running count” and making decisions based off of that count for a long time. Skill that you really want is to keep focus for hours.';
