@@ -1,4 +1,6 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
+import { BlackJackGameContext } from '../GameManager/BlackJackGameContext';
+import { countValue } from '../GameManager/cards';
 import {
   CardPlaceholder,
   CardPlaceholderBox,
@@ -9,13 +11,17 @@ import {
 } from './CardsBox.styles';
 
 const CardsBox: FC = () => {
+  const { dealer } = useContext(BlackJackGameContext);
   return (
     <FlexBox>
       <CardPlaceholder>
         <HandCountBox>
-          <HandCount>17</HandCount>
+          <HandCount>{countValue(dealer)}</HandCount>
           <HandCountPointer />
         </HandCountBox>
+        {dealer.map((card) => (
+          <img key={card._id} src={require(card.src).default} alt="card" />
+        ))}
       </CardPlaceholder>
       <CardPlaceholderBox>
         <CardPlaceholder id="card1">

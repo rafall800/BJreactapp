@@ -1,14 +1,18 @@
-import { FC, useRef } from 'react';
+import { FC, useContext, useEffect } from 'react';
 import Button from '../../Button/Button';
 import { Header2 } from '../../textStyles/Header2.styles';
 import { Paragraph } from '../../textStyles/Paragrapsh.styles';
+import { BlackJackGameContext } from '../GameManager/BlackJackGameContext';
 import { BetOptions, DecisionOptions, Stakes, StyledHud, YourBalance, YourBet } from './Hud.styles';
-import { add, strartGame, substract } from './utils';
 
 const Hud: FC = () => {
   const betStakes: string[] = ['5', '10', '25', '50', '100'];
-  const yourBetRef = useRef<HTMLParagraphElement>(null);
-  const yourBalanceRef = useRef<HTMLHeadingElement>(null);
+
+  const { bet, balance, deck, setBet, setBalance, startGame, startDeal } = useContext(BlackJackGameContext);
+  useEffect(() => {
+    startGame();
+  }, [startGame]);
+  console.log(deck);
   return (
     <StyledHud>
       <DecisionOptions>
@@ -19,41 +23,28 @@ const Hud: FC = () => {
       </DecisionOptions>
       <BetOptions>
         <YourBalance>
-          <Header2>Your balance:</Header2>
-          <Header2 ref={yourBalanceRef}>1000</Header2>
+          <Header2>Your balance: {balance}</Header2>
         </YourBalance>
         <YourBet>
-          <Paragraph>Your bet:</Paragraph>
-          <Paragraph ref={yourBetRef}></Paragraph>
+          <Paragraph>Your bet: {bet}</Paragraph>
         </YourBet>
         <Stakes>
           {betStakes.map((stake) => {
             return (
-              <Button
-                key={stake}
-                variant="tab"
-                onClick={() => {
-                  add(yourBetRef, stake);
-                }}
-              >
+              <Button key={stake} variant="tab" onClick={() => setBet(bet + Number(stake))}>
                 {'+' + stake}
               </Button>
             );
           })}
-          <Button
-            variant="tab"
-            onClick={() => {
-              if (yourBetRef.current) yourBetRef.current.innerHTML = '0';
-            }}
-          >
+          <Button variant="tab" onClick={() => setBet(0)}>
             CLEAR
           </Button>
         </Stakes>
         <Button
           variant="primary"
           onClick={() => {
-            substract(yourBalanceRef, yourBetRef);
-            strartGame();
+            setBalance(balance - bet);
+            startDeal();
           }}
         >
           bet
