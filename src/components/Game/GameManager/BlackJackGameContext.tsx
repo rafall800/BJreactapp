@@ -14,6 +14,7 @@ export const BlackJackGameContext = createContext<BlackJackGameInterface>({
     { isPlaying: false, hand: [] }
   ],
   setPlayers: () => undefined,
+  addPlayer: () => undefined,
   dealer: [],
   setDealer: () => undefined,
   deck: [],

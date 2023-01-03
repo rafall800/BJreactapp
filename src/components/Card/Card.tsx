@@ -16,7 +16,7 @@ const Card: FC<CardProps> = ({ symbol, number }) => {
       setIcon(importedIcon.default);
     }
     if (cardRef.current) {
-      cardRef.current.style.transform = `translate(${number * 15}px,${number * -15}px)`;
+      cardRef.current.style.transform = `translate(${number * 15}px,${number * -5}px)`;
       cardRef.current.style.zIndex = number.toString();
     }
     fetchData();

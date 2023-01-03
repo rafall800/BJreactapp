@@ -11,6 +11,7 @@ export const FlexBox = styled.div`
 export const CardPlaceholder = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
   position: relative;
   width: 73px;
   height: 107px;
@@ -32,27 +33,37 @@ export const CardPlaceholderBox = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 30px;
-  gap: 40px;
-  #card2 {
-    transform: rotate(30deg);
-  }
-  #card3 {
-    margin-top: 30px;
-  }
-  #card4 {
-    transform: rotate(-30deg);
-  }
+  gap: 30vw;
   #card1,
+  #card2,
   #card5 {
     display: none;
   }
-  @media (min-width: 1050px) {
-    gap: 180px;
+  @media (min-width: 650px) {
+    gap: 20vw;
+    #card2 {
+      display: flex;
+      transform: rotate(30deg);
+    }
+    #card3 {
+      margin-top: 30px;
+    }
+    #card4 {
+      transform: rotate(-30deg);
+    }
+    #card1,
+    #card5 {
+      display: none;
+    }
+  }
+  @media (min-width: 1150px) {
+    gap: 200px;
     #card1 {
       display: flex;
       transform: rotate(42deg) translateY(-150px);
     }
     #card2 {
+      display: flex;
       transform: rotate(24deg) translateY(-15px);
     }
     #card4 {
@@ -64,18 +75,19 @@ export const CardPlaceholderBox = styled.div`
     }
   }
   @media (min-width: 1350px) {
-    gap: 180px;
+    gap: 220px;
     #card1 {
-      transform: rotate(30deg) translateY(-80px);
+      transform: rotate(26deg) translateY(-100px);
     }
     #card2 {
+      display: flex;
       transform: rotate(14deg);
     }
     #card4 {
       transform: rotate(-14deg);
     }
     #card5 {
-      transform: rotate(-30deg) translateY(-80px);
+      transform: rotate(-26deg) translateY(-100px);
     }
   }
 `;
@@ -84,9 +96,9 @@ export const HandCountBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: translateY(-55px);
+  transform: translateY(-75px);
   @media (min-width: 1050px) {
-    transform: translateY(-70px);
+    transform: translateY(-100px);
   }
 `;
 export const HandCount = styled.div`
@@ -107,4 +119,23 @@ export const HandCountPointer = styled.div`
   border-style: solid;
   border-width: 11px 9.5px 0 9.5px;
   border-color: ${theme.colorStyles.Orange1} transparent transparent transparent;
+`;
+
+export const AddPlayerButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 10px;
+  height: 50px;
+  width: 50px;
+  border-radius: 25px;
+
+  background-color: ${theme.colorStyles.Gray1};
+  border: none;
+
+  :hover {
+    cursor: pointer;
+    opacity: 80%;
+  }
 `;

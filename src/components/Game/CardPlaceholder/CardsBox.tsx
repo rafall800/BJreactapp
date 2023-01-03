@@ -3,6 +3,7 @@ import Card from '../../Card/Card';
 import { BlackJackGameContext } from '../GameManager/BlackJackGameContext';
 import { countValue } from '../GameManager/cards';
 import {
+  AddPlayerButton,
   CardPlaceholder,
   CardPlaceholderBox,
   FlexBox,
@@ -10,9 +11,10 @@ import {
   HandCountBox,
   HandCountPointer
 } from './CardsBox.styles';
+import { ReactComponent as PlusIcon } from '../../../assets/icons/plus.svg';
 
 const CardsBox: FC = () => {
-  const { dealer, players } = useContext(BlackJackGameContext);
+  const { dealer, players, addPlayer } = useContext(BlackJackGameContext);
   return (
     <FlexBox>
       <CardPlaceholder>
@@ -30,6 +32,11 @@ const CardsBox: FC = () => {
           .map((_card, index) => {
             return (
               <CardPlaceholder key={`card${index + 1}`} id={`card${index + 1}`}>
+                {!players[index]?.isPlaying && (
+                  <AddPlayerButton onClick={() => addPlayer(index)}>
+                    <PlusIcon />
+                  </AddPlayerButton>
+                )}
                 {players[index]?.isPlaying && (
                   <>
                     <HandCountBox>
