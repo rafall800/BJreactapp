@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import { shuffleCards, WithIdCard } from './cards';
 
-export type Player = { seat: number; hand: WithIdCard[] };
+export type Player = { isPlaying: boolean; hand: WithIdCard[] };
 
 export interface BlackJackGameInterface {
   bet: number;
@@ -35,7 +35,7 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
     (hand: WithIdCard[]) => {
       if (!deck) setDeck(shuffleCards(6));
       hand.push(deck.pop()!);
-      setDeck(deck);
+      setDeck([...deck]);
       return hand;
     },
     [deck, setDeck]
@@ -51,10 +51,10 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
 
   const startDeal = useCallback(() => {
     for (let i = 0; i < 2; i++) {
-      setDealer(dealCard(dealer));
+      setDealer([...dealCard(dealer)]);
       players.forEach((player) => {
         dealCard(player.hand);
-        setPlayers(players);
+        setPlayers([...players]);
       });
     }
   }, [dealer, players, setDealer, setPlayers, dealCard]);

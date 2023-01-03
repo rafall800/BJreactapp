@@ -25,7 +25,7 @@ export const Background = styled.div`
   min-width: 700px;
   max-width: 1440px;
   height: 847px;
-  top: -330px;
+  top: -260px;
   background: radial-gradient(circle, rgba(31, 231, 51, 0.4) 0%, rgba(2, 3, 5, 1) 100%);
   border-radius: 49%;
   border: 20px solid #000000;

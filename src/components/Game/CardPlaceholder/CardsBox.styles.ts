@@ -5,15 +5,15 @@ export const FlexBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 150px;
+  gap: 100px;
 `;
 
 export const CardPlaceholder = styled.div`
   display: flex;
-  align-items: center;
   justify-content: center;
+  position: relative;
   width: 73px;
-  height: 87px;
+  height: 107px;
   border: 3px solid rgba(255, 255, 255, 0.39);
   border-radius: 10px;
 
@@ -23,8 +23,8 @@ export const CardPlaceholder = styled.div`
     margin-top: 20px;
   }
   @media (min-width: 1050px) {
-    width: 78px;
-    height: 106px;
+    width: 88px;
+    height: 128px;
   }
 `;
 
@@ -84,13 +84,13 @@ export const HandCountBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: translateY(-75px);
+  transform: translateY(-55px);
   @media (min-width: 1050px) {
-    transform: translateY(-100px);
+    transform: translateY(-70px);
   }
 `;
 export const HandCount = styled.div`
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 42px;

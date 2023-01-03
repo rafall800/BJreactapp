@@ -8,11 +8,10 @@ import { BetOptions, DecisionOptions, Stakes, StyledHud, YourBalance, YourBet } 
 const Hud: FC = () => {
   const betStakes: string[] = ['5', '10', '25', '50', '100'];
 
-  const { bet, balance, deck, setBet, setBalance, startGame, startDeal } = useContext(BlackJackGameContext);
+  const { bet, balance, setBet, setBalance, startGame, startDeal } = useContext(BlackJackGameContext);
   useEffect(() => {
     startGame();
-  }, [startGame]);
-  console.log(deck);
+  });
   return (
     <StyledHud>
       <DecisionOptions>
