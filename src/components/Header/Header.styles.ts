@@ -32,3 +32,32 @@ export const Background = styled.div`
   box-shadow: inset 0px -10px 4px rgba(0, 0, 0, 0.85);
   filter: drop-shadow(0px 10px 4px rgba(0, 0, 0, 0.85));
 `;
+
+export const CardBorder = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90px;
+  height: 131px;
+  border: 3px solid rgba(255, 255, 255, 0.39);
+  border-radius: 11px;
+
+  white-space: nowrap;
+  h1 {
+    margin-top: 20px;
+  }
+  @media (min-width: 1100px) {
+    width: 110px;
+    height: 161px;
+    border-radius: 13px;
+  }
+`;
+
+export const CardBorderBox = styled.div`
+  display: flex;
+  gap: 12vw;
+  margin-top: 20px;
+  @media (min-width: 1100px) {
+    gap: 80px;
+  }
+`;

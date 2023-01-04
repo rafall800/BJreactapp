@@ -13,14 +13,14 @@ export const GameProvider: FC<Props> = ({ children }) => {
     balance: 1000,
     setBalance: () => undefined,
     players: [
-      { isPlaying: false, hand: [] },
-      { isPlaying: false, hand: [] },
-      { isPlaying: true, hand: [] },
-      { isPlaying: false, hand: [] },
-      { isPlaying: false, hand: [] }
+      { seatTaken: false, isPlaying: false, hand: [] },
+      { seatTaken: false, isPlaying: false, hand: [] },
+      { seatTaken: true, isPlaying: false, hand: [] },
+      { seatTaken: false, isPlaying: false, hand: [] },
+      { seatTaken: false, isPlaying: false, hand: [] }
     ],
     setPlayers: () => undefined,
-    addPlayer: () => undefined,
+    handleSeatAvailability: () => undefined,
     dealer: [],
     setDealer: () => undefined,
     deck: [],

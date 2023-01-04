@@ -19,7 +19,7 @@ export const TextBlock1 = styled.div`
   flex-direction: column;
   gap: 10px;
   max-width: 350px;
-  @media (min-width: 964px) {
+  @media (min-width: 1100px) {
     max-width: 858px;
     align-self: flex-end;
   }
@@ -30,7 +30,7 @@ export const TextBlock2 = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
-  @media (min-width: 964px) {
+  @media (min-width: 1100px) {
     max-width: 592px;
     align-self: flex-start;
   }
@@ -48,7 +48,7 @@ export const PreviewBlock = styled.div`
   align-items: center;
   margin-top: 20px;
   gap: 20px;
-  @media (min-width: 964px) {
+  @media (min-width: 1100px) {
     gap: none;
     min-width: 1080px;
     #reverse {
@@ -68,7 +68,7 @@ export const PreviewItem = styled.div`
     max-height: 260px;
     border-radius: 50px;
   }
-  @media (min-width: 964px) {
+  @media (min-width: 1100px) {
     flex-direction: row;
     justify-content: space-between;
     img {

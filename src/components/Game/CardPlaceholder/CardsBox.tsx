@@ -6,51 +6,62 @@ import {
   AddPlayerButton,
   CardPlaceholder,
   CardPlaceholderBox,
-  FlexBox,
+  DeletePlayerButton,
+  StyledCardsBox,
   HandCount,
   HandCountBox,
-  HandCountPointer
+  HandCountPointer,
+  PlayerSeat
 } from './CardsBox.styles';
 import { ReactComponent as PlusIcon } from '../../../assets/icons/plus.svg';
+import { ReactComponent as MinusIcon } from '../../../assets/icons/dash.svg';
 
 const CardsBox: FC = () => {
-  const { dealer, players, addPlayer } = useContext(BlackJackGameContext);
+  const { dealer, players, handleSeatAvailability } = useContext(BlackJackGameContext);
+
   return (
-    <FlexBox>
-      <CardPlaceholder>
+    <StyledCardsBox>
+      <PlayerSeat>
         <HandCountBox>
           <HandCount>{countValue(dealer)}</HandCount>
           <HandCountPointer />
         </HandCountBox>
-        {dealer.map((card, index) => (
-          <Card key={card._id} symbol={card.src} number={index} />
-        ))}
-      </CardPlaceholder>
+        <CardPlaceholder>
+          {dealer.map((card, index) => (
+            <Card key={card._id} symbol={card.src} number={index} />
+          ))}
+        </CardPlaceholder>
+      </PlayerSeat>
       <CardPlaceholderBox>
-        {Array(5)
-          .fill(<></>)
-          .map((_card, index) => {
-            return (
-              <CardPlaceholder key={`card${index + 1}`} id={`card${index + 1}`}>
-                {!players[index]?.isPlaying && (
-                  <AddPlayerButton onClick={() => addPlayer(index)}>
+        {players.map((player, index) => {
+          return (
+            <PlayerSeat key={`player${index + 1}`} id={`player${index + 1}`}>
+              {player.seatTaken && (
+                <HandCountBox>
+                  <HandCount>{countValue(players[index]!.hand)}</HandCount>
+                  <HandCountPointer />
+                </HandCountBox>
+              )}
+              <CardPlaceholder>
+                {!player.seatTaken && (
+                  <AddPlayerButton onClick={() => handleSeatAvailability(index)}>
                     <PlusIcon />
                   </AddPlayerButton>
                 )}
-                {players[index]?.isPlaying && (
-                  <>
-                    <HandCountBox>
-                      <HandCount>{countValue(players[index]!.hand)}</HandCount>
-                      <HandCountPointer />
-                    </HandCountBox>
-                    {players[index]?.hand.map((card, index) => (
-                      <Card key={card._id} symbol={card.src} number={index} />
-                    ))}
-                  </>
-                )}
+                {player.seatTaken &&
+                  player.hand.map((card, index) => <Card key={card._id} symbol={card.src} number={index} />)}
               </CardPlaceholder>
-            );
-          })}
+              {player.seatTaken && (
+                <DeletePlayerButton
+                  style={index === 2 ? { visibility: 'hidden' } : {}}
+                  onClick={() => handleSeatAvailability(index)}
+                >
+                  <MinusIcon />
+                </DeletePlayerButton>
+              )}
+            </PlayerSeat>
+          );
+        })}
       </CardPlaceholderBox>
       {/* <CardPlaceholderBox>
         <CardPlaceholder id="card1">
@@ -99,7 +110,7 @@ const CardsBox: FC = () => {
             players[4]?.hand.map((card, index) => <Card key={card._id} symbol={card.src} number={index} />)}
         </CardPlaceholder>
       </CardPlaceholderBox> */}
-    </FlexBox>
+    </StyledCardsBox>
   );
 };
 

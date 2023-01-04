@@ -6,7 +6,7 @@ export const Header2 = styled.h2`
   font-size: ${theme.fontSize.H2Mobile};
   font-weight: ${theme.fontWeight.Bold};
   text-transform: ${theme.fontVariant.Caps};
-  @media (min-width: 964px) {
+  @media (min-width: 1100px) {
     font-size: ${theme.fontSize.H2};
   }
 `;

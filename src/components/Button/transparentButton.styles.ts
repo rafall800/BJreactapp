@@ -19,7 +19,7 @@ export const transparentButtonStyle = css`
     border-radius: 50%;
     text-shadow: ${theme.textOutlines.Light}, 0px 4px 4px rgba(0, 0, 0, 0.4);
   }
-  @media (min-width: 964px) {
+  @media (min-width: 1100px) {
     font-size: ${theme.fontSize.FrontButton};
   }
 `;

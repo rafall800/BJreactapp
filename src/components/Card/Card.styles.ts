@@ -7,5 +7,8 @@ export const StyledCard = styled.img`
   left: 0;
   width: 100%;
   border: 1px solid ${theme.colorStyles.Black};
-  border-radius: 6px;
+  border-radius: 8px;
+  @media (min-width: 1100px) {
+    border-radius: 10px;
+  }
 `;

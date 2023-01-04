@@ -31,7 +31,7 @@ export const Content = styled.div`
     display: none;
     justify-self: end;
   }
-  @media (min-width: 964px) {
+  @media (min-width: 1100px) {
     padding: 0 70px;
     #singin-navbar {
       display: inline;
@@ -60,7 +60,7 @@ export const Collapsible = styled.div`
   #singin-collapsible {
     margin: 50px 0;
   }
-  @media (min-width: 964px) {
+  @media (min-width: 1100px) {
     max-width: 33%;
   }
 `;

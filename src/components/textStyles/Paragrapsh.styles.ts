@@ -5,7 +5,7 @@ export const Paragraph = styled.p`
   color: ${theme.colorStyles.Gray2};
   font-size: ${theme.fontSize.ParagraphMobile};
   font-weight: ${theme.fontWeight.SemiBold};
-  @media (min-width: 964px) {
+  @media (min-width: 1100px) {
     font-size: ${theme.fontSize.Paragraph};
   }
 `;

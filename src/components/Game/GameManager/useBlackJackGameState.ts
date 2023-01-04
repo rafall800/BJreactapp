@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import { shuffleCards, WithIdCard } from './cards';
 
-export type Player = { isPlaying: boolean; hand: WithIdCard[] };
+export type Player = { seatTaken: boolean; isPlaying: boolean; hand: WithIdCard[] };
 
 export interface BlackJackGameInterface {
   bet: number;
@@ -10,7 +10,7 @@ export interface BlackJackGameInterface {
   setBalance: React.Dispatch<React.SetStateAction<number>>;
   players: Player[];
   setPlayers: React.Dispatch<React.SetStateAction<Player[]>>;
-  addPlayer: (playerNumber: number) => void;
+  handleSeatAvailability: (playerNumber: number) => void;
   dealer: WithIdCard[];
   setDealer: React.Dispatch<React.SetStateAction<WithIdCard[]>>;
   deck: WithIdCard[];
@@ -54,16 +54,16 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
     for (let i = 0; i < 2; i++) {
       setDealer([...dealCard(dealer)]);
       players.forEach((player) => {
-        if (player.isPlaying) dealCard(player.hand);
+        if (player.seatTaken) dealCard(player.hand);
         setPlayers([...players]);
       });
     }
   }, [dealer, players, setDealer, setPlayers, dealCard]);
 
-  const addPlayer = useCallback(
+  const handleSeatAvailability = useCallback(
     (playerNumber: number) => {
       const newState = players.map((player, index) => {
-        if (index === playerNumber) return { ...player, isPlaying: true };
+        if (index === playerNumber) return { ...player, seatTaken: !player.seatTaken, isPlaying: false, hand: [] };
         return player;
       });
       setPlayers(newState);
@@ -79,7 +79,7 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
       setBalance,
       players,
       setPlayers,
-      addPlayer,
+      handleSeatAvailability,
       dealer,
       setDealer,
       deck,
@@ -97,7 +97,7 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
       setBalance,
       players,
       setPlayers,
-      addPlayer,
+      handleSeatAvailability,
       dealer,
       setDealer,
       deck,
