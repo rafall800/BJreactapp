@@ -17,6 +17,8 @@ export interface BlackJackGameInterface {
   setDeck: React.Dispatch<React.SetStateAction<WithIdCard[]>>;
   isNewGame: boolean;
   setIsNewGame: React.Dispatch<React.SetStateAction<boolean>>;
+  dealSpeed: number;
+  setDealSpeed: React.Dispatch<React.SetStateAction<number>>;
   dealCard: (hand: WithIdCard[]) => WithIdCard[];
   startGame: () => void;
   startDeal: () => void;
@@ -31,6 +33,8 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
 
   const [isNewGame, setIsNewGame] = useState<boolean>(initialValue.isNewGame);
   const [deck, setDeck] = useState<WithIdCard[]>(initialValue.deck);
+
+  const [dealSpeed, setDealSpeed] = useState<number>(initialValue.dealSpeed);
 
   const dealCard = useCallback(
     (hand: WithIdCard[]) => {
@@ -58,6 +62,8 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
         setPlayers([...players]);
       });
     }
+    dealer[1]!.isPrivate = true;
+    setDealer([...dealer]);
   }, [dealer, players, setDealer, setPlayers, dealCard]);
 
   const handleSeatAvailability = useCallback(
@@ -86,6 +92,8 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
       setDeck,
       isNewGame,
       setIsNewGame,
+      dealSpeed,
+      setDealSpeed,
       startGame,
       startDeal,
       dealCard
@@ -104,6 +112,8 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
       setDeck,
       isNewGame,
       setIsNewGame,
+      dealSpeed,
+      setDealSpeed,
       startGame,
       startDeal,
       dealCard

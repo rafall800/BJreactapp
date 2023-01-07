@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import RoutesEnum from '../../routes/routes';
-import Button from '../Button/Button';
+import RoutesEnum from '../../../../routes/routes';
+import Button from '../../../Button/Button';
 import { CardBorder, CardBorderBox } from './Header.styles';
-import { Header1 } from '../textStyles/Header1.styles';
-import { Header2 } from '../textStyles/Header2.styles';
+import { Header1 } from '../../../textStyles/Header1.styles';
+import { Header2 } from '../../../textStyles/Header2.styles';
 import { Background, StyledHeader } from './Header.styles';
 
 const Header: FC = () => {

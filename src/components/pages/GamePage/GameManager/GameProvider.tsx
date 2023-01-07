@@ -27,6 +27,8 @@ export const GameProvider: FC<Props> = ({ children }) => {
     setDeck: () => undefined,
     isNewGame: true,
     setIsNewGame: () => undefined,
+    dealSpeed: 0.5,
+    setDealSpeed: () => undefined,
     dealCard: () => [],
     startGame: () => undefined,
     startDeal: () => undefined

@@ -1,28 +1,39 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { useState, useEffect, useRef, FC, SVGProps } from 'react';
 import { StyledCard } from './Card.styles';
-
 interface CardProps {
   symbol: string;
   number: number;
 }
 
 const Card: FC<CardProps> = ({ symbol, number }) => {
-  const [icon, setIcon] = useState('');
-  const cardRef = useRef<HTMLImageElement>(null);
+  const ImportedIconRef = useRef<FC<SVGProps<SVGSVGElement>>>();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    async function fetchData() {
-      const importedIcon = await import(`../../assets/cards/${symbol}.svg`);
-      setIcon(importedIcon.default);
-    }
-    if (cardRef.current) {
-      cardRef.current.style.transform = `translate(${number * 15}px,${number * -5}px)`;
-      cardRef.current.style.zIndex = number.toString();
-    }
-    fetchData();
-  }, [symbol, number]);
+    setLoading(true);
+    const importIcon = async () => {
+      try {
+        ImportedIconRef.current = (
+          await import(`!!@svgr/webpack?-svgo,+titleProp,+ref!../../assets/cards/${symbol}.svg`)
+        ).default;
+      } catch (err) {
+        throw err;
+      } finally {
+        setLoading(false);
+      }
+    };
+    importIcon();
+  }, [symbol]);
 
-  return <StyledCard ref={cardRef} alt="card" src={icon} loading="lazy" />;
+  if (!loading && ImportedIconRef.current) {
+    const ImportedIcon = ImportedIconRef.current;
+    return (
+      <StyledCard number={number}>
+        <ImportedIcon />
+      </StyledCard>
+    );
+  }
+
+  return null;
 };
-
 export default Card;

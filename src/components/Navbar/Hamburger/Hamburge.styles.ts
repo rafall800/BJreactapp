@@ -6,14 +6,14 @@ export const StyledHamburger = styled.button`
   flex-direction: column;
   gap: 3px;
 
-  width: 25px;
+  width: 30px;
   padding: 0;
   margin: 0;
   border: none;
   background-color: transparent;
   span {
     width: 100%;
-    height: 5px;
+    height: 7px;
     background-color: ${theme.colorStyles.Black};
     border-radius: 25px;
   }

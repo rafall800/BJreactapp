@@ -1,7 +1,6 @@
 import { FC, useContext } from 'react';
-import Card from '../../Card/Card';
-import { BlackJackGameContext } from '../GameManager/BlackJackGameContext';
-import { countValue } from '../GameManager/cards';
+import { BlackJackGameContext } from '../../pages/GamePage/GameManager/BlackJackGameContext';
+import { countValue } from '../../pages/GamePage/GameManager/cards';
 import {
   AddPlayerButton,
   CardPlaceholder,
@@ -15,9 +14,17 @@ import {
 } from './CardsBox.styles';
 import { ReactComponent as PlusIcon } from '../../../assets/icons/plus.svg';
 import { ReactComponent as MinusIcon } from '../../../assets/icons/dash.svg';
+import Cardv2 from '../../Card/Cardv2';
 
 const CardsBox: FC = () => {
-  const { dealer, players, handleSeatAvailability } = useContext(BlackJackGameContext);
+  const { dealSpeed, dealer, players, handleSeatAvailability } = useContext(BlackJackGameContext);
+
+  const getHandsNumber = (): number => {
+    return players.reduce((acc, curr) => {
+      if (curr.seatTaken) return acc + 1;
+      return acc;
+    }, 1);
+  };
 
   return (
     <StyledCardsBox>
@@ -26,9 +33,9 @@ const CardsBox: FC = () => {
           <HandCount>{countValue(dealer)}</HandCount>
           <HandCountPointer />
         </HandCountBox>
-        <CardPlaceholder>
+        <CardPlaceholder dealSpeed={dealSpeed} handsNumber={getHandsNumber()} currentHand={getHandsNumber() - 1}>
           {dealer.map((card, index) => (
-            <Card key={card._id} symbol={card.src} number={index} />
+            <Cardv2 key={card._id} card={card} number={index} />
           ))}
         </CardPlaceholder>
       </PlayerSeat>
@@ -42,14 +49,14 @@ const CardsBox: FC = () => {
                   <HandCountPointer />
                 </HandCountBox>
               )}
-              <CardPlaceholder>
+              <CardPlaceholder dealSpeed={dealSpeed} handsNumber={getHandsNumber()} currentHand={index}>
                 {!player.seatTaken && (
                   <AddPlayerButton onClick={() => handleSeatAvailability(index)}>
                     <PlusIcon />
                   </AddPlayerButton>
                 )}
                 {player.seatTaken &&
-                  player.hand.map((card, index) => <Card key={card._id} symbol={card.src} number={index} />)}
+                  player.hand.map((card, index) => <Cardv2 key={card._id} card={card} number={index} />)}
               </CardPlaceholder>
               {player.seatTaken && (
                 <DeletePlayerButton

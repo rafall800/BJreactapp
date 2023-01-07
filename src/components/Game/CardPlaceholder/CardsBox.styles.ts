@@ -1,5 +1,14 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { theme } from '../../theme';
+
+interface CardPLaceholderProps {
+  dealSpeed: number;
+  handsNumber: number;
+  currentHand: number;
+}
+
+const dealDelay = 0.2;
 
 export const StyledCardsBox = styled.div`
   display: flex;
@@ -15,7 +24,7 @@ export const PlayerSeat = styled.div`
   flex-direction: column;
 `;
 
-export const CardPlaceholder = styled.div`
+export const CardPlaceholder = styled.div<CardPLaceholderProps>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,6 +34,26 @@ export const CardPlaceholder = styled.div`
   height: 131px;
   border: 3px solid rgba(255, 255, 255, 0.39);
   border-radius: 11px;
+
+  ${({ dealSpeed, handsNumber, currentHand }: CardPLaceholderProps) => css`
+    div:first-of-type {
+      animation: card-in ${dealSpeed}s ${dealDelay * currentHand}s backwards;
+    }
+    div:nth-of-type(2) {
+      animation: card-in ${dealSpeed}s ${dealDelay * currentHand + dealDelay * handsNumber}s backwards;
+    }
+    div {
+      animation: card-in ${dealSpeed}s backwards;
+    }
+  `};
+  @keyframes card-in {
+    0% {
+      transform: translate(100vw, -100vh);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
 
   @media (min-width: 1100px) {
     width: 110px;

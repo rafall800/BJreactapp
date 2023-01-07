@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import Header from '../../Header/Header';
+import Header from './Header/Header';
 import LandingPageContent from '../../LandingPageContent/LandingPageContent';
 import Navbar from '../../Navbar/Navbar';
 import { StyledLandingPage } from './LandingPage.styles';

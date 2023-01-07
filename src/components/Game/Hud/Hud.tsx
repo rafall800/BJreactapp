@@ -2,7 +2,7 @@ import { FC, useContext, useEffect } from 'react';
 import Button from '../../Button/Button';
 import { Header2 } from '../../textStyles/Header2.styles';
 import { Paragraph } from '../../textStyles/Paragrapsh.styles';
-import { BlackJackGameContext } from '../GameManager/BlackJackGameContext';
+import { BlackJackGameContext } from '../../pages/GamePage/GameManager/BlackJackGameContext';
 import { BetOptions, DecisionOptions, Stakes, StyledHud, YourBalance, YourBet } from './Hud.styles';
 
 const Hud: FC = () => {

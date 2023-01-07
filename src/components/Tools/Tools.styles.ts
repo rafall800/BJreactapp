@@ -1,4 +1,4 @@
-import { theme } from './../theme';
+import { theme } from '../theme';
 import styled from '@emotion/styled';
 
 export const StyledTools = styled.div`
@@ -6,5 +6,5 @@ export const StyledTools = styled.div`
   max-width: 860px;
   height: 600px;
   background-color: ${theme.colorStyles.Gray1};
-  margin: 150px 0;
+  margin-top: 100px;
 `;

@@ -21,6 +21,8 @@ export const BlackJackGameContext = createContext<BlackJackGameInterface>({
   setDeck: () => undefined,
   isNewGame: true,
   setIsNewGame: () => undefined,
+  dealSpeed: 0.5,
+  setDealSpeed: () => undefined,
   dealCard: () => [],
   startGame: () => undefined,
   startDeal: () => undefined
