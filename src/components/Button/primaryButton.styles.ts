@@ -17,7 +17,7 @@ export const primaryButtonStyle = css`
   }
 
   :disabled {
-    color: ${theme.colorStyles.Gray1};
-    background-color: ${theme.colorStyles.Gray3};
+    color: ${theme.colorStyles.Gray2};
+    background-color: ${theme.colorStyles.Gray4};
   }
 `;

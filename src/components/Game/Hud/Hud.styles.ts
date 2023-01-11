@@ -3,11 +3,15 @@ import { theme } from '../../theme';
 
 export const StyledHud = styled.div`
   display: flex;
+  align-items: flex-end;
+  height: 100%;
 `;
 
 export const DecisionOptions = styled.div`
-  display: none;
+  display: flex;
   gap: 10px;
+  margin-top: 200px;
+  margin-bottom: 40px;
 `;
 
 export const BetOptions = styled.div`
@@ -16,7 +20,7 @@ export const BetOptions = styled.div`
   align-items: center;
   gap: 10px;
   padding: 20px;
-  margin-top: 20px;
+  margin-bottom: 20px;
 
   background-color: ${theme.colorStyles.Green1};
   border-radius: 20px;

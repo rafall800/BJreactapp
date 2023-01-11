@@ -10,7 +10,6 @@ export const GameTableContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 60px;
   min-width: 700px;
   max-width: 1440px;
   height: 850px;
@@ -18,7 +17,7 @@ export const GameTableContent = styled.div`
 
 export const GameTable = styled.div`
   position: absolute;
-  z-index: -1;
+  z-index: -2;
 
   width: 110%;
   min-width: 700px;

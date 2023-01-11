@@ -5,9 +5,15 @@ interface ButtonProps {
   variant?: 'tab' | 'primary' | 'doubledown' | 'split' | 'stand' | 'transparent';
 }
 
-const Button: FC<ButtonProps & React.HTMLAttributes<HTMLButtonElement>> = ({ onClick, variant, children, id }) => {
+const Button: FC<ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
+  onClick,
+  variant,
+  children,
+  id,
+  type
+}) => {
   return (
-    <StyledButton id={id} onClick={onClick} variant={variant}>
+    <StyledButton id={id} onClick={onClick} variant={variant} type={type}>
       {children}
     </StyledButton>
   );

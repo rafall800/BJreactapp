@@ -1,7 +1,7 @@
 import { FC, useContext } from 'react';
 import Button from '../Button/Button';
-import { BlackJackGameContext } from '../pages/GamePage/GameManager/BlackJackGameContext';
-import { Speeds, StyledGameSettings } from './StyledGameSettings.styles';
+import { BlackJackGameContext } from '../pages/GamePage/GameManager/GameProvider';
+import { Speeds, StyledGameSettings } from './GameSettings.styles';
 
 const GameSettings: FC = () => {
   const dealSpeeds: string[] = ['25', '50', '75', '100'];

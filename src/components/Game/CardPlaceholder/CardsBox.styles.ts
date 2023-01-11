@@ -14,52 +14,28 @@ export const StyledCardsBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 90px;
+  gap: 80px;
+  margin-top: 60px;
 `;
 
-export const PlayerSeat = styled.div`
-  display: flex;
-  justify-content: center;
+export const TopHud = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   align-items: center;
-  flex-direction: column;
+
+  width: 100%;
 `;
 
-export const CardPlaceholder = styled.div<CardPLaceholderProps>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
+export const DealtCards = styled.div`
+  height: 160px;
+  width: 100px;
+  background-color: pink;
+`;
 
-  width: 90px;
-  height: 131px;
-  border: 3px solid rgba(255, 255, 255, 0.39);
-  border-radius: 11px;
-
-  ${({ dealSpeed, handsNumber, currentHand }: CardPLaceholderProps) => css`
-    div:first-of-type {
-      animation: card-in ${dealSpeed}s ${dealDelay * currentHand}s backwards;
-    }
-    div:nth-of-type(2) {
-      animation: card-in ${dealSpeed}s ${dealDelay * currentHand + dealDelay * handsNumber}s backwards;
-    }
-    div {
-      animation: card-in ${dealSpeed}s backwards;
-    }
-  `};
-  @keyframes card-in {
-    0% {
-      transform: translate(100vw, -100vh);
-    }
-    100% {
-      transform: translate(0, 0);
-    }
-  }
-
-  @media (min-width: 1100px) {
-    width: 110px;
-    height: 161px;
-    border-radius: 13px;
-  }
+export const Shoe = styled.div`
+  height: 50px;
+  width: 240px;
+  background-color: blue;
 `;
 
 export const CardPlaceholderBox = styled.div`
@@ -95,6 +71,72 @@ export const CardPlaceholderBox = styled.div`
   }
 `;
 
+export const PlayerSeat = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+export const CardPlaceholder = styled.div<CardPLaceholderProps>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  width: 90px;
+  height: 131px;
+  border: 3px solid rgba(255, 255, 255, 0.39);
+  border-radius: 11px;
+
+  ${({ dealSpeed, handsNumber, currentHand }: CardPLaceholderProps) => css`
+    #card:first-of-type {
+      animation: card-in ${dealSpeed}s ${dealDelay * currentHand}s backwards;
+    }
+    #card:nth-of-type(2) {
+      animation: card-in ${dealSpeed}s ${dealDelay * currentHand + dealDelay * handsNumber}s backwards;
+    }
+    #card {
+      animation: card-in ${dealSpeed}s backwards;
+    }
+  `};
+  @keyframes card-in {
+    0% {
+      transform: translate(100vw, -100vh);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+
+  @media (min-width: 1100px) {
+    width: 110px;
+    height: 161px;
+    border-radius: 13px;
+  }
+`;
+
+export const Highlight = styled.div`
+  z-index: -1;
+  position: absolute;
+  width: 180px;
+  height: 200px;
+  background: radial-gradient(circle, #fff9 0%, #fff0 100%);
+  border-radius: 50%;
+  animation: HighlightPulse 4s linear infinite;
+  @keyframes HighlightPulse {
+    from {
+      opacity: 1;
+    }
+    50% {
+      opacity: 50%;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+`;
+
 export const HandCountBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -116,7 +158,8 @@ export const HandCount = styled.div`
 `;
 
 export const HandCountPointer = styled.div`
-  display: none;
+  position: absolute;
+  transform: translateY(20px);
   width: 0;
   height: 0;
   border-style: solid;
@@ -134,7 +177,7 @@ export const AddPlayerButton = styled.button`
   width: 50px;
   border-radius: 25px;
 
-  background-color: ${theme.colorStyles.Gray1};
+  background-color: ${theme.colorStyles.Gray2};
   border: none;
 
   :hover {
@@ -142,7 +185,7 @@ export const AddPlayerButton = styled.button`
     opacity: 80%;
   }
   :active {
-    background-color: ${theme.colorStyles.Gray2};
+    background-color: ${theme.colorStyles.Gray3};
   }
 `;
 

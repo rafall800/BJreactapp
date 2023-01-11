@@ -1,38 +1,12 @@
-import { FC } from 'react';
-import { BlackJackGameContext } from './BlackJackGameContext';
-import { useBlackJackGameState } from './useBlackJackGameState';
+import { createContext, FC } from 'react';
+import { DefaultProps } from '../../../util/types';
+import { BlackJackGameInterface, useBlackJackGameState } from './useBlackJackGameState';
+import { initialData } from './util';
 
-type Props = {
-  children?: React.ReactNode;
-};
+export const BlackJackGameContext = createContext<BlackJackGameInterface>(initialData);
 
-export const GameProvider: FC<Props> = ({ children }) => {
-  const ctx = useBlackJackGameState({
-    bet: 0,
-    setBet: () => undefined,
-    balance: 1000,
-    setBalance: () => undefined,
-    players: [
-      { seatTaken: false, isPlaying: false, hand: [] },
-      { seatTaken: false, isPlaying: false, hand: [] },
-      { seatTaken: true, isPlaying: false, hand: [] },
-      { seatTaken: false, isPlaying: false, hand: [] },
-      { seatTaken: false, isPlaying: false, hand: [] }
-    ],
-    setPlayers: () => undefined,
-    handleSeatAvailability: () => undefined,
-    dealer: [],
-    setDealer: () => undefined,
-    deck: [],
-    setDeck: () => undefined,
-    isNewGame: true,
-    setIsNewGame: () => undefined,
-    dealSpeed: 0.5,
-    setDealSpeed: () => undefined,
-    dealCard: () => [],
-    startGame: () => undefined,
-    startDeal: () => undefined
-  });
+export const GameProvider: FC<DefaultProps> = ({ children }) => {
+  const ctx = useBlackJackGameState(initialData);
 
   return <BlackJackGameContext.Provider value={ctx}>{children}</BlackJackGameContext.Provider>;
 };

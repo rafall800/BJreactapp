@@ -8,7 +8,7 @@ export const useDynamicSVGImport = (symbol: string) => {
     setLoading(true);
     const importIcon = async () => {
       try {
-        ImportedIconRef.current = (await import(`../../assets/cards/${symbol}.svg`)).ReactComponent;
+        ImportedIconRef.current = (await import(`../assets/cards/${symbol}.svg`)).ReactComponent;
       } catch (err) {
         throw err;
       } finally {

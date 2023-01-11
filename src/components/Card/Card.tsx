@@ -1,39 +1,25 @@
-import { useState, useEffect, useRef, FC, SVGProps } from 'react';
+import { FC } from 'react';
+import { useDynamicSVGImport } from '../../hooks/UseDynamicSvg';
 import { StyledCard } from './Card.styles';
+import { ReactComponent as BackCard } from '../../assets/cards/back.svg';
+import { WithIdCard } from '../pages/GamePage/GameManager/util';
+
 interface CardProps {
-  symbol: string;
+  card: WithIdCard;
   number: number;
 }
 
-const Card: FC<CardProps> = ({ symbol, number }) => {
-  const ImportedIconRef = useRef<FC<SVGProps<SVGSVGElement>>>();
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setLoading(true);
-    const importIcon = async () => {
-      try {
-        ImportedIconRef.current = (
-          await import(`!!@svgr/webpack?-svgo,+titleProp,+ref!../../assets/cards/${symbol}.svg`)
-        ).default;
-      } catch (err) {
-        throw err;
-      } finally {
-        setLoading(false);
-      }
-    };
-    importIcon();
-  }, [symbol]);
-
-  if (!loading && ImportedIconRef.current) {
-    const ImportedIcon = ImportedIconRef.current;
+const Icon: FC<CardProps> = ({ card, number }) => {
+  const { SvgIcon } = useDynamicSVGImport(card.value);
+  if (SvgIcon) {
     return (
-      <StyledCard number={number}>
-        <ImportedIcon />
+      <StyledCard id="card" number={number}>
+        {card.isPrivate && <BackCard style={{ position: 'absolute' }} />}
+        <SvgIcon id="frontCard" />
       </StyledCard>
     );
   }
-
   return null;
 };
-export default Card;
+
+export default Icon;

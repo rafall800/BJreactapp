@@ -1,3 +1,4 @@
+import { BlackJackGameInterface } from './useBlackJackGameState';
 import { WithIdRaw } from '../../../util/types';
 
 export interface Card {
@@ -62,6 +63,47 @@ export const cards: Card[] = [
   { isPrivate: false, value: 'KD' }
 ];
 
+export const initialData: BlackJackGameInterface = {
+  gameRules: {
+    soft17: true,
+    decksNumber: 6
+  },
+  setGameRules: () => undefined,
+  gameRunning: false,
+  setGameRunning: () => undefined,
+  bettingStage: true,
+  setBettingStage: () => undefined,
+  bet: 0,
+  setBet: () => undefined,
+  balance: 1000,
+  setBalance: () => undefined,
+  players: [
+    { seatTaken: false, isPlaying: false, hand: [], bet: 0, outcome: undefined },
+    { seatTaken: false, isPlaying: false, hand: [], bet: 0, outcome: undefined },
+    { seatTaken: true, isPlaying: false, hand: [], bet: 0, outcome: undefined },
+    { seatTaken: false, isPlaying: false, hand: [], bet: 0, outcome: undefined },
+    { seatTaken: false, isPlaying: false, hand: [], bet: 0, outcome: undefined }
+  ],
+  setPlayers: () => undefined,
+  handleSeatAvailability: () => undefined,
+  handleSetupPlayers: () => undefined,
+  handlePlayerBet: () => undefined,
+  handlePLayerHit: () => undefined,
+  handlePLayerStand: () => undefined,
+  dealer: [],
+  setDealer: () => undefined,
+  shoe: [],
+  setShoe: () => undefined,
+  isNewGame: true,
+  setIsNewGame: () => undefined,
+  dealSpeed: 0.5,
+  setDealSpeed: () => undefined,
+  dealCard: () => [],
+  startGame: () => undefined,
+  startDeal: () => undefined,
+  countDealerValue: () => 0
+};
+
 export const shuffleCards = (decksNumber: number): WithIdCard[] => {
   return Array(decksNumber)
     .fill(cards)
@@ -70,13 +112,20 @@ export const shuffleCards = (decksNumber: number): WithIdCard[] => {
     .map((card, index) => ({ ...card, _id: index.toString() }));
 };
 
-export const countValue = (cards: WithIdCard[]): number => {
-  return cards.reduce((acc, curr) => {
+export const countPlayerValue = (cards: WithIdCard[]): number => {
+  let AcesNumber = 0;
+
+  let playerValue = cards.reduce((acc, curr) => {
     if (curr.isPrivate) return acc;
     if (curr.value.slice(0, -1) === 'A') {
-      return acc + 11 > 21 ? acc + 1 : acc + 11;
+      AcesNumber++;
+      return acc;
     }
     if (['J', 'Q', 'K'].includes(curr.value.slice(0, -1))) return acc + 10;
     return acc + Number(curr.value.slice(0, -1));
   }, 0);
+  for (let i = 0; i < AcesNumber; i++) {
+    playerValue + 11 > 21 ? (playerValue = playerValue + 1) : (playerValue = playerValue + 11);
+  }
+  return playerValue;
 };

@@ -14,7 +14,7 @@ export const StyledNavbar = styled.div`
 
 export const Content = styled.div`
   position: relative;
-  z-index: 2;
+  z-index: 3;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   align-items: center;
@@ -41,7 +41,7 @@ export const Content = styled.div`
 
 export const Collapsible = styled.div`
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   top: 0;
   left: 0;
   right: 0;
