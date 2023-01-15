@@ -5,6 +5,6 @@ export const StyledTools = styled.div`
   width: 100%;
   max-width: 860px;
   height: 600px;
-  background-color: ${theme.colorStyles.Gray2};
+  background-color: ${theme.colorStyles.Gray3};
   margin-top: 100px;
 `;

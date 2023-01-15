@@ -6,7 +6,7 @@ import Button from '../../Button/Button';
 import CustomDialog from '../../CustomDialog/CustomDialog';
 import CustomInput from '../../CustomInput/CustomInput';
 import { BlackJackGameContext } from '../../pages/GamePage/GameManager/GameProvider';
-import { ButtonBox } from './StartGameDialog.styles';
+import { ButtonBox, CheckboxBox } from './StartGameDialog.styles';
 
 export interface StartGameDialogForm {
   balance: number;
@@ -29,8 +29,8 @@ const StartGameDialog: FC = () => {
       ],
       decksNumber: [
         {
-          isValid: (decks) => decks >= 1,
-          message: 'Needs to be over 0!'
+          isValid: (decks) => decks >= 5,
+          message: 'Needs to be over 4!'
         },
         {
           isValid: (decks) => decks <= 8,
@@ -40,7 +40,9 @@ const StartGameDialog: FC = () => {
     },
     onSubmit: () => {
       setBalance(form.balance);
-      setGameRules({ soft17: form.soft17Rule, decksNumber: form.decksNumber });
+      gameRules.decksNumber = form.decksNumber;
+      gameRules.soft17 = form.soft17Rule;
+      setGameRules({ ...gameRules });
       startGame();
       handleSetupPlayers();
     },
@@ -69,8 +71,10 @@ const StartGameDialog: FC = () => {
           errorMessage={errors.decksNumber}
           onChange={handleChange}
         />
-        <label htmlFor="soft17Rule">Soft 17 rule:</label>
-        <input name="soft17Rule" id="soft17Rule" type="checkbox" checked={form.soft17Rule} onChange={handleChange} />
+        <CheckboxBox>
+          <label htmlFor="soft17Rule">Soft 17 rule:</label>
+          <input name="soft17Rule" id="soft17Rule" type="checkbox" checked={form.soft17Rule} onChange={handleChange} />
+        </CheckboxBox>
         <ButtonBox>
           <Button variant="primary" type="submit">
             Play

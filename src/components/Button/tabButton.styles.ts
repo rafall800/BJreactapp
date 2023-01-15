@@ -17,11 +17,11 @@ export const tabButtonStyle = css`
   }
 
   :active {
-    background-color: ${theme.colorStyles.Green3};
+    background-color: ${theme.colorStyles.Green4};
   }
 
   :disabled {
-    color: ${theme.colorStyles.Gray2};
-    background-color: ${theme.colorStyles.Gray4};
+    color: ${theme.colorStyles.Gray3};
+    background-color: ${theme.colorStyles.Gray5};
   }
 `;

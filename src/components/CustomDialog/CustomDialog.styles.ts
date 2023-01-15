@@ -6,4 +6,10 @@ export const StyledCustomDialog = styled.dialog`
   display: flex;
   justify-content: center;
   align-items: center;
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
 `;

@@ -2,10 +2,27 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { theme } from '../../theme';
 
-interface CardPLaceholderProps {
+interface CardPlaceholderProps {
   dealSpeed: number;
   handsNumber: number;
   currentHand: number;
+}
+
+interface SplitCardPlaceholderProps {
+  dealSpeed: number;
+}
+
+interface StackedCardsProps {
+  container: 'shoe' | 'dealtCards';
+  cardsAmount: number;
+}
+
+interface OutcomeProps {
+  outcome: 'win' | 'lose' | 'push';
+}
+
+interface HighlightProps {
+  handType: 'default' | 'splitHand';
 }
 
 const dealDelay = 0.2;
@@ -20,22 +37,77 @@ export const StyledCardsBox = styled.div`
 
 export const TopHud = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr auto 1fr;
+  column-gap: 10px;
   align-items: center;
+  justify-items: center;
 
   width: 100%;
 `;
 
 export const DealtCards = styled.div`
-  height: 160px;
-  width: 100px;
-  background-color: pink;
+  display: flex;
+  align-items: flex-end;
+  height: 120px;
+  width: 80px;
+  margin-top: 35px;
+  border-width: 0 0 3px 3px;
+  border-style: solid;
+  border-color: ${theme.colorStyles.Black};
+  @media (min-width: 1100px) {
+    height: 140px;
+    width: 100px;
+    margin-top: 45px;
+  }
 `;
 
 export const Shoe = styled.div`
-  height: 50px;
-  width: 240px;
-  background-color: blue;
+  display: flex;
+  justify-content: flex-end;
+  height: 40px;
+  width: 120px;
+  margin-top: 35px;
+  border-width: 0 3px 3px 0;
+  border-style: solid;
+  border-color: ${theme.colorStyles.Black};
+  @media (min-width: 1100px) {
+    height: 50px;
+    width: 240px;
+    margin-top: 45px;
+  }
+`;
+
+export const StackedCards = styled.div<StackedCardsProps>`
+  ${({ container, cardsAmount }: StackedCardsProps) => css`
+    ${container === 'shoe' &&
+    css`
+      height: 100%;
+      width: ${cardsAmount * 120}px;
+      @media (min-width: 1100px) {
+        width: ${cardsAmount * 240}px;
+      }
+      background: linear-gradient(
+        90deg,
+        ${theme.colorStyles.Gray2} 0%,
+        ${theme.colorStyles.Gray3} 50%,
+        ${theme.colorStyles.Gray4} 100%
+      );
+    `};
+    ${container === 'dealtCards' &&
+    css`
+      width: 100%;
+      height: ${cardsAmount * 120}px;
+      @media (min-width: 1100px) {
+        height: ${cardsAmount * 140}px;
+      }
+      background: linear-gradient(
+        180deg,
+        ${theme.colorStyles.Gray2} 0%,
+        ${theme.colorStyles.Gray3} 50%,
+        ${theme.colorStyles.Gray4} 100%
+      );
+    `};
+  `};
 `;
 
 export const CardPlaceholderBox = styled.div`
@@ -78,7 +150,7 @@ export const PlayerSeat = styled.div`
   flex-direction: column;
 `;
 
-export const CardPlaceholder = styled.div<CardPLaceholderProps>`
+export const CardPlaceholder = styled.div<CardPlaceholderProps>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -89,14 +161,14 @@ export const CardPlaceholder = styled.div<CardPLaceholderProps>`
   border: 3px solid rgba(255, 255, 255, 0.39);
   border-radius: 11px;
 
-  ${({ dealSpeed, handsNumber, currentHand }: CardPLaceholderProps) => css`
+  ${({ dealSpeed, handsNumber, currentHand }: CardPlaceholderProps) => css`
     #card:first-of-type {
       animation: card-in ${dealSpeed}s ${dealDelay * currentHand}s backwards;
     }
     #card:nth-of-type(2) {
       animation: card-in ${dealSpeed}s ${dealDelay * currentHand + dealDelay * handsNumber}s backwards;
     }
-    #card {
+    #card:nth-of-type(n + 2) ~ #card {
       animation: card-in ${dealSpeed}s backwards;
     }
   `};
@@ -116,14 +188,80 @@ export const CardPlaceholder = styled.div<CardPLaceholderProps>`
   }
 `;
 
-export const Highlight = styled.div`
+export const SplitHandsBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  gap: 20px;
+`;
+
+export const SplitCardPlaceholderBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const SplitCardPlaceholder = styled.div<SplitCardPlaceholderProps>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  width: 90px;
+  height: 31px;
+  border: 3px solid rgba(255, 255, 255, 0.39);
+  border-radius: 11px;
+
+  ${({ dealSpeed }: SplitCardPlaceholderProps) => css`
+    #card:first-of-type {
+      animation: first-card-in ${dealSpeed}s ${dealDelay}s backwards;
+    }
+    #card:nth-of-type(n + 1) ~ #card {
+      animation: card-in ${dealSpeed}s backwards;
+    }
+  `};
+  @keyframes card-in {
+    0% {
+      transform: translate(100vw, -100vh);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+  @keyframes first-card-in {
+    0% {
+      transform: translateY(-150px);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+
+  @media (min-width: 1100px) {
+    width: 110px;
+    height: 61px;
+    border-radius: 13px;
+  }
+`;
+
+export const Highlight = styled.div<HighlightProps>`
   z-index: -1;
   position: absolute;
   width: 180px;
-  height: 200px;
-  background: radial-gradient(circle, #fff9 0%, #fff0 100%);
+  background: radial-gradient(circle, #fff9 30%, #fff0 100%);
   border-radius: 50%;
-  animation: HighlightPulse 4s linear infinite;
+  animation: HighlightPulse 2s linear infinite;
+  ${({ handType }: HighlightProps) => css`
+    ${handType === 'default' &&
+    css`
+      height: 200px;
+    `};
+    ${handType === 'splitHand' &&
+    css`
+      height: 100px;
+    `};
+  `};
   @keyframes HighlightPulse {
     from {
       opacity: 1;
@@ -135,6 +273,28 @@ export const Highlight = styled.div`
       opacity: 1;
     }
   }
+`;
+
+export const Outcome = styled.div<OutcomeProps>`
+  z-index: -1;
+  position: absolute;
+  width: 180px;
+  height: 200px;
+  border-radius: 50%;
+  ${({ outcome }: OutcomeProps) => css`
+    ${outcome === 'win' &&
+    css`
+      background: radial-gradient(circle, ${theme.colorStyles.Green3} 0%, ${theme.colorStyles.Green3} 100%);
+    `};
+    ${outcome === 'lose' &&
+    css`
+      background: radial-gradient(circle, ${theme.colorStyles.Red2} 0%, ${theme.colorStyles.Red2} 100%);
+    `};
+    ${outcome === 'push' &&
+    css`
+      background: radial-gradient(circle, ${theme.colorStyles.Orange1} 0%, ${theme.colorStyles.Orange1} 100%);
+    `};
+  `};
 `;
 
 export const HandCountBox = styled.div`
@@ -177,7 +337,7 @@ export const AddPlayerButton = styled.button`
   width: 50px;
   border-radius: 25px;
 
-  background-color: ${theme.colorStyles.Gray2};
+  background-color: ${theme.colorStyles.Gray3};
   border: none;
 
   :hover {
@@ -185,7 +345,7 @@ export const AddPlayerButton = styled.button`
     opacity: 80%;
   }
   :active {
-    background-color: ${theme.colorStyles.Gray3};
+    background-color: ${theme.colorStyles.Gray4};
   }
 `;
 
@@ -204,7 +364,7 @@ export const DeletePlayerButton = styled.button`
     margin-top: 25px;
   }
 
-  background-color: ${theme.colorStyles.Red1};
+  background-color: ${theme.colorStyles.Red3};
   border: none;
 
   :hover {
@@ -212,6 +372,6 @@ export const DeletePlayerButton = styled.button`
     opacity: 80%;
   }
   :active {
-    background-color: ${theme.colorStyles.Red2};
+    background-color: ${theme.colorStyles.Red4};
   }
 `;

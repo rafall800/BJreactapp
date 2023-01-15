@@ -38,7 +38,7 @@ export const TextBlock2 = styled.div`
 
 export const ListElement = styled.li`
   list-style-type: disc;
-  color: ${theme.colorStyles.Gray3};
+  color: ${theme.colorStyles.Gray4};
   margin: 5px 0 0 15px;
 `;
 

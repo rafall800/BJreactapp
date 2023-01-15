@@ -1,5 +1,5 @@
 import { FC, useContext } from 'react';
-import { GameTable, GameTableContent, StyledGame } from './Game.styles';
+import { GameTable, GameTableContent, RelativeBox, StyledGame } from './Game.styles';
 import CardsBox from './CardPlaceholder/CardsBox';
 import Hud from './Hud/Hud';
 import StartGameDialog from './StartGameDialog/StartGameDialog';
@@ -10,11 +10,13 @@ const Game: FC = () => {
   return (
     <StyledGame>
       {isNewGame && <StartGameDialog />}
+      <RelativeBox>
+        <GameTable />
+      </RelativeBox>
       <GameTableContent>
         <CardsBox />
         <Hud />
       </GameTableContent>
-      <GameTable />
     </StyledGame>
   );
 };

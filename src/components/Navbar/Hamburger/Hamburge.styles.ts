@@ -23,7 +23,7 @@ export const StyledHamburger = styled.button`
   :hover,
   :active {
     span {
-      background-color: ${theme.colorStyles.Green3};
+      background-color: ${theme.colorStyles.Green4};
       border: 1px solid ${theme.colorStyles.Black};
     }
   }

@@ -10,9 +10,21 @@ export const GameTableContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 700px;
   max-width: 1440px;
-  height: 850px;
+  min-height: 850px;
+`;
+
+export const RelativeBox = styled.div`
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin-top: 20px;
+  width: 100%;
+  @media (min-width: 1100px) {
+    position: unset;
+    width: unset;
+    height: unset;
+  }
 `;
 
 export const GameTable = styled.div`
@@ -23,7 +35,7 @@ export const GameTable = styled.div`
   min-width: 700px;
   max-width: 1440px;
   height: 850px;
-  top: 100px;
+  margin-top: 20px;
 
   background: radial-gradient(circle, rgba(31, 231, 51, 0.4) 0%, rgba(2, 3, 5, 1) 100%);
   border-radius: 49%;

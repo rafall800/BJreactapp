@@ -10,10 +10,11 @@ const Button: FC<ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>> = 
   variant,
   children,
   id,
-  type
+  type,
+  disabled
 }) => {
   return (
-    <StyledButton id={id} onClick={onClick} variant={variant} type={type}>
+    <StyledButton id={id} onClick={onClick} variant={variant} type={type} disabled={disabled}>
       {children}
     </StyledButton>
   );

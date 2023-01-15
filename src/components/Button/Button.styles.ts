@@ -37,4 +37,12 @@ export const StyledButton = styled.button<ButtonProps>`
   :hover {
     cursor: pointer;
   }
+
+  :disabled {
+    background-color: ${theme.colorStyles.Gray2};
+    color: ${theme.colorStyles.Gray1};
+  }
+  :disabled:hover {
+    cursor: default;
+  }
 `;

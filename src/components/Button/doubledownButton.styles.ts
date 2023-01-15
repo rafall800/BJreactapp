@@ -1,6 +1,6 @@
+import { theme } from './../theme';
 import { primaryButtonStyle } from './primaryButton.styles';
 import { css } from '@emotion/react';
-import { theme } from '../theme';
 
 export const doubledownButtonStyle = css`
   ${primaryButtonStyle};

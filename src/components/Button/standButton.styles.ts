@@ -4,12 +4,12 @@ import { theme } from '../theme';
 
 export const standButtonStyle = css`
   ${primaryButtonStyle};
-  background-color: ${theme.colorStyles.Red1};
+  background-color: ${theme.colorStyles.Red3};
   :hover {
-    background-color: ${theme.colorStyles.Red2};
+    background-color: ${theme.colorStyles.Red4};
   }
 
   :active {
-    background-color: ${theme.colorStyles.Red2};
+    background-color: ${theme.colorStyles.Red4};
   }
 `;

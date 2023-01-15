@@ -4,14 +4,23 @@ import { theme } from '../../theme';
 export const StyledHud = styled.div`
   display: flex;
   align-items: flex-end;
-  height: 100%;
+  flex: 1;
+`;
+
+export const Decisions = styled.div`
+  display: flex;
+  gap: 10px;
 `;
 
 export const DecisionOptions = styled.div`
   display: flex;
-  gap: 10px;
-  margin-top: 200px;
-  margin-bottom: 40px;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin: 20px 0;
+  p {
+    color: ${theme.colorStyles.Black};
+  }
 `;
 
 export const BetOptions = styled.div`

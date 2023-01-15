@@ -23,7 +23,7 @@ export const StyledCustomInput = styled('div')<StyledCustomInputProps>`
     background-color: ${theme.colorStyles.Gray1};
     border-radius: 8px;
 
-    color: ${theme.colorStyles.Gray4};
+    color: ${theme.colorStyles.Gray5};
     font-size: ${theme.fontSize.CustomInput};
 
     ::placeholder {
@@ -41,13 +41,13 @@ export const StyledCustomInput = styled('div')<StyledCustomInputProps>`
     transition: all 0.3s ease;
     pointer-events: none;
 
-    color: ${theme.colorStyles.Gray2};
+    color: ${theme.colorStyles.Gray3};
     font-size: ${theme.fontSize.CustomInput};
   }
 
   span {
     display: none;
-    color: ${theme.colorStyles.Red1};
+    color: ${theme.colorStyles.Red3};
   }
 
   ${({ isError }: StyledCustomInputProps) => css`
@@ -57,16 +57,16 @@ export const StyledCustomInput = styled('div')<StyledCustomInputProps>`
         display: block;
       }
       input + label {
-        color: ${theme.colorStyles.Red1};
+        color: ${theme.colorStyles.Red3};
       }
       input:focus + label {
-        color: ${theme.colorStyles.Red1};
+        color: ${theme.colorStyles.Red3};
       }
     `}
   `};
 
   input:focus {
-    border: solid 2px ${theme.colorStyles.Green4};
+    border: solid 2px ${theme.colorStyles.Green5};
   }
 
   input:focus + label,
@@ -77,7 +77,7 @@ export const StyledCustomInput = styled('div')<StyledCustomInputProps>`
   }
 
   input:focus + label {
-    color: ${theme.colorStyles.Green4};
+    color: ${theme.colorStyles.Green5};
   }
 
   input::-webkit-outer-spin-button,

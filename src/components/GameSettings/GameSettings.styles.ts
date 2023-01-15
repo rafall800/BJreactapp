@@ -3,7 +3,7 @@ import { theme } from '../theme';
 
 export const StyledGameSettings = styled.div`
   height: 100px;
-  background-color: ${theme.colorStyles.Gray2};
+  background-color: ${theme.colorStyles.Gray3};
   margin: 50px 0;
 `;
 
@@ -14,7 +14,7 @@ export const Speeds = styled.div`
     padding: 0 5px;
     border-left: 2px solid ${theme.colorStyles.Black};
     :hover {
-      background-color: ${theme.colorStyles.Gray3};
+      background-color: ${theme.colorStyles.Gray4};
     }
   }
 `;

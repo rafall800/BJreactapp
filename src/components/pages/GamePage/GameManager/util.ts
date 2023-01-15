@@ -1,6 +1,17 @@
 import { BlackJackGameInterface } from './useBlackJackGameState';
 import { WithIdRaw } from '../../../util/types';
 
+//TODO:
+
+//naprawić zliczanie wartości ręki
+//dodać funkcje split i dd
+//dodać artykuł jak grać, jak liczyć
+//dodać ćwiczenia takie jak: zliczanie kart, podejmowanie decyzji
+//zrobienie tabelki z statsami
+//dodanie sesji
+//dodanie logowania ? nie wiem po co; może zliczanie statystyk, możliwość zresetowania ich np staty performance z ćwiczonek, ilość kaski przegranej/zarobionej
+//dodanie ustawień języka
+
 export interface Card {
   value: string;
   isPrivate: boolean;
@@ -73,27 +84,83 @@ export const initialData: BlackJackGameInterface = {
   setGameRunning: () => undefined,
   bettingStage: true,
   setBettingStage: () => undefined,
+  splitHandStage: false,
+  setSplitHandStage: () => undefined,
   bet: 0,
   setBet: () => undefined,
   balance: 1000,
   setBalance: () => undefined,
   players: [
-    { seatTaken: false, isPlaying: false, hand: [], bet: 0, outcome: undefined },
-    { seatTaken: false, isPlaying: false, hand: [], bet: 0, outcome: undefined },
-    { seatTaken: true, isPlaying: false, hand: [], bet: 0, outcome: undefined },
-    { seatTaken: false, isPlaying: false, hand: [], bet: 0, outcome: undefined },
-    { seatTaken: false, isPlaying: false, hand: [], bet: 0, outcome: undefined }
+    {
+      seatTaken: false,
+      isPlaying: false,
+      hand: [],
+      bet: 0,
+      outcome: undefined,
+      canSplit: false,
+      canDoubledown: true,
+      canGetBlackJack: true,
+      splitHands: []
+    },
+    {
+      seatTaken: false,
+      isPlaying: false,
+      hand: [],
+      bet: 0,
+      outcome: undefined,
+      canSplit: false,
+      canDoubledown: true,
+      canGetBlackJack: true,
+      splitHands: []
+    },
+    {
+      seatTaken: true,
+      isPlaying: false,
+      hand: [],
+      bet: 0,
+      outcome: undefined,
+      canSplit: false,
+      canDoubledown: true,
+      canGetBlackJack: true,
+      splitHands: []
+    },
+    {
+      seatTaken: false,
+      isPlaying: false,
+      hand: [],
+      bet: 0,
+      outcome: undefined,
+      canSplit: false,
+      canDoubledown: true,
+      canGetBlackJack: true,
+      splitHands: []
+    },
+    {
+      seatTaken: false,
+      isPlaying: false,
+      hand: [],
+      bet: 0,
+      outcome: undefined,
+      canSplit: false,
+      canDoubledown: true,
+      canGetBlackJack: true,
+      splitHands: []
+    }
   ],
   setPlayers: () => undefined,
   handleSeatAvailability: () => undefined,
   handleSetupPlayers: () => undefined,
   handlePlayerBet: () => undefined,
-  handlePLayerHit: () => undefined,
-  handlePLayerStand: () => undefined,
+  handlePlayerHit: () => undefined,
+  handlePlayerStand: () => undefined,
+  handlePlayerDoubledown: () => undefined,
+  handlePlayerSplit: () => undefined,
   dealer: [],
   setDealer: () => undefined,
   shoe: [],
   setShoe: () => undefined,
+  dealtCardsAmount: 0,
+  setDealtCardsAmount: () => undefined,
   isNewGame: true,
   setIsNewGame: () => undefined,
   dealSpeed: 0.5,
@@ -112,7 +179,7 @@ export const shuffleCards = (decksNumber: number): WithIdCard[] => {
     .map((card, index) => ({ ...card, _id: index.toString() }));
 };
 
-export const countPlayerValue = (cards: WithIdCard[]): number => {
+export const countHandValue = (cards: WithIdCard[]): number => {
   let AcesNumber = 0;
 
   let playerValue = cards.reduce((acc, curr) => {
@@ -129,3 +196,11 @@ export const countPlayerValue = (cards: WithIdCard[]): number => {
   }
   return playerValue;
 };
+
+export function findLastIndex<T>(array: Array<T>, predicate: (value: T, index?: number, obj?: T[]) => boolean): number {
+  let l = array.length;
+  while (l--) {
+    if (predicate(array[l]!, l, array)) return l;
+  }
+  return -1;
+}
