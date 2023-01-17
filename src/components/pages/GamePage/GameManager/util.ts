@@ -3,8 +3,9 @@ import { WithIdRaw } from '../../../util/types';
 
 //TODO:
 
-//naprawić zliczanie wartości ręki
-//dodać funkcje split i dd
+//fix surrender
+//Add deviations
+//hide dealer 2
 //dodać artykuł jak grać, jak liczyć
 //dodać ćwiczenia takie jak: zliczanie kart, podejmowanie decyzji
 //zrobienie tabelki z statsami
@@ -13,71 +14,77 @@ import { WithIdRaw } from '../../../util/types';
 //dodanie ustawień języka
 
 export interface Card {
-  value: string;
   isPrivate: boolean;
+  symbol: string;
+  value: 'A' | '10' | '9' | '8' | '7' | '6' | '5' | '4' | '3' | '2';
 }
 
 export type WithIdCard = WithIdRaw<Card>;
 
+export type Options = 'hit' | 'stand' | 'split' | 'doubleDown' | 'surrender';
+
+export type Softs = '20' | '19' | '18' | '17' | '16' | '15' | '14' | '13';
+
 export const cards: Card[] = [
-  { isPrivate: false, value: 'AP' },
-  { isPrivate: false, value: '2P' },
-  { isPrivate: false, value: '3P' },
-  { isPrivate: false, value: '4P' },
-  { isPrivate: false, value: '5P' },
-  { isPrivate: false, value: '6P' },
-  { isPrivate: false, value: '7P' },
-  { isPrivate: false, value: '8P' },
-  { isPrivate: false, value: '9P' },
-  { isPrivate: false, value: '10P' },
-  { isPrivate: false, value: 'JP' },
-  { isPrivate: false, value: 'QP' },
-  { isPrivate: false, value: 'KP' },
-  { isPrivate: false, value: 'AS' },
-  { isPrivate: false, value: '2S' },
-  { isPrivate: false, value: '3S' },
-  { isPrivate: false, value: '4S' },
-  { isPrivate: false, value: '5S' },
-  { isPrivate: false, value: '6S' },
-  { isPrivate: false, value: '7S' },
-  { isPrivate: false, value: '8S' },
-  { isPrivate: false, value: '9S' },
-  { isPrivate: false, value: '10S' },
-  { isPrivate: false, value: 'JS' },
-  { isPrivate: false, value: 'QS' },
-  { isPrivate: false, value: 'KS' },
-  { isPrivate: false, value: 'AT' },
-  { isPrivate: false, value: '2T' },
-  { isPrivate: false, value: '3T' },
-  { isPrivate: false, value: '4T' },
-  { isPrivate: false, value: '5T' },
-  { isPrivate: false, value: '6T' },
-  { isPrivate: false, value: '7T' },
-  { isPrivate: false, value: '8T' },
-  { isPrivate: false, value: '9T' },
-  { isPrivate: false, value: '10T' },
-  { isPrivate: false, value: 'JT' },
-  { isPrivate: false, value: 'QT' },
-  { isPrivate: false, value: 'KT' },
-  { isPrivate: false, value: 'AD' },
-  { isPrivate: false, value: '2D' },
-  { isPrivate: false, value: '3D' },
-  { isPrivate: false, value: '4D' },
-  { isPrivate: false, value: '5D' },
-  { isPrivate: false, value: '6D' },
-  { isPrivate: false, value: '7D' },
-  { isPrivate: false, value: '8D' },
-  { isPrivate: false, value: '9D' },
-  { isPrivate: false, value: '10D' },
-  { isPrivate: false, value: 'JD' },
-  { isPrivate: false, value: 'QD' },
-  { isPrivate: false, value: 'KD' }
+  { isPrivate: false, symbol: 'AP', value: 'A' },
+  { isPrivate: false, symbol: '2P', value: '2' },
+  { isPrivate: false, symbol: '3P', value: '3' },
+  { isPrivate: false, symbol: '4P', value: '4' },
+  { isPrivate: false, symbol: '5P', value: '5' },
+  { isPrivate: false, symbol: '6P', value: '6' },
+  { isPrivate: false, symbol: '7P', value: '7' },
+  { isPrivate: false, symbol: '8P', value: '8' },
+  { isPrivate: false, symbol: '9P', value: '9' },
+  { isPrivate: false, symbol: '10P', value: '10' },
+  { isPrivate: false, symbol: 'JP', value: '10' },
+  { isPrivate: false, symbol: 'QP', value: '10' },
+  { isPrivate: false, symbol: 'KP', value: '10' },
+  { isPrivate: false, symbol: 'AS', value: 'A' },
+  { isPrivate: false, symbol: '2S', value: '2' },
+  { isPrivate: false, symbol: '3S', value: '3' },
+  { isPrivate: false, symbol: '4S', value: '4' },
+  { isPrivate: false, symbol: '5S', value: '5' },
+  { isPrivate: false, symbol: '6S', value: '6' },
+  { isPrivate: false, symbol: '7S', value: '7' },
+  { isPrivate: false, symbol: '8S', value: '8' },
+  { isPrivate: false, symbol: '9S', value: '9' },
+  { isPrivate: false, symbol: '10S', value: '10' },
+  { isPrivate: false, symbol: 'JS', value: '10' },
+  { isPrivate: false, symbol: 'QS', value: '10' },
+  { isPrivate: false, symbol: 'KS', value: '10' },
+  { isPrivate: false, symbol: 'AT', value: 'A' },
+  { isPrivate: false, symbol: '2T', value: '2' },
+  { isPrivate: false, symbol: '3T', value: '3' },
+  { isPrivate: false, symbol: '4T', value: '4' },
+  { isPrivate: false, symbol: '5T', value: '5' },
+  { isPrivate: false, symbol: '6T', value: '6' },
+  { isPrivate: false, symbol: '7T', value: '7' },
+  { isPrivate: false, symbol: '8T', value: '8' },
+  { isPrivate: false, symbol: '9T', value: '9' },
+  { isPrivate: false, symbol: '10T', value: '10' },
+  { isPrivate: false, symbol: 'JT', value: '10' },
+  { isPrivate: false, symbol: 'QT', value: '10' },
+  { isPrivate: false, symbol: 'KT', value: '10' },
+  { isPrivate: false, symbol: 'AD', value: 'A' },
+  { isPrivate: false, symbol: '2D', value: '2' },
+  { isPrivate: false, symbol: '3D', value: '3' },
+  { isPrivate: false, symbol: '4D', value: '4' },
+  { isPrivate: false, symbol: '5D', value: '5' },
+  { isPrivate: false, symbol: '6D', value: '6' },
+  { isPrivate: false, symbol: '7D', value: '7' },
+  { isPrivate: false, symbol: '8D', value: '8' },
+  { isPrivate: false, symbol: '9D', value: '9' },
+  { isPrivate: false, symbol: '10D', value: '10' },
+  { isPrivate: false, symbol: 'JD', value: '10' },
+  { isPrivate: false, symbol: 'QD', value: '10' },
+  { isPrivate: false, symbol: 'KD', value: '10' }
 ];
 
 export const initialData: BlackJackGameInterface = {
   gameRules: {
     soft17: true,
-    decksNumber: 6
+    decksNumber: 6,
+    penetration: 0.75
   },
   setGameRules: () => undefined,
   gameRunning: false,
@@ -97,54 +104,69 @@ export const initialData: BlackJackGameInterface = {
       hand: [],
       bet: 0,
       outcome: undefined,
+      betOutcome: 0,
       canSplit: false,
       canDoubledown: true,
       canGetBlackJack: true,
-      splitHands: []
+      canSurrender: true,
+      splitHands: [],
+      playerName: 'player1'
     },
     {
       seatTaken: false,
       isPlaying: false,
       hand: [],
       bet: 0,
+      betOutcome: 0,
       outcome: undefined,
       canSplit: false,
       canDoubledown: true,
       canGetBlackJack: true,
-      splitHands: []
+      canSurrender: true,
+      splitHands: [],
+      playerName: 'player2'
     },
     {
       seatTaken: true,
       isPlaying: false,
       hand: [],
       bet: 0,
+      betOutcome: 0,
       outcome: undefined,
       canSplit: false,
       canDoubledown: true,
       canGetBlackJack: true,
-      splitHands: []
+      canSurrender: true,
+      splitHands: [],
+      playerName: 'player3'
     },
     {
       seatTaken: false,
       isPlaying: false,
       hand: [],
       bet: 0,
+      betOutcome: 0,
       outcome: undefined,
       canSplit: false,
       canDoubledown: true,
       canGetBlackJack: true,
-      splitHands: []
+      canSurrender: true,
+      splitHands: [],
+      playerName: 'player4'
     },
     {
       seatTaken: false,
       isPlaying: false,
       hand: [],
       bet: 0,
+      betOutcome: 0,
       outcome: undefined,
       canSplit: false,
       canDoubledown: true,
       canGetBlackJack: true,
-      splitHands: []
+      canSurrender: true,
+      splitHands: [],
+      playerName: 'player5'
     }
   ],
   setPlayers: () => undefined,
@@ -155,15 +177,22 @@ export const initialData: BlackJackGameInterface = {
   handlePlayerStand: () => undefined,
   handlePlayerDoubledown: () => undefined,
   handlePlayerSplit: () => undefined,
+  handlePlayerSurrender: () => undefined,
   dealer: [],
   setDealer: () => undefined,
   shoe: [],
   setShoe: () => undefined,
   dealtCardsAmount: 0,
   setDealtCardsAmount: () => undefined,
+  penetrationReached: false,
+  setPenetrationReached: () => undefined,
   isNewGame: true,
   setIsNewGame: () => undefined,
   dealSpeed: 0.5,
+  gameData: [],
+  setGameData: () => undefined,
+  runningCount: 0,
+  setRunningCount: () => undefined,
   setDealSpeed: () => undefined,
   dealCard: () => [],
   startGame: () => undefined,
@@ -184,17 +213,22 @@ export const countHandValue = (cards: WithIdCard[]): number => {
 
   let playerValue = cards.reduce((acc, curr) => {
     if (curr.isPrivate) return acc;
-    if (curr.value.slice(0, -1) === 'A') {
+    if (curr.value === 'A') {
       AcesNumber++;
       return acc;
     }
-    if (['J', 'Q', 'K'].includes(curr.value.slice(0, -1))) return acc + 10;
-    return acc + Number(curr.value.slice(0, -1));
+    return acc + Number(curr.value);
   }, 0);
   for (let i = 0; i < AcesNumber; i++) {
     playerValue + 11 > 21 ? (playerValue = playerValue + 1) : (playerValue = playerValue + 11);
   }
   return playerValue;
+};
+
+export const getCardCount = (card: WithIdCard): number => {
+  if (['A', '10'].includes(card.value)) return -1;
+  if (Number(card.value) <= 6) return 1;
+  return 0;
 };
 
 export function findLastIndex<T>(array: Array<T>, predicate: (value: T, index?: number, obj?: T[]) => boolean): number {
@@ -204,3 +238,49 @@ export function findLastIndex<T>(array: Array<T>, predicate: (value: T, index?: 
   }
   return -1;
 }
+
+//BS
+export const BASIC_STRATEGY_SPLITS = {
+  A: { '2': 'y', '3': 'y', '4': 'y', '5': 'y', '6': 'y', '7': 'y', '8': 'y', '9': 'y', '10': 'y', A: 'y' },
+  '10': { '2': 'n', '3': 'n', '4': 'n', '5': 'n', '6': 'n', '7': 'n', '8': 'n', '9': 'n', '10': 'n', A: 'n' },
+  '9': { '2': 'y', '3': 'y', '4': 'y', '5': 'y', '6': 'y', '7': 'n', '8': 'y', '9': 'y', '10': 'n', A: 'n' },
+  '8': { '2': 'y', '3': 'y', '4': 'y', '5': 'y', '6': 'y', '7': 'y', '8': 'y', '9': 'y', '10': 'y', A: 'y' },
+  '7': { '2': 'y', '3': 'y', '4': 'y', '5': 'y', '6': 'y', '7': 'y', '8': 'n', '9': 'n', '10': 'n', A: 'n' },
+  '6': { '2': 'y', '3': 'y', '4': 'y', '5': 'y', '6': 'y', '7': 'n', '8': 'n', '9': 'n', '10': 'n', A: 'n' },
+  '5': { '2': 'n', '3': 'n', '4': 'n', '5': 'n', '6': 'n', '7': 'n', '8': 'n', '9': 'n', '10': 'n', A: 'n' },
+  '4': { '2': 'n', '3': 'n', '4': 'n', '5': 'y', '6': 'y', '7': 'n', '8': 'n', '9': 'n', '10': 'n', A: 'n' },
+  '3': { '2': 'y', '3': 'y', '4': 'y', '5': 'y', '6': 'y', '7': 'y', '8': 'n', '9': 'n', '10': 'n', A: 'n' },
+  '2': { '2': 'y', '3': 'y', '4': 'y', '5': 'y', '6': 'y', '7': 'y', '8': 'n', '9': 'n', '10': 'n', A: 'n' }
+};
+
+export const BASIC_STRATEGY_SOFT: any = {
+  '21': { '2': 's', '3': 's', '4': 's', '5': 's', '6': 's', '7': 's', '8': 's', '9': 's', '10': 's', A: 's' },
+  '20': { '2': 's', '3': 's', '4': 's', '5': 's', '6': 's', '7': 's', '8': 's', '9': 's', '10': 's', A: 's' },
+  '19': { '2': 's', '3': 's', '4': 's', '5': 's', '6': 'Ds', '7': 's', '8': 's', '9': 's', '10': 's', A: 's' },
+  '18': { '2': 'Ds', '3': 'Ds', '4': 'Ds', '5': 'Ds', '6': 'Ds', '7': 's', '8': 's', '9': 'h', '10': 'h', A: 'h' },
+  '17': { '2': 'h', '3': 'D', '4': 'D', '5': 'D', '6': 'D', '7': 'h', '8': 'h', '9': 'h', '10': 'h', A: 'h' },
+  '16': { '2': 'h', '3': 'h', '4': 'D', '5': 'D', '6': 'D', '7': 'h', '8': 'h', '9': 'h', '10': 'h', A: 'h' },
+  '15': { '2': 'h', '3': 'h', '4': 'D', '5': 'D', '6': 'D', '7': 'h', '8': 'h', '9': 'h', '10': 'h', A: 'h' },
+  '14': { '2': 'h', '3': 'h', '4': 'h', '5': 'D', '6': 'D', '7': 'h', '8': 'h', '9': 'h', '10': 'h', A: 'h' },
+  '13': { '2': 'h', '3': 'h', '4': 'h', '5': 'D', '6': 'D', '7': 'h', '8': 'h', '9': 'h', '10': 'h', A: 'h' }
+};
+
+export const BASIC_STRATEGY_HARD: any = {
+  '21': { '2': 's', '3': 's', '4': 's', '5': 's', '6': 's', '7': 's', '8': 's', '9': 's', '10': 's', A: 's' },
+  '20': { '2': 's', '3': 's', '4': 's', '5': 's', '6': 's', '7': 's', '8': 's', '9': 's', '10': 's', A: 's' },
+  '19': { '2': 's', '3': 's', '4': 's', '5': 's', '6': 's', '7': 's', '8': 's', '9': 's', '10': 's', A: 's' },
+  '18': { '2': 's', '3': 's', '4': 's', '5': 's', '6': 's', '7': 's', '8': 's', '9': 's', '10': 's', A: 's' },
+  '17': { '2': 's', '3': 's', '4': 's', '5': 's', '6': 's', '7': 's', '8': 's', '9': 's', '10': 's', A: 's' },
+  '16': { '2': 's', '3': 's', '4': 's', '5': 's', '6': 's', '7': 'h', '8': 'h', '9': 'h', '10': 'h', A: 'h' },
+  '15': { '2': 's', '3': 's', '4': 's', '5': 's', '6': 's', '7': 'h', '8': 'h', '9': 'h', '10': 'h', A: 'h' },
+  '14': { '2': 's', '3': 's', '4': 's', '5': 's', '6': 's', '7': 'h', '8': 'h', '9': 'h', '10': 'h', A: 'h' },
+  '13': { '2': 's', '3': 's', '4': 's', '5': 's', '6': 's', '7': 'h', '8': 'h', '9': 'h', '10': 'h', A: 'h' },
+  '12': { '2': 'h', '3': 'h', '4': 's', '5': 's', '6': 's', '7': 'h', '8': 'h', '9': 'h', '10': 'h', A: 'h' },
+  '11': { '2': 'D', '3': 'D', '4': 'D', '5': 'D', '6': 'D', '7': 'D', '8': 'D', '9': 'D', '10': 'D', A: 'D' },
+  '10': { '2': 'D', '3': 'D', '4': 'D', '5': 'D', '6': 'D', '7': 'D', '8': 'D', '9': 'D', '10': 'h', A: 'h' },
+  '9': { '2': 'h', '3': 'D', '4': 'D', '5': 'D', '6': 'D', '7': 'h', '8': 'h', '9': 'h', '10': 'h', A: 'h' },
+  '8': { '2': 'h', '3': 'h', '4': 'h', '5': 'h', '6': 'h', '7': 'h', '8': 'h', '9': 'h', '10': 'h', A: 'h' },
+  '7': { '2': 'h', '3': 'h', '4': 'h', '5': 'h', '6': 'h', '7': 'h', '8': 'h', '9': 'h', '10': 'h', A: 'h' },
+  '6': { '2': 'h', '3': 'h', '4': 'h', '5': 'h', '6': 'h', '7': 'h', '8': 'h', '9': 'h', '10': 'h', A: 'h' },
+  '5': { '2': 'h', '3': 'h', '4': 'h', '5': 'h', '6': 'h', '7': 'h', '8': 'h', '9': 'h', '10': 'h', A: 'h' }
+};

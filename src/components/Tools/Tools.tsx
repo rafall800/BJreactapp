@@ -1,8 +1,20 @@
 import { FC } from 'react';
+import { Header1 } from '../textStyles/Header1.styles';
+import AnaliticsTab from './AnaliticsTab/AnaliticsTab';
+import Tabs from './Tabs/Tabs';
 import { StyledTools } from './Tools.styles';
 
 const Tools: FC = () => {
-  return <StyledTools></StyledTools>;
+  return (
+    <StyledTools>
+      <Header1>tools</Header1>
+      <span />
+      <Tabs>
+        <AnaliticsTab title="analitics" />
+        <AnaliticsTab title="statistics" />
+      </Tabs>
+    </StyledTools>
+  );
 };
 
 export default Tools;

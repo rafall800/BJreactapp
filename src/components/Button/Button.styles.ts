@@ -7,9 +7,10 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { theme } from '../theme';
 import { transparentButtonStyle } from './transparentButton.styles';
+import { surrenderButtonStyle } from './surrenderButton.styles';
 
 interface ButtonProps {
-  variant?: 'tab' | 'primary' | 'doubledown' | 'split' | 'stand' | 'transparent';
+  variant?: 'tab' | 'primary' | 'doubledown' | 'split' | 'stand' | 'surrender' | 'transparent';
 }
 
 export const StyledButton = styled.button<ButtonProps>`
@@ -32,6 +33,7 @@ export const StyledButton = styled.button<ButtonProps>`
     ${variant === 'doubledown' && doubledownButtonStyle};
     ${variant === 'split' && splitButtonStyle};
     ${variant === 'stand' && standButtonStyle};
+    ${variant === 'surrender' && surrenderButtonStyle};
   `};
 
   :hover {

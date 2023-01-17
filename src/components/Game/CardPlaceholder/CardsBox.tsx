@@ -1,5 +1,5 @@
 import { FC, useContext, useEffect } from 'react';
-import { countHandValue, shuffleCards } from '../../pages/GamePage/GameManager/util';
+import { shuffleCards, WithIdCard } from '../../pages/GamePage/GameManager/util';
 import {
   AddPlayerButton,
   CardPlaceholder,
@@ -18,11 +18,12 @@ import {
   Outcome,
   SplitCardPlaceholder,
   SplitHandsBox,
-  SplitCardPlaceholderBox
+  SplitCardPlaceholderBox,
+  HandBet,
+  CutCard
 } from './CardsBox.styles';
 import { ReactComponent as PlusIcon } from '../../../assets/icons/plus.svg';
 import { ReactComponent as MinusIcon } from '../../../assets/icons/dash.svg';
-import Card from '../../Card/Card';
 import { BlackJackGameContext } from '../../pages/GamePage/GameManager/GameProvider';
 import Test from '../../Card/Test';
 
@@ -36,6 +37,7 @@ const CardsBox: FC = () => {
     shoe,
     dealtCardsAmount,
     splitHandStage,
+    penetrationReached,
     setShoe,
     setPlayers,
     handleSeatAvailability,
@@ -52,6 +54,28 @@ const CardsBox: FC = () => {
       return acc;
     }, 1);
   };
+  const getHandValueText = (hand: WithIdCard[]): string => {
+    let AcesNumber = 0;
+    let isAlternative = false;
+
+    let playerValue = hand.reduce((acc, curr) => {
+      if (curr.isPrivate) return acc;
+      if (curr.value === 'A') {
+        AcesNumber++;
+        return acc;
+      }
+      return acc + Number(curr.value);
+    }, 0);
+    for (let i = 0; i < AcesNumber; i++) {
+      if (playerValue + 11 > 21) playerValue = playerValue + 1;
+      else {
+        playerValue = playerValue + 11;
+        isAlternative = true;
+      }
+    }
+    if (isAlternative && playerValue < 21) return `${playerValue - 10}/${playerValue}`;
+    return `${playerValue}`;
+  };
   let handIndexCounter = -1;
   const maxCardsAmount = 8 * 52;
   return (
@@ -59,6 +83,7 @@ const CardsBox: FC = () => {
       <TopHud>
         <DealtCards title="Dealt cards">
           <StackedCards container="dealtCards" cardsAmount={dealtCardsAmount / maxCardsAmount} />
+          {penetrationReached && <CutCard />}
         </DealtCards>
         <PlayerSeat>
           <HandCountBox>
@@ -66,7 +91,7 @@ const CardsBox: FC = () => {
           </HandCountBox>
           <CardPlaceholder dealSpeed={dealSpeed} handsNumber={getHandsNumber()} currentHand={getHandsNumber() - 1}>
             {dealer.map((card, index) => (
-              <Card key={card._id} card={card} number={index} />
+              <Test key={card._id} number={index} card={card} />
             ))}
           </CardPlaceholder>
         </PlayerSeat>
@@ -83,15 +108,18 @@ const CardsBox: FC = () => {
               id={`player${index + 1}`}
               style={gameRunning ? { justifyContent: 'flex-start' } : {}}
             >
+              <HandBet style={player.bet > 0 ? { visibility: 'visible' } : { visibility: 'hidden' }}>
+                {player.bet}
+              </HandBet>
               <HandCountBox style={player.seatTaken ? { visibility: 'visible' } : { visibility: 'hidden' }}>
-                <HandCount>{countHandValue(player.hand)}</HandCount>
+                <HandCount>{getHandValueText(player.hand)}</HandCount>
                 <HandCountPointer
                   style={player.isPlaying && !splitHandStage ? { visibility: 'visible' } : { visibility: 'hidden' }}
                 />
               </HandCountBox>
               <CardPlaceholder dealSpeed={dealSpeed} handsNumber={getHandsNumber()} currentHand={handIndexCounter}>
                 {player.seatTaken &&
-                  player.hand.map((card, index) => <Test key={card._id} number={index} symbol={card.value} />)}
+                  player.hand.map((card, index) => <Test key={card._id} number={index} card={card} />)}
                 {player.isPlaying && !splitHandStage && <Highlight handType="default" />}
                 {player.outcome && <Outcome outcome={player.outcome} />}
                 {!player.seatTaken && !gameRunning && (
@@ -106,14 +134,14 @@ const CardsBox: FC = () => {
                     return (
                       <SplitCardPlaceholderBox key={`player${index + 1}-splitHand${splitHandIndex + 1}`}>
                         <HandCountBox>
-                          <HandCount>{countHandValue(splitHand.hand)}</HandCount>
+                          <HandCount>{getHandValueText(splitHand.hand)}</HandCount>
                           <HandCountPointer
                             style={splitHand.isPlaying ? { visibility: 'visible' } : { visibility: 'hidden' }}
                           />
                         </HandCountBox>
                         <SplitCardPlaceholder dealSpeed={dealSpeed}>
                           {splitHand.hand.map((card, index) => (
-                            <Card key={card._id} card={card} number={index} viewBox="0 0 360 186" height="186" />
+                            <Test key={card._id} number={index} card={card} />
                           ))}
                           {splitHand.isPlaying && <Highlight handType="splitHand" />}
                           {splitHand.outcome && <Outcome outcome={splitHand.outcome} />}
@@ -140,7 +168,3 @@ const CardsBox: FC = () => {
 };
 
 export default CardsBox;
-
-{
-  /* <Card key={card._id} card={card} number={index} /> */
-}

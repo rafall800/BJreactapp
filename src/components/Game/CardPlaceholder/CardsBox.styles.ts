@@ -18,7 +18,7 @@ interface StackedCardsProps {
 }
 
 interface OutcomeProps {
-  outcome: 'win' | 'lose' | 'push';
+  outcome: 'win' | 'lose' | 'push' | 'surrender';
 }
 
 interface HighlightProps {
@@ -48,6 +48,7 @@ export const TopHud = styled.div`
 export const DealtCards = styled.div`
   display: flex;
   align-items: flex-end;
+  position: relative;
   height: 120px;
   width: 80px;
   margin-top: 35px;
@@ -59,6 +60,15 @@ export const DealtCards = styled.div`
     width: 100px;
     margin-top: 45px;
   }
+`;
+
+export const CutCard = styled.div`
+  position: absolute;
+  right: -70px;
+  width: 50px;
+  height: 70px;
+  background-color: ${theme.colorStyles.Yellow1};
+  border-radius: 7px;
 `;
 
 export const Shoe = styled.div`
@@ -213,6 +223,10 @@ export const SplitCardPlaceholder = styled.div<SplitCardPlaceholderProps>`
   border: 3px solid rgba(255, 255, 255, 0.39);
   border-radius: 11px;
 
+  img {
+    object-position: 0 0;
+  }
+
   ${({ dealSpeed }: SplitCardPlaceholderProps) => css`
     #card:first-of-type {
       animation: first-card-in ${dealSpeed}s ${dealDelay}s backwards;
@@ -294,7 +308,24 @@ export const Outcome = styled.div<OutcomeProps>`
     css`
       background: radial-gradient(circle, ${theme.colorStyles.Orange1} 0%, ${theme.colorStyles.Orange1} 100%);
     `};
+    ${outcome === 'surrender' &&
+    css`
+      background: radial-gradient(circle, ${theme.colorStyles.Gray3} 0%, ${theme.colorStyles.Gray3} 100%);
+    `};
   `};
+`;
+
+export const HandBet = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 20px;
+  margin-bottom: 5px;
+  background-color: ${theme.colorStyles.Green5};
+  border: 1px solid ${theme.colorStyles.Black};
+  color: ${theme.colorStyles.White};
+  border-radius: 15px;
 `;
 
 export const HandCountBox = styled.div`

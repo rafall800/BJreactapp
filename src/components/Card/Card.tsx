@@ -12,7 +12,7 @@ interface CardProps {
 }
 
 const Icon: FC<CardProps> = ({ card, number, viewBox, height }) => {
-  const { SvgIcon } = useDynamicSVGImport(card.value);
+  const { SvgIcon } = useDynamicSVGImport(card.symbol);
   if (SvgIcon) {
     if (!viewBox) {
       viewBox = '0 0 360 540';

@@ -13,6 +13,7 @@ export const theme = {
     Gray3: '#7C7C7C',
     Gray4: '#494949',
     Gray5: '#30372D',
+    Gray6: '#2C2B2B',
     Red1: 'rgba(203,73,73,0.72)',
     Red2: '#FF2423',
     Red3: '#A71B1B',
@@ -21,7 +22,9 @@ export const theme = {
     Blue2: '#1A9696',
     Purple1: '#5456AA',
     Purple2: '#424387',
-    Orange1: '#BB6414'
+    Orange1: '#BB6414',
+    Orange2: '#7a3d05',
+    Yellow1: '#d6bc11'
   },
   fontWeight: {
     Regular: 400,

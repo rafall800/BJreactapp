@@ -2,6 +2,7 @@ import { FC, useContext, useEffect, useState } from 'react';
 import Button from '../../Button/Button';
 import { BlackJackGameContext } from '../../pages/GamePage/GameManager/GameProvider';
 import { Player } from '../../pages/GamePage/GameManager/useBlackJackGameState';
+import { countHandValue } from '../../pages/GamePage/GameManager/util';
 import { Header2 } from '../../textStyles/Header2.styles';
 import { Paragraph } from '../../textStyles/Paragrapsh.styles';
 import { BetOptions, DecisionOptions, Decisions, Stakes, StyledHud, YourBalance, YourBet } from './Hud.styles';
@@ -22,7 +23,8 @@ const Hud: FC = () => {
     handlePlayerHit,
     handlePlayerStand,
     handlePlayerDoubledown,
-    handlePlayerSplit
+    handlePlayerSplit,
+    handlePlayerSurrender
   } = useContext(BlackJackGameContext);
 
   const [currentHand, setCurrentHand] = useState<Player | undefined>(players.find((player) => player.isPlaying));
@@ -35,18 +37,9 @@ const Hud: FC = () => {
       const splitHand = currentPlayer.splitHands.find((hand) => hand.isPlaying);
       if (splitHand) currentHand = splitHand;
     }
-    if (
-      currentHand.hand.length === 2 &&
-      currentHand.hand.every((card) => card.value.slice(0, -1) === currentHand.hand[0]?.value.slice(0, -1))
-    ) {
-      currentHand.canSplit = true;
-    }
-    if (currentHand.bet > balance) {
-      currentHand.canDoubledown = false;
-      currentHand.canSplit = false;
-    }
+    if (countHandValue(currentHand.hand) >= 21) handlePlayerStand();
     setCurrentHand(currentHand);
-  }, [players, balance, splitHandStage]);
+  }, [players, balance, splitHandStage, handlePlayerStand]);
 
   const handleBet = () => {
     if (bet === 0) return;
@@ -69,6 +62,9 @@ const Hud: FC = () => {
             </Button>
             <Button variant="stand" onClick={handlePlayerStand}>
               stand
+            </Button>
+            <Button variant="surrender" disabled={!currentHand?.canSurrender} onClick={handlePlayerSurrender}>
+              surr
             </Button>
           </Decisions>
           <Paragraph>Your balance: {balance}</Paragraph>

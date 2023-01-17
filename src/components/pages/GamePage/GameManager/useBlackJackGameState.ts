@@ -1,22 +1,52 @@
 import { useState, useMemo, useCallback } from 'react';
-import { countHandValue, findLastIndex, shuffleCards, WithIdCard } from './util';
+import {
+  countHandValue,
+  findLastIndex,
+  shuffleCards,
+  WithIdCard,
+  BASIC_STRATEGY_SPLITS,
+  Options,
+  BASIC_STRATEGY_SOFT,
+  BASIC_STRATEGY_HARD,
+  getCardCount
+} from './util';
 
 export type Player = {
   seatTaken: boolean;
   isPlaying: boolean;
   hand: WithIdCard[];
   bet: number;
-  outcome: 'win' | 'push' | 'lose' | undefined;
+  outcome: 'win' | 'push' | 'lose' | 'surrender' | undefined;
+  betOutcome: number;
   canSplit: boolean;
   canDoubledown: boolean;
   canGetBlackJack: boolean;
+  canSurrender: boolean;
   splitHands: Player[];
+  playerName: string;
 };
 
 export type GameRules = {
   soft17: boolean;
   decksNumber: number;
+  penetration: number;
 };
+
+export type GameHand = {
+  betOutcome: number;
+  outcome: 'win' | 'push' | 'lose' | 'surrender' | undefined;
+  handData: HandGameData[];
+  handName: string;
+};
+
+export type HandGameData = {
+  playerHand: WithIdCard[];
+  dealerHand: WithIdCard;
+  count: string;
+  playerOption: string;
+  bestOption: string;
+};
+
 export interface BlackJackGameInterface {
   gameRules: GameRules;
   setGameRules: React.Dispatch<React.SetStateAction<GameRules>>;
@@ -39,15 +69,22 @@ export interface BlackJackGameInterface {
   handlePlayerStand: () => void;
   handlePlayerDoubledown: () => void;
   handlePlayerSplit: () => void;
+  handlePlayerSurrender: () => void;
   dealer: WithIdCard[];
   setDealer: React.Dispatch<React.SetStateAction<WithIdCard[]>>;
   shoe: WithIdCard[];
   setShoe: React.Dispatch<React.SetStateAction<WithIdCard[]>>;
   dealtCardsAmount: number;
   setDealtCardsAmount: React.Dispatch<React.SetStateAction<number>>;
+  penetrationReached: boolean;
+  setPenetrationReached: React.Dispatch<React.SetStateAction<boolean>>;
   isNewGame: boolean;
   setIsNewGame: React.Dispatch<React.SetStateAction<boolean>>;
   dealSpeed: number;
+  gameData: GameHand[][];
+  setGameData: React.Dispatch<React.SetStateAction<GameHand[][]>>;
+  runningCount: number;
+  setRunningCount: React.Dispatch<React.SetStateAction<number>>;
   setDealSpeed: React.Dispatch<React.SetStateAction<number>>;
   dealCard: (hand: WithIdCard[]) => WithIdCard[];
   startGame: () => void;
@@ -66,6 +103,7 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
 
   const [shoe, setShoe] = useState<WithIdCard[]>(initialValue.shoe);
   const [dealtCardsAmount, setDealtCardsAmount] = useState<number>(initialValue.dealtCardsAmount);
+  const [penetrationReached, setPenetrationReached] = useState<boolean>(false);
 
   const [bet, setBet] = useState<number>(initialValue.bet);
   const [balance, setBalance] = useState<number>(initialValue.balance);
@@ -73,14 +111,126 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
   const [players, setPlayers] = useState<Player[]>(initialValue.players);
   const [dealer, setDealer] = useState<WithIdCard[]>(initialValue.dealer);
 
-  //counts dealer's hand value based on game settings =========REPAIR=========
+  const [gameData, setGameData] = useState<GameHand[][]>(initialValue.gameData);
+  const [runningCount, setRunningCount] = useState<number>(initialValue.runningCount);
+
+  //fix dealer priv card counting and playerName checking
+  const handleAddGameData = useCallback(
+    (player: Player, dealerHand: WithIdCard[], count: number, cardsLeft: number, option: Options) => {
+      const dealer = dealerHand[0]!;
+      let bestOption: Options | '' = '';
+      if (player.canSurrender) {
+        //surrender
+        if (countHandValue(player.hand) === 17 && dealer.value === 'A') bestOption = 'surrender';
+        if (countHandValue(player.hand) === 16 && ['9', '10', 'A'].includes(dealer.value)) bestOption = 'surrender';
+        if (countHandValue(player.hand) === 15 && dealer.value === '10') bestOption = 'surrender';
+      }
+      if (!bestOption && player.hand.length === 2 && player.hand[0]!.value === player.hand[1]!.value) {
+        //split
+        if (BASIC_STRATEGY_SPLITS[player.hand[0]!.value][dealer.value] === 'y') bestOption = 'split';
+      }
+      if (!bestOption && player.hand.find((card) => card.value === 'A')) {
+        //soft
+        let AcesNumber = 0;
+        let isAlternative = false;
+
+        let playerValue = player.hand.reduce((acc, curr) => {
+          if (curr.value === 'A') {
+            AcesNumber++;
+            return acc;
+          }
+          return acc + Number(curr.value);
+        }, 0);
+        for (let i = 0; i < AcesNumber; i++) {
+          if (playerValue + 11 > 21) playerValue = playerValue + 1;
+          else {
+            playerValue = playerValue + 11;
+            isAlternative = true;
+          }
+        }
+        if (isAlternative && playerValue.toString() in BASIC_STRATEGY_SOFT) {
+          switch (BASIC_STRATEGY_SOFT[playerValue.toString()][dealer.value]) {
+            case 's':
+              bestOption = 'stand';
+              break;
+            case 'h':
+              bestOption = 'hit';
+              break;
+            case 'D':
+              if (player.canDoubledown) bestOption = 'doubleDown';
+              else bestOption = 'hit';
+              break;
+            case 'Ds':
+              if (player.canDoubledown) bestOption = 'doubleDown';
+              else bestOption = 'stand';
+              break;
+            default:
+              break;
+          }
+        }
+      } else if (!bestOption) {
+        //hard
+        switch (BASIC_STRATEGY_HARD[countHandValue(player.hand).toString()][dealer.value]) {
+          case 's':
+            bestOption = 'stand';
+            break;
+          case 'h':
+            bestOption = 'hit';
+            break;
+          case 'D':
+            if (player.canDoubledown) bestOption = 'doubleDown';
+            else bestOption = 'hit';
+            break;
+          case 'Ds':
+            if (player.canDoubledown) bestOption = 'doubleDown';
+            else bestOption = 'stand';
+            break;
+          default:
+            break;
+        }
+      }
+      const decsLeft = Math.round(cardsLeft / 52);
+      const trueCount = Math.round((count / decsLeft) * 100) / 100;
+      const newHandData = {
+        playerHand: player.hand,
+        dealerHand: dealer,
+        count: `${count}/${decsLeft}=${trueCount}`,
+        playerOption: option,
+        bestOption: bestOption
+      };
+      let currentHand: GameHand | undefined = gameData[gameData.length - 1]?.find(
+        (hand) => hand.handName === player.playerName
+      );
+      if (!currentHand) {
+        currentHand = {
+          betOutcome: 0,
+          outcome: undefined,
+          handData: [newHandData],
+          handName: player.playerName
+        };
+        gameData[gameData.length - 1]!.push(currentHand);
+      } else currentHand.handData.push(newHandData);
+      setGameData([...gameData]);
+      return;
+    },
+    [gameData]
+  );
+  //counts dealer's hand value based on game settings
   const countDealerValue = useCallback(
     (cards: WithIdCard[]): number => {
+      if (cards.length === 2 && ['10', 'A'].includes(cards[0]!.value)) {
+        let handCount = 0;
+        cards.forEach((card) => {
+          if (card.value === 'A') handCount += 11;
+          else handCount += Number(card.value);
+        });
+        if (handCount === 21) return 21;
+      }
       if (
         cards.length === 2 &&
         gameRules.soft17 &&
         cards.find((card) => card.value.includes('A')) &&
-        countHandValue(cards) === 17
+        cards.find((card) => card.value.includes('6'))
       ) {
         return 7;
       }
@@ -92,12 +242,14 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
   //Add card to provided hand and return it
   const dealCard = useCallback(
     (hand: WithIdCard[]) => {
+      const maxCardsAmount = gameRules.decksNumber * 52;
+      if (shoe.length === maxCardsAmount - maxCardsAmount * gameRules.penetration) setPenetrationReached(true);
       hand.push(shoe.pop()!);
       setShoe([...shoe]);
       setDealtCardsAmount((prevValue) => prevValue + 1);
       return hand;
     },
-    [shoe]
+    [shoe, gameRules]
   );
 
   //get new shoe of cards
@@ -122,7 +274,11 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
   const getGameResults = useCallback(() => {
     const getHandResult = (player: Player) => {
       //player busted
-      if (player.outcome) {
+      if (player.outcome === 'lose') {
+        return;
+      }
+      if (player.outcome === 'surrender') {
+        player.betOutcome = player.bet * 0.5;
         return;
       }
 
@@ -133,7 +289,7 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
       if (dealer.length === 2 && dealerValue === 21) {
         if (player.hand.length === 2 && handValue === 21) {
           player.outcome = 'push';
-          newBalance += player.bet;
+          player.betOutcome = player.bet;
           return;
         } else {
           player.outcome = 'lose';
@@ -143,43 +299,76 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
       //player has 2 card BJ
       if (player.hand.length === 2 && handValue === 21) {
         player.outcome = 'win';
-        newBalance += player.bet * 2.5;
+        player.betOutcome = player.bet * 2.5;
         return;
       }
       //dealer busts
       if (dealerValue > 21) {
         player.outcome = 'win';
-        newBalance += player.bet * 2;
+        player.betOutcome = player.bet * 2;
         return;
       }
       //hands are equal
       if (dealerValue === handValue) {
         player.outcome = 'push';
-        newBalance += player.bet;
+        player.betOutcome = player.bet;
         return;
       }
       //player hand is greater than dealer's
       if (handValue > dealerValue) {
         player.outcome = 'win';
-        newBalance += player.bet * 2;
+        player.betOutcome = player.bet * 2;
         return;
       }
       //player hand is lower than dealer's
       player.outcome = 'lose';
       return;
     };
-    if (shoe.length === 0 && countDealerValue(dealer) < 17) {
-      setIsNewGame((prevValue) => !prevValue);
-      return;
-    }
     dealer[1]!.isPrivate = false;
-    while (countDealerValue(dealer) < 17) dealCard(dealer);
+    if (countDealerValue(dealer) === 21) {
+      const decsLeft = Math.round(shoe.length / 52);
+      const trueCount = Math.round((runningCount / decsLeft) * 100) / 100;
+      const currentDeal = [...Array<GameHand>(players.length)].map((gameHand, index) => {
+        gameHand.betOutcome = 0;
+        gameHand.outcome = undefined;
+        gameHand.handData = [
+          {
+            playerHand: players[index]!.hand,
+            dealerHand: dealer[0]!,
+            count: `${runningCount}/${decsLeft}=${trueCount}`,
+            playerOption: '',
+            bestOption: ''
+          }
+        ];
+        gameHand.handName = players[index]!.playerName;
+        return gameHand;
+      });
+      gameData.push(currentDeal);
+    }
+    let count = 0;
+    while (countDealerValue(dealer) < 17) count = getCardCount(dealCard(dealer).at(-1)!);
+    setRunningCount((prevValue) => prevValue + count);
     const dealerValue = countHandValue(dealer);
+    const currentGameData = gameData[gameData.length - 1]!;
     let newBalance = balance;
     players.forEach((player) => {
       if (player.seatTaken) {
         getHandResult(player);
-        player.splitHands.forEach((hand) => getHandResult(hand));
+        newBalance += player.betOutcome;
+        const gameDataPlayer = currentGameData.find((gameDataPlayer) => gameDataPlayer.handName === player.playerName);
+        if (!gameDataPlayer) return;
+        gameDataPlayer.outcome = player.outcome;
+        gameDataPlayer.betOutcome = player.betOutcome;
+        player.splitHands.forEach((hand) => {
+          getHandResult(hand);
+          newBalance += hand.betOutcome;
+          const gameDataSplitPlayer = currentGameData.find(
+            (gameDataPlayer) => gameDataPlayer.handName === hand.playerName
+          );
+          if (!gameDataSplitPlayer) return;
+          gameDataSplitPlayer.outcome = hand.outcome;
+          gameDataSplitPlayer.betOutcome = hand.betOutcome;
+        });
       }
     });
     setBalance(newBalance);
@@ -196,18 +385,37 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
           player.hand = [];
           player.bet = 0;
           player.outcome = undefined;
+          player.betOutcome = 0;
           player.splitHands = [];
           player.canDoubledown = true;
           player.canGetBlackJack = true;
           player.canSplit = false;
+          player.canSurrender = true;
           return player;
         })
       ]);
       handleSetupPlayers();
       return;
     }, 3000);
-  }, [dealer, players, balance, shoe, dealCard, handleSetupPlayers, countDealerValue]);
-
+    const maxCardsAmount = gameRules.decksNumber * 52;
+    if (shoe.length <= maxCardsAmount - maxCardsAmount * gameRules.penetration) {
+      setShoe(shuffleCards(gameRules.decksNumber));
+      setPenetrationReached(false);
+      setDealtCardsAmount(0);
+    }
+    setGameData([...gameData]);
+  }, [
+    dealer,
+    players,
+    balance,
+    shoe,
+    gameRules,
+    gameData,
+    runningCount,
+    dealCard,
+    handleSetupPlayers,
+    countDealerValue
+  ]);
   //add/delete a player from the table and determine wchich player is first in order
   const handleSeatAvailability = useCallback(
     (player: Player) => {
@@ -221,15 +429,15 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
   //change current playing player
   const playNextHand = useCallback(
     (playingPlayerIndex: number) => {
+      let handsToPlay = players;
+      let currentPrimaryPlayerIndex = 2;
+
       //if primary player just splitted -> set split hand to be next and start splitHandStage
       if (!splitHandStage && players[playingPlayerIndex]!.splitHands.length > 0) {
         setSplitHandStage(true);
         players[playingPlayerIndex]!.splitHands[0]!.isPlaying = true;
         return;
       }
-
-      let handsToPlay = players;
-      let currentPrimaryPlayerIndex = 2;
 
       //if one of split hands is playing ->find index of primary player and set hands we operate on to his splitHands
       if (splitHandStage) {
@@ -264,23 +472,16 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
         } else {
           getGameResults();
         }
-      } else if (
-        handsToPlay[playingPlayerIndex + 1]!.seatTaken &&
-        countHandValue(handsToPlay[playingPlayerIndex + 1]!.hand) < 21
-      )
-        handsToPlay[playingPlayerIndex + 1]!.isPlaying = true;
-      else playNextHand(playingPlayerIndex + 1);
+      } else if (handsToPlay[playingPlayerIndex + 1]!.seatTaken) handsToPlay[playingPlayerIndex + 1]!.isPlaying = true;
+      else {
+        playNextHand(playingPlayerIndex + 1);
+      }
     },
     [players, splitHandStage, getGameResults]
   );
 
   //deal card to current player, change current playing player if he busts
   const handlePlayerHit = useCallback(() => {
-    if (shoe.length === 0) {
-      setIsNewGame((prevValue) => !prevValue);
-      return;
-    }
-
     let handsToPlay = players;
     if (splitHandStage) {
       const currentPlayer = players.find((player) => {
@@ -303,21 +504,23 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
     });
 
     if (!currentHand) return;
-
+    handleAddGameData(JSON.parse(JSON.stringify(currentHand)), [...dealer], runningCount, shoe.length, 'hit');
+    setRunningCount((prevValue) => prevValue + getCardCount(shoe[shoe.length - 1]!));
     const handValue = countHandValue(dealCard(currentHand.hand));
 
     if (handValue === 21) {
-      currentHand.isPlaying = false;
+      if (currentHand.splitHands.length === 0) currentHand.isPlaying = false;
       playNextHand(currentHandIndex);
     } else if (handValue > 21) {
-      currentHand.isPlaying = false;
+      if (currentHand.splitHands.length === 0) currentHand.isPlaying = false;
       currentHand.outcome = 'lose';
       playNextHand(currentHandIndex);
     }
     currentHand.canDoubledown = false;
     currentHand.canSplit = false;
+    currentHand.canSurrender = false;
     setPlayers([...players]);
-  }, [players, shoe, splitHandStage, dealCard, playNextHand]);
+  }, [players, dealer, shoe, splitHandStage, runningCount, dealCard, playNextHand, handleAddGameData]);
 
   //stand current player and change current playing player
   const handlePlayerStand = useCallback(() => {
@@ -331,11 +534,19 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
       });
       if (currentPlayer) handsToPlay = currentPlayer.splitHands;
     }
-    const currentHandIndex = handsToPlay.findIndex((hand) => hand.isPlaying); //fix when first hand is 21
+    const currentHandIndex = handsToPlay.findIndex((hand) => hand.isPlaying);
+    if (countHandValue(handsToPlay[currentHandIndex]!.hand) <= 21)
+      handleAddGameData(
+        JSON.parse(JSON.stringify(handsToPlay[currentHandIndex]!)),
+        [...dealer],
+        runningCount,
+        shoe.length,
+        'stand'
+      );
     if (handsToPlay[currentHandIndex]!.splitHands.length === 0) handsToPlay[currentHandIndex]!.isPlaying = false;
     playNextHand(currentHandIndex);
     setPlayers([...players]);
-  }, [players, splitHandStage, playNextHand]);
+  }, [players, splitHandStage, dealer, shoe, runningCount, handleAddGameData, playNextHand]);
 
   //doubledown hand of current player
   const handlePlayerDoubledown = useCallback(() => {
@@ -366,16 +577,21 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
     });
 
     if (!currentHand) return;
+    handleAddGameData(JSON.parse(JSON.stringify(currentHand)), [...dealer], runningCount, shoe.length, 'doubleDown');
+    setRunningCount((prevValue) => prevValue + getCardCount(shoe[shoe.length - 1]!));
+
     const bet = currentHand.bet;
     currentHand.bet = 2 * bet;
     currentHand.canDoubledown = false;
     currentHand.canSplit = false;
+    currentHand.canSurrender = false;
     currentHand.isPlaying = false;
-    dealCard(currentHand.hand);
+    const handValue = countHandValue(dealCard(currentHand.hand));
+    if (handValue > 21) currentHand.outcome = 'lose';
     playNextHand(currentHandIndex);
     setBalance((prevValue) => prevValue - bet);
     setPlayers([...players]);
-  }, [players, shoe, splitHandStage, dealCard, playNextHand]);
+  }, [players, dealer, shoe, splitHandStage, runningCount, dealCard, playNextHand, handleAddGameData]);
 
   //split hand of current player
   const handlePlayerSplit = useCallback(() => {
@@ -396,16 +612,32 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
     if (!currentPlayer) return;
     //if primary player splits
     if (!splitHandStage) {
+      handleAddGameData(JSON.parse(JSON.stringify(currentPlayer)), [...dealer], runningCount, shoe.length, 'split');
       currentPlayer.canGetBlackJack = false;
+      currentPlayer.canSurrender = false;
       currentPlayer.canDoubledown = true;
+      currentPlayer.canSplit = false;
       const newHand: Player = {
         ...currentPlayer,
         hand: currentPlayer.hand.splice(1),
         isPlaying: false,
-        splitHands: []
+        splitHands: [],
+        playerName: currentPlayer.playerName + `-splitHand${currentPlayer.splitHands.length + 1}`
       };
       dealCard(currentPlayer.hand);
       dealCard(newHand.hand);
+      setRunningCount(
+        (prevValue) => prevValue + getCardCount(currentPlayer.hand.at(-1)!) + getCardCount(newHand.hand.at(-1)!)
+      );
+      if (
+        currentPlayer.hand.length === 2 &&
+        currentPlayer.hand.every((card) => card.value === currentPlayer.hand[0]?.value)
+      ) {
+        currentPlayer.canSplit = true;
+      }
+      if (newHand.hand.length === 2 && newHand.hand.every((card) => card.value === newHand.hand[0]?.value)) {
+        newHand.canSplit = true;
+      }
       currentPlayer.splitHands.push(newHand);
       if (countHandValue(currentPlayer.hand) >= 21) playNextHand(currentPlayerIndex);
       //if splitHands splits
@@ -419,59 +651,109 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
         return false;
       });
       if (!currentPlayerSplitHand) return;
+      handleAddGameData(
+        JSON.parse(JSON.stringify(currentPlayerSplitHand)),
+        [...dealer],
+        runningCount,
+        shoe.length,
+        'split'
+      );
       currentPlayerSplitHand.canGetBlackJack = false;
+      currentPlayerSplitHand.canSurrender = false;
       currentPlayerSplitHand.canDoubledown = true;
+      currentPlayerSplitHand.canSplit = false;
       const newHand: Player = {
         ...currentPlayerSplitHand,
         hand: currentPlayerSplitHand.hand.splice(1),
         isPlaying: false,
-        splitHands: []
+        splitHands: [],
+        playerName: currentPlayer.playerName + `-splitHand${currentPlayer.splitHands.length + 1}`
       };
       dealCard(currentPlayerSplitHand.hand);
       dealCard(newHand.hand);
+      setRunningCount(
+        (prevValue) =>
+          prevValue + getCardCount(currentPlayerSplitHand.hand.at(-1)!) + getCardCount(newHand.hand.at(-1)!)
+      );
+      if (
+        currentPlayerSplitHand.hand.length === 2 &&
+        currentPlayerSplitHand.hand.every((card) => card.value === currentPlayerSplitHand.hand[0]?.value)
+      ) {
+        currentPlayerSplitHand.canSplit = true;
+      }
+      if (newHand.hand.length === 2 && newHand.hand.every((card) => card.value === newHand.hand[0]?.value)) {
+        newHand.canSplit = true;
+      }
       currentPlayer.splitHands.push(newHand);
       if (countHandValue(currentPlayerSplitHand.hand) >= 21) playNextHand(currentPlayerSplitHandIndex);
     }
     setBalance((prevValue) => prevValue - currentPlayer.bet);
     setPlayers([...players]);
-  }, [players, shoe, splitHandStage, dealCard, playNextHand]);
+  }, [players, dealer, shoe, splitHandStage, runningCount, dealCard, playNextHand, handleAddGameData]);
+
+  const handlePlayerSurrender = useCallback(() => {
+    let currentHandIndex = 2;
+    const currentPlayer = players.find((player, index) => {
+      if (player.isPlaying) {
+        currentHandIndex = index;
+        return player;
+      }
+      return false;
+    });
+    if (!currentPlayer) return;
+    handleAddGameData(JSON.parse(JSON.stringify(currentPlayer)), [...dealer], runningCount, shoe.length, 'doubleDown');
+    currentPlayer.outcome = 'surrender';
+    playNextHand(currentHandIndex);
+    setPlayers([...players]);
+  }, [players, dealer, shoe, runningCount, playNextHand, handleAddGameData]);
 
   //deal the first two cards to every player and dealer
   const startDeal = useCallback(() => {
-    for (let i = 0; i < 2; i++) {
+    setGameData([...gameData, []]);
+    const count: Array<WithIdCard> = [];
+    [...Array(2)].forEach((_el) => {
       players.forEach((player) => {
         if (player.seatTaken) {
           if (shoe.length === 0) {
             setIsNewGame((prevValue) => !prevValue);
             return;
           }
+          count.push(shoe[shoe.length - 1]!);
           dealCard(player.hand);
-          if (i === 1) {
-            if (player.hand) {
-            }
+          if (player.hand.length === 2 && player.hand.every((card) => card.value === player.hand[0]?.value)) {
+            player.canSplit = true;
           }
         }
       });
-      if (shoe.length === 0) {
-        setIsNewGame((prevValue) => !prevValue);
-        return;
-      }
       dealCard(dealer);
-    }
+    });
     dealer[1]!.isPrivate = true;
+    count.pop();
+    setRunningCount(
+      (prevValue) =>
+        prevValue +
+        count.reduce((acc, curr) => {
+          return acc + getCardCount(curr);
+        }, 0)
+    );
     setPlayers([...players]);
     setDealer([...dealer]);
-    const firstPlayer = players.findIndex((player) => player.seatTaken === true);
-    if (countHandValue(players[firstPlayer]!.hand) === 21) handlePlayerStand();
-  }, [dealer, players, shoe, dealCard, handlePlayerStand]);
+    if (countDealerValue(dealer) === 21) {
+      setTimeout(() => getGameResults(), 3000);
+      return;
+    }
+    const firstPlayer = players.find((player) => player.seatTaken === true);
+    if (!firstPlayer) return;
+    if (countHandValue(firstPlayer.hand) === 21) handlePlayerStand();
+  }, [dealer, players, shoe, gameData, dealCard, handlePlayerStand, getGameResults, countDealerValue]);
 
   //change current betting player
   const betNextHand = useCallback(
     (currentPlayerIndex: number) => {
       if (currentPlayerIndex === players.length - 1) {
         setBettingStage((prevValue) => !prevValue);
-        startDeal();
         handleSetupPlayers();
+        startDeal();
       } else if (players[currentPlayerIndex + 1]!.seatTaken) players[currentPlayerIndex + 1]!.isPlaying = true;
       else betNextHand(currentPlayerIndex + 1);
     },
@@ -511,15 +793,22 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
       handlePlayerStand,
       handlePlayerDoubledown,
       handlePlayerSplit,
+      handlePlayerSurrender,
       dealer,
       setDealer,
       shoe,
       setShoe,
       dealtCardsAmount,
       setDealtCardsAmount,
+      penetrationReached,
+      setPenetrationReached,
       isNewGame,
       setIsNewGame,
       dealSpeed,
+      gameData,
+      setGameData,
+      runningCount,
+      setRunningCount,
       setDealSpeed,
       startGame,
       startDeal,
@@ -548,15 +837,22 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
       handlePlayerStand,
       handlePlayerDoubledown,
       handlePlayerSplit,
+      handlePlayerSurrender,
       dealer,
       setDealer,
       shoe,
       setShoe,
       dealtCardsAmount,
       setDealtCardsAmount,
+      penetrationReached,
+      setPenetrationReached,
       isNewGame,
       setIsNewGame,
       dealSpeed,
+      gameData,
+      setGameData,
+      runningCount,
+      setRunningCount,
       setDealSpeed,
       startGame,
       startDeal,

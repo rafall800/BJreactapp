@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { StyledButton } from './Button.styles';
 
 interface ButtonProps {
-  variant?: 'tab' | 'primary' | 'doubledown' | 'split' | 'stand' | 'transparent';
+  variant?: 'tab' | 'primary' | 'doubledown' | 'split' | 'stand' | 'surrender' | 'transparent';
 }
 
 const Button: FC<ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
