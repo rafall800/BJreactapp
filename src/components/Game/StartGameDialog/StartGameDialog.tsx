@@ -29,7 +29,7 @@ const StartGameDialog: FC = () => {
       ],
       decksNumber: [
         {
-          isValid: (decks) => decks >= 1,
+          isValid: (decks) => decks >= 6,
           message: 'Needs to be over 4!'
         },
         {

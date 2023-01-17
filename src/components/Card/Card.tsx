@@ -1,31 +1,30 @@
-import { FC } from 'react';
-import { useDynamicSVGImport } from '../../hooks/UseDynamicSvg';
-import { StyledCard } from './Card.styles';
-import { ReactComponent as BackCard } from '../../assets/cards/back.svg';
+import { FC, useEffect, useState } from 'react';
 import { WithIdCard } from '../pages/GamePage/GameManager/util';
+import { ReactComponent as BackCard } from '../../assets/cards/back.svg';
+import { StyledCard } from './Card.styles';
 
-interface CardProps {
+interface TEstInterface {
   card: WithIdCard;
   number: number;
-  viewBox?: string;
-  height?: string;
 }
 
-const Icon: FC<CardProps> = ({ card, number, viewBox, height }) => {
-  const { SvgIcon } = useDynamicSVGImport(card.symbol);
-  if (SvgIcon) {
-    if (!viewBox) {
-      viewBox = '0 0 360 540';
-      height = '540';
-    }
-    return (
-      <StyledCard id="card" number={number}>
-        {card.isPrivate && <BackCard style={{ position: 'absolute' }} />}
-        <SvgIcon id="frontCard" height={height} viewBox={viewBox} />
-      </StyledCard>
-    );
-  }
-  return null;
+const Card: FC<TEstInterface> = ({ card, number }) => {
+  let [icon, setIcon] = useState('');
+
+  useEffect(() => {
+    const importIcon = async () => {
+      let importedIcon = await import(`../../assets/cards/${card.symbol}.svg`);
+      setIcon(importedIcon.default);
+    };
+    importIcon();
+  }, [card]);
+
+  return (
+    <StyledCard id="card" number={number}>
+      {card.isPrivate && <BackCard id="backCard" />}
+      <img id="frontCard" alt="card" src={icon} />
+    </StyledCard>
+  );
 };
 
-export default Icon;
+export default Card;

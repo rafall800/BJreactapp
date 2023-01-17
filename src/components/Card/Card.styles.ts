@@ -13,13 +13,20 @@ export const StyledCard = styled.div<CardProps>`
     left: ${number * 15}px;
   `};
   width: 100%;
+  height: 100%;
   #frontCard {
     border: 1px solid ${theme.colorStyles.Black};
     border-radius: 8px;
   }
-  svg {
+  #backCard {
+    position: absolute;
     width: 100%;
     height: 100%;
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     @media (min-width: 1100px) {
       border-radius: 10px;
     }
