@@ -2,15 +2,13 @@ import styled from '@emotion/styled';
 import { theme } from '../../theme';
 
 export const StyledAnaliticsTab = styled.div`
-  flex: 1;
-  margin: 20px 0;
-`;
-
-export const StyledOuterTable = styled.table`
-  width: 100%;
-  thead {
-    color: ${theme.colorStyles.White};
-    background-color: ${theme.colorStyles.Gray6};
-    height: 30px;
-  }
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+  margin: 40px 20px;
+  padding: 20px;
+  background-color: ${theme.colorStyles.Gray6};
+  border-radius: 15px;
+  gap: 2px;
+  overflow: scroll;
 `;

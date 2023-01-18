@@ -47,7 +47,8 @@ export const theme = {
     Logo: '20px',
     CustomInputLabel: '18px',
     Button: '16px',
-    Tab: '16px'
+    Tab: '16px',
+    TabMobile: '14px'
   },
   fontVariant: {
     Caps: 'uppercase',

@@ -4,23 +4,35 @@ import { theme } from '../../theme';
 export const StyledHud = styled.div`
   display: flex;
   align-items: flex-end;
+  justify-content: center;
   flex: 1;
 `;
 
 export const Decisions = styled.div`
   display: flex;
+  flex-direction: column;
   gap: 10px;
+  @media (min-width: 1100px) {
+    flex-direction: row;
+  }
 `;
 
 export const DecisionOptions = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
   gap: 5px;
   margin: 20px 0;
   p {
     color: ${theme.colorStyles.Black};
   }
+`;
+
+export const FlexBox = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: center;
 `;
 
 export const BetOptions = styled.div`

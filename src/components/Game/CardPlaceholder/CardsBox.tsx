@@ -47,7 +47,6 @@ const CardsBox: FC = () => {
 
   useEffect(() => {
     if (shoe.length === 0) setShoe(shuffleCards(gameRules.decksNumber));
-    console.log(runningCount);
   }, [shoe, gameRules, splitHandStage, runningCount, players, setShoe, setPlayers]);
 
   const getPlayersNumber = (): number => {

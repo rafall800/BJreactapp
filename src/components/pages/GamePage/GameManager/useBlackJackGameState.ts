@@ -42,7 +42,7 @@ export type GameHand = {
 export type HandGameData = {
   playerHand: WithIdCard[];
   dealerHand: WithIdCard;
-  count: string;
+  trueCount: number;
   playerOption: string;
   bestOption: string;
 };
@@ -194,7 +194,7 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
       const newHandData = {
         playerHand: player.hand,
         dealerHand: dealer,
-        count: `${count}/${decsLeft}=${trueCount}`,
+        trueCount: trueCount,
         playerOption: option,
         bestOption: bestOption
       };
@@ -345,7 +345,7 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
               {
                 playerHand: player.hand,
                 dealerHand: dealer[0]!,
-                count: `${runningCount}/${decsLeft}=${trueCount}`,
+                trueCount: trueCount,
                 playerOption: '',
                 bestOption: ''
               }
@@ -726,7 +726,6 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
 
   //deal the first two cards to every player and dealer
   const startDeal = useCallback(() => {
-    console.log(getHandsAmount());
     gameData.push([]);
     const count: Array<WithIdCard> = [];
     [...Array(2)].forEach((_el) => {

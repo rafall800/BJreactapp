@@ -5,7 +5,7 @@ import { Player } from '../../pages/GamePage/GameManager/useBlackJackGameState';
 import { countHandValue } from '../../pages/GamePage/GameManager/util';
 import { Header2 } from '../../textStyles/Header2.styles';
 import { Paragraph } from '../../textStyles/Paragrapsh.styles';
-import { BetOptions, DecisionOptions, Decisions, Stakes, StyledHud, YourBalance, YourBet } from './Hud.styles';
+import { BetOptions, DecisionOptions, Decisions, FlexBox, Stakes, StyledHud, YourBalance, YourBet } from './Hud.styles';
 
 const Hud: FC = () => {
   const betStakes: string[] = ['5', '10', '25', '50', '100'];
@@ -51,21 +51,25 @@ const Hud: FC = () => {
       {!bettingStage && (
         <DecisionOptions>
           <Decisions>
-            <Button variant="primary" onClick={handlePlayerHit}>
-              hit
-            </Button>
-            <Button variant="doubledown" disabled={!currentHand?.canDoubledown} onClick={handlePlayerDoubledown}>
-              x2
-            </Button>
-            <Button variant="split" disabled={!currentHand?.canSplit} onClick={handlePlayerSplit}>
-              split
-            </Button>
-            <Button variant="stand" onClick={handlePlayerStand}>
-              stand
-            </Button>
-            <Button variant="surrender" disabled={!currentHand?.canSurrender} onClick={handlePlayerSurrender}>
-              surr
-            </Button>
+            <FlexBox>
+              <Button variant="primary" onClick={handlePlayerHit}>
+                hit
+              </Button>
+              <Button variant="doubledown" disabled={!currentHand?.canDoubledown} onClick={handlePlayerDoubledown}>
+                x2
+              </Button>
+              <Button variant="stand" onClick={handlePlayerStand}>
+                stand
+              </Button>
+            </FlexBox>
+            <FlexBox>
+              <Button variant="split" disabled={!currentHand?.canSplit} onClick={handlePlayerSplit}>
+                split
+              </Button>
+              <Button variant="surrender" disabled={!currentHand?.canSurrender} onClick={handlePlayerSurrender}>
+                surr
+              </Button>
+            </FlexBox>
           </Decisions>
           <Paragraph>Your balance: {balance}</Paragraph>
         </DecisionOptions>
