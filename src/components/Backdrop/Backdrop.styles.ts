@@ -24,5 +24,6 @@ export const StyledBackdrop = styled.div`
   background-color: rgba(0, 0, 0, 0.25);
   img {
     max-width: 100vw;
+    cursor: pointer;
   }
 `;

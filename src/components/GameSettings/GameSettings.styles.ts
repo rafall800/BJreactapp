@@ -1,20 +1,45 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { theme } from '../theme';
 
+interface ButtonWrapperProps {
+  isActive: boolean;
+}
+
 export const StyledGameSettings = styled.div`
-  height: 100px;
-  background-color: ${theme.colorStyles.Gray3};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  padding: 10px;
+  background-color: ${theme.colorStyles.Gray1};
+  border: 1px solid ${theme.colorStyles.Blue2};
+  border-radius: 25px;
   margin: 50px 0;
 `;
 
 export const Speeds = styled.div`
   display: flex;
   align-items: center;
+  gap: 10px;
+  padding: 10px;
   button {
-    padding: 0 5px;
-    border-left: 2px solid ${theme.colorStyles.Black};
+    padding: 5px;
+    height: 100%;
+    border-radius: 20px;
+    border: 1px solid ${theme.colorStyles.Black};
     :hover {
-      background-color: ${theme.colorStyles.Gray4};
+      background-color: ${theme.colorStyles.Blue1};
     }
   }
+`;
+
+export const ButtonWrapper = styled.div<ButtonWrapperProps>`
+  ${({ isActive }: ButtonWrapperProps) => css`
+    ${isActive &&
+    css`
+      background-color: ${theme.colorStyles.Blue2};
+      border-radius: 20px;
+    `};
+  `};
 `;

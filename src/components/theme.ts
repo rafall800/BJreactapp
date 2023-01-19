@@ -37,6 +37,8 @@ export const theme = {
     H1Mobile: '36px',
     H2: '26px',
     H2Mobile: '24px',
+    H3: '20px',
+    H3Mobile: '18px',
     Title: '40px',
     TitleMobile: '33px',
     Paragraph: '28px',

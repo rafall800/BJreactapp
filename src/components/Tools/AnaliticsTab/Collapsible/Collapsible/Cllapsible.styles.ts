@@ -48,6 +48,12 @@ export const CollapsibleContent = styled.div<CollapsibleProps>`
     ${isNested &&
     css`
       overflow: scroll;
+      :-webkit-scrollbar {
+        display: none;
+      }
+
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     `};
   `};
 `;

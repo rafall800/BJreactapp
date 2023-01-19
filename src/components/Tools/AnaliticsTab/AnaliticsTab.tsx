@@ -11,16 +11,11 @@ const AnaliticsTab: FC<AnaliticsTabProps> = () => {
   const { gameData } = useContext(BlackJackGameContext);
   return (
     <StyledAnaliticsTab>
-      {gameData.reverse().map((deal, index) => {
-        return (
-          <CollapisbleDeal
-            key={`deal${gameData.length - index}`}
-            deal={deal}
-            dealNumber={gameData.length - index}
-            open={index === 0}
-          />
-        );
-      })}
+      {gameData
+        .map((deal, index) => {
+          return <CollapisbleDeal key={`deal${index}`} deal={deal} dealNumber={index + 1} open={index === 0} />;
+        })
+        .reverse()}
     </StyledAnaliticsTab>
   );
 };

@@ -25,17 +25,19 @@ const Table: FC<TableProps> = ({ moves }) => {
         </tr>
       </thead>
       <tbody>
-        {moves.map((move, index) => {
-          return (
-            <StyledMove key={`move${index}`} isCorrect={move.playerOption === move.bestOption}>
-              <th>{countHandValue(move.playerHand)}</th>
-              <th>{move.dealerHand.value}</th>
-              <th>{move.trueCount}</th>
-              <th>{move.playerOption}</th>
-              <th>{move.bestOption}</th>
-            </StyledMove>
-          );
-        })}
+        {moves
+          .map((move, index) => {
+            return (
+              <StyledMove key={`move${index}`} isCorrect={move.playerOption === move.bestOption}>
+                <th>{countHandValue(move.playerHand)}</th>
+                <th>{move.dealerHand.value}</th>
+                <th>{move.trueCount}</th>
+                <th>{move.playerOption}</th>
+                <th>{move.bestOption}</th>
+              </StyledMove>
+            );
+          })
+          .reverse()}
       </tbody>
     </StyledTable>
   );

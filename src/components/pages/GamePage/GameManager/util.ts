@@ -3,12 +3,10 @@ import { WithIdRaw } from '../../../util/types';
 
 //TODO:
 
-//fix surrender
 //Add deviations
-//hide dealer 2
 //dodać artykuł jak grać, jak liczyć
 //dodać ćwiczenia takie jak: zliczanie kart, podejmowanie decyzji
-//zrobienie tabelki z statsami
+// bug jeśli 1 gracz i ma natural bj - za duzo dodaje kasy bo nie zdąża zmienić stanu balance
 //dodanie sesji
 //dodanie logowania ? nie wiem po co; może zliczanie statystyk, możliwość zresetowania ich np staty performance z ćwiczonek, ilość kaski przegranej/zarobionej
 //dodanie ustawień języka
@@ -197,7 +195,8 @@ export const initialData: BlackJackGameInterface = {
   dealCard: () => [],
   startGame: () => undefined,
   startDeal: () => undefined,
-  countDealerValue: () => 0
+  countDealerValue: () => 0,
+  resetGame: () => undefined
 };
 
 export const shuffleCards = (decksNumber: number): WithIdCard[] => {

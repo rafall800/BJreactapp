@@ -90,29 +90,48 @@ export interface BlackJackGameInterface {
   startGame: () => void;
   startDeal: () => void;
   countDealerValue: (cards: WithIdCard[]) => number;
+  resetGame: () => void;
 }
 
 export const useBlackJackGameState = (initialValue: BlackJackGameInterface): BlackJackGameInterface => {
   const [gameRunning, setGameRunning] = useState<boolean>(initialValue.gameRunning);
   const [isNewGame, setIsNewGame] = useState<boolean>(initialValue.isNewGame);
   const [dealSpeed, setDealSpeed] = useState<number>(initialValue.dealSpeed);
-  const [gameRules, setGameRules] = useState<GameRules>(initialValue.gameRules);
+  const [gameRules, setGameRules] = useState<GameRules>({ ...initialValue.gameRules });
 
   const [bettingStage, setBettingStage] = useState<boolean>(initialValue.bettingStage);
   const [splitHandStage, setSplitHandStage] = useState<boolean>(initialValue.splitHandStage);
 
-  const [shoe, setShoe] = useState<WithIdCard[]>(initialValue.shoe);
+  const [shoe, setShoe] = useState<WithIdCard[]>([...initialValue.shoe]);
   const [dealtCardsAmount, setDealtCardsAmount] = useState<number>(initialValue.dealtCardsAmount);
   const [penetrationReached, setPenetrationReached] = useState<boolean>(false);
 
   const [bet, setBet] = useState<number>(initialValue.bet);
   const [balance, setBalance] = useState<number>(initialValue.balance);
 
-  const [players, setPlayers] = useState<Player[]>(initialValue.players);
-  const [dealer, setDealer] = useState<WithIdCard[]>(initialValue.dealer);
+  const [players, setPlayers] = useState<Player[]>([...initialValue.players]);
+  const [dealer, setDealer] = useState<WithIdCard[]>([...initialValue.dealer]);
 
-  const [gameData, setGameData] = useState<GameHand[][]>(initialValue.gameData);
+  const [gameData, setGameData] = useState<GameHand[][]>([...initialValue.gameData]);
   const [runningCount, setRunningCount] = useState<number>(initialValue.runningCount);
+
+  const resetGame = useCallback(() => {
+    setRunningCount(initialValue.runningCount);
+    setGameData([...initialValue.gameData]);
+    setDealer([...initialValue.dealer]);
+    setPlayers([...initialValue.players]);
+    setBalance(initialValue.balance);
+    setBet(initialValue.bet);
+    setPenetrationReached(false);
+    setShoe([...initialValue.shoe]);
+    setDealtCardsAmount(initialValue.dealtCardsAmount);
+    setSplitHandStage(initialValue.splitHandStage);
+    setBettingStage(initialValue.bettingStage);
+    setDealSpeed(initialValue.dealSpeed);
+    setGameRules({ ...initialValue.gameRules });
+    setGameRunning(initialValue.gameRunning);
+    setIsNewGame(initialValue.isNewGame);
+  }, [initialValue]);
 
   //adds data of most recent move to gameData
   const handleAddGameData = useCallback(
@@ -168,7 +187,8 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
               break;
           }
         }
-      } else if (!bestOption) {
+      }
+      if (!bestOption) {
         //hard
         switch (BASIC_STRATEGY_HARD[countHandValue(player.hand).toString()][dealer.value]) {
           case 's':
@@ -332,13 +352,13 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
       return;
     };
     dealer[1]!.isPrivate = false;
+    const currentGameData = gameData[gameData.length - 1]!;
     if (countDealerValue(dealer) === 21) {
       const decsLeft = Math.round(shoe.length / 52);
       const trueCount = Math.round((runningCount / decsLeft) * 100) / 100;
-      const currentDeal: GameHand[] = [];
       players.forEach((player) => {
         if (player.seatTaken) {
-          currentDeal.push({
+          currentGameData.push({
             betOutcome: 0,
             outcome: undefined,
             handData: [
@@ -354,13 +374,11 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
           });
         }
       });
-      gameData.push(currentDeal);
     }
     let count = getCardCount(dealer[1]!);
     while (countDealerValue(dealer) < 17) count += getCardCount(dealCard(dealer).at(-1)!);
     setRunningCount((prevValue) => prevValue + count);
     const dealerValue = countHandValue(dealer);
-    const currentGameData = gameData[gameData.length - 1]!;
     let newBalance = balance;
     players.forEach((player) => {
       if (player.seatTaken) {
@@ -369,7 +387,7 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
         const gameDataPlayer = currentGameData.find((gameDataPlayer) => gameDataPlayer.handName === player.playerName);
         if (!gameDataPlayer) return;
         gameDataPlayer.outcome = player.outcome;
-        gameDataPlayer.betOutcome = player.betOutcome;
+        gameDataPlayer.betOutcome = player.betOutcome - player.bet;
         player.splitHands.forEach((hand) => {
           getHandResult(hand);
           newBalance += hand.betOutcome;
@@ -785,8 +803,8 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
     setBalance((prevValue) => prevValue - bet);
     players[currentPlayerIndex]!.bet = bet;
     players[currentPlayerIndex]!.isPlaying = false;
-    betNextHand(currentPlayerIndex);
     setPlayers([...players]);
+    betNextHand(currentPlayerIndex);
   }, [bet, players, betNextHand]);
 
   return useMemo(
@@ -832,7 +850,8 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
       startGame,
       startDeal,
       dealCard,
-      countDealerValue
+      countDealerValue,
+      resetGame
     }),
     [
       gameRules,
@@ -876,7 +895,8 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
       startGame,
       startDeal,
       dealCard,
-      countDealerValue
+      countDealerValue,
+      resetGame
     ]
   );
 };
