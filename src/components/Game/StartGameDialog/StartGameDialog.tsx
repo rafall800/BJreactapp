@@ -16,7 +16,7 @@ export interface StartGameDialogForm {
 
 const StartGameDialog: FC = () => {
   const navigate = useNavigate();
-  const { balance, gameRules, setGameRules, setBalance, startGame, handleSetupPlayers } =
+  const { balance, gameRules, setGameRules, setBalance, startGame, handleSetupPlayers, setPlayers } =
     useContext(BlackJackGameContext);
 
   const { handleSubmit, handleChange, form, errors } = useForm<StartGameDialogForm>({
@@ -30,7 +30,7 @@ const StartGameDialog: FC = () => {
       decksNumber: [
         {
           isValid: (decks) => decks >= 6,
-          message: 'Needs to be over 4!'
+          message: 'Needs to be over 5!'
         },
         {
           isValid: (decks) => decks <= 8,
@@ -39,6 +39,78 @@ const StartGameDialog: FC = () => {
       ]
     },
     onSubmit: () => {
+      setPlayers([
+        {
+          seatTaken: false,
+          isPlaying: false,
+          hand: [],
+          bet: 0,
+          outcome: undefined,
+          betOutcome: 0,
+          canSplit: false,
+          canDoubledown: true,
+          canGetBlackJack: true,
+          canSurrender: true,
+          splitHands: [],
+          playerName: 'player1'
+        },
+        {
+          seatTaken: false,
+          isPlaying: false,
+          hand: [],
+          bet: 0,
+          betOutcome: 0,
+          outcome: undefined,
+          canSplit: false,
+          canDoubledown: true,
+          canGetBlackJack: true,
+          canSurrender: true,
+          splitHands: [],
+          playerName: 'player2'
+        },
+        {
+          seatTaken: true,
+          isPlaying: false,
+          hand: [],
+          bet: 0,
+          betOutcome: 0,
+          outcome: undefined,
+          canSplit: false,
+          canDoubledown: true,
+          canGetBlackJack: true,
+          canSurrender: true,
+          splitHands: [],
+          playerName: 'player3'
+        },
+        {
+          seatTaken: false,
+          isPlaying: false,
+          hand: [],
+          bet: 0,
+          betOutcome: 0,
+          outcome: undefined,
+          canSplit: false,
+          canDoubledown: true,
+          canGetBlackJack: true,
+          canSurrender: true,
+          splitHands: [],
+          playerName: 'player4'
+        },
+        {
+          seatTaken: false,
+          isPlaying: false,
+          hand: [],
+          bet: 0,
+          betOutcome: 0,
+          outcome: undefined,
+          canSplit: false,
+          canDoubledown: true,
+          canGetBlackJack: true,
+          canSurrender: true,
+          splitHands: [],
+          playerName: 'player5'
+        }
+      ]);
       setBalance(form.balance);
       gameRules.decksNumber = form.decksNumber;
       gameRules.soft17 = form.soft17Rule;

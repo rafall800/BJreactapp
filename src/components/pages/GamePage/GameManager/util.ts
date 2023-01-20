@@ -3,13 +3,22 @@ import { WithIdRaw } from '../../../util/types';
 
 //TODO:
 
-//Add deviations
-//dodać artykuł jak grać, jak liczyć
-//dodać ćwiczenia takie jak: zliczanie kart, podejmowanie decyzji
+//Add deviations !!!!!
+//dodać artykuł jak grać, jak liczyć !!!!
+
+//zliczanie kart:
+// - zliczanie rąk -> klikanie next i na koniec pytanie jaki był running count
+// - info jaki jest running count, ile deckowa gra, -> zliczanie rąk -> klikanie nex i pytanie jaki true count
+
+//podejmowanie decyzji:
+// - info jaki jest running count -> rozdanie kart -> podejmowanie decyzji deviacje
+
 // bug jeśli 1 gracz i ma natural bj - za duzo dodaje kasy bo nie zdąża zmienić stanu balance
-//dodanie sesji
+// bug nie da się zmienić ilości talii
+
 //dodanie logowania ? nie wiem po co; może zliczanie statystyk, możliwość zresetowania ich np staty performance z ćwiczonek, ilość kaski przegranej/zarobionej
-//dodanie ustawień języka
+//dodanie sesji ??
+//dodanie ustawień języka ??
 
 export interface Card {
   isPrivate: boolean;
@@ -195,8 +204,7 @@ export const initialData: BlackJackGameInterface = {
   dealCard: () => [],
   startGame: () => undefined,
   startDeal: () => undefined,
-  countDealerValue: () => 0,
-  resetGame: () => undefined
+  countDealerValue: () => 0
 };
 
 export const shuffleCards = (decksNumber: number): WithIdCard[] => {

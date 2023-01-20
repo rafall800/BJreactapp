@@ -26,7 +26,9 @@ const Header: FC = () => {
           <Button variant="transparent">start course</Button>
         </CardBorder>
         <CardBorder>
-          <Button variant="transparent">do exercise</Button>
+          <Button variant="transparent" onClick={() => navigate(RoutesEnum.ExercisesPage)}>
+            do exercise
+          </Button>
         </CardBorder>
       </CardBorderBox>
       <Background />

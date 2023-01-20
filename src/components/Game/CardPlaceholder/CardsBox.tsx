@@ -35,19 +35,17 @@ const CardsBox: FC = () => {
     dealer,
     players,
     shoe,
-    runningCount,
     dealtCardsAmount,
     splitHandStage,
     penetrationReached,
     setShoe,
-    setPlayers,
     handleSeatAvailability,
     countDealerValue
   } = useContext(BlackJackGameContext);
 
   useEffect(() => {
     if (shoe.length === 0) setShoe(shuffleCards(gameRules.decksNumber));
-  }, [shoe, gameRules, splitHandStage, runningCount, players, setShoe, setPlayers]);
+  }, [shoe, gameRules, players, setShoe]);
 
   const getPlayersNumber = (): number => {
     return players.reduce((acc, curr) => {

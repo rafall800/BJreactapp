@@ -1,7 +1,9 @@
 enum RoutesEnum {
   LandingPage = '/',
-  GamePage = '/blackjack',
-  AgendaPage = 'AgendaPage'
+  GamePage = 'Blackjack',
+  ExercisesPage = 'Exercises',
+  CardCountingExercise = '/CardCounting',
+  DecisionMakingExercise = '/DecisionMaking'
 }
 
 export default RoutesEnum;

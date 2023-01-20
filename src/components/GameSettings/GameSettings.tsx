@@ -22,8 +22,8 @@ const GameSettings: FC = () => {
       <Speeds>
         {dealSpeeds.map((speed, index) => {
           return (
-            <ButtonWrapper isActive={activeDealSpeed === index ? true : false}>
-              <Button key={speed} variant="tab" onClick={() => handleActivateSpeed(speed, index)}>
+            <ButtonWrapper key={speed} isActive={activeDealSpeed === index ? true : false}>
+              <Button variant="tab" onClick={() => handleActivateSpeed(speed, index)}>
                 {speed + '%'}
               </Button>
             </ButtonWrapper>

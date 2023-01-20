@@ -90,7 +90,6 @@ export interface BlackJackGameInterface {
   startGame: () => void;
   startDeal: () => void;
   countDealerValue: (cards: WithIdCard[]) => number;
-  resetGame: () => void;
 }
 
 export const useBlackJackGameState = (initialValue: BlackJackGameInterface): BlackJackGameInterface => {
@@ -114,24 +113,6 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
 
   const [gameData, setGameData] = useState<GameHand[][]>([...initialValue.gameData]);
   const [runningCount, setRunningCount] = useState<number>(initialValue.runningCount);
-
-  const resetGame = useCallback(() => {
-    setRunningCount(initialValue.runningCount);
-    setGameData([...initialValue.gameData]);
-    setDealer([...initialValue.dealer]);
-    setPlayers([...initialValue.players]);
-    setBalance(initialValue.balance);
-    setBet(initialValue.bet);
-    setPenetrationReached(false);
-    setShoe([...initialValue.shoe]);
-    setDealtCardsAmount(initialValue.dealtCardsAmount);
-    setSplitHandStage(initialValue.splitHandStage);
-    setBettingStage(initialValue.bettingStage);
-    setDealSpeed(initialValue.dealSpeed);
-    setGameRules({ ...initialValue.gameRules });
-    setGameRunning(initialValue.gameRunning);
-    setIsNewGame(initialValue.isNewGame);
-  }, [initialValue]);
 
   //adds data of most recent move to gameData
   const handleAddGameData = useCallback(
@@ -850,8 +831,7 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
       startGame,
       startDeal,
       dealCard,
-      countDealerValue,
-      resetGame
+      countDealerValue
     }),
     [
       gameRules,
@@ -895,8 +875,7 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
       startGame,
       startDeal,
       dealCard,
-      countDealerValue,
-      resetGame
+      countDealerValue
     ]
   );
 };
