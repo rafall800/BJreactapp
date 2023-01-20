@@ -9,6 +9,9 @@ import GamePage from '../pages/GamePage/GamePage';
 import ExercisesPage from '../pages/ExercisesPage/ExercisesPage';
 import CardCountingPage from '../pages/CardCountingPage/CardCountingPage.';
 import DecisionMakingPage from '../pages/DecisionMakingPage/DecisionMakingPage';
+import ArticlesPage from '../pages/ArticlesPage/ArticlesPage';
+import HowToPlay from '../pages/ArticlesPage/HowToPlay/HowToPlay';
+import HowToCountCards from '../pages/ArticlesPage/HowToCountCards/HowToCountCards';
 
 export const queryClient = new QueryClient();
 
@@ -34,6 +37,11 @@ export const InnerApp: FC<InnerAppProps> = ({ queryClient }) => (
         <Route path={RoutesEnum.ExercisesPage} element={<ExercisesPage />} />
         <Route path={RoutesEnum.CardCountingExercise} element={<CardCountingPage />} />
         <Route path={RoutesEnum.DecisionMakingExercise} element={<DecisionMakingPage />} />
+        <Route path={RoutesEnum.ArticlesPage} element={<ArticlesPage />}>
+          <Route index element={<HowToPlay />} />
+          <Route path={RoutesEnum.HowToPlay} element={<HowToPlay />} />
+          <Route path={RoutesEnum.HowToCountCards} element={<HowToCountCards />} />
+        </Route>
       </Routes>
     </StyledCenterContainer>
     <GlobalStyles />

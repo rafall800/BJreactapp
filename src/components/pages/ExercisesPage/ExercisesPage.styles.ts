@@ -10,9 +10,8 @@ export const StyledExercisesPage = styled.div`
 `;
 
 export const ExercisesBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 50px;
   max-width: ${theme.contentMaxWidth};
   width: 100%;

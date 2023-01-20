@@ -23,7 +23,8 @@ const Navbar: FC = () => {
     },
     {
       id: '2',
-      title: 'read articles'
+      title: 'read articles',
+      onClick: () => navigate(RoutesEnum.ArticlesPage)
     },
     {
       id: '3',
