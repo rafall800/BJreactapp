@@ -15,6 +15,7 @@ export const StyledHamburger = styled.button`
     width: 100%;
     height: 7px;
     background-color: ${theme.colorStyles.Black};
+    border: 1px solid ${theme.colorStyles.Gray2};
     border-radius: 25px;
   }
   :hover {

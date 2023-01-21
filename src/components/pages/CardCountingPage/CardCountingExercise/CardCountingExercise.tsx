@@ -54,7 +54,9 @@ const CardCountingExercise: FC = () => {
   return (
     <StyledCardCountingExercise>
       {alert.isVisible && currentCard && <Alert variant={alert.variant}>{alert.message}</Alert>}
-      <SingleCardPlaceholder>{currentCard && <Card card={currentCard} number={0} />}</SingleCardPlaceholder>
+      <SingleCardPlaceholder>
+        {currentCard && <Card key={Math.random()} card={currentCard} number={0} />}
+      </SingleCardPlaceholder>
       {!gameRunning && (
         <Button variant="primary" onClick={handleStartGame}>
           start

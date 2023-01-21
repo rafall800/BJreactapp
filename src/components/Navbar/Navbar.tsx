@@ -19,25 +19,17 @@ const Navbar: FC = () => {
   const tabs: TabProps[] = [
     {
       id: '1',
-      title: 'start course'
-    },
-    {
-      id: '2',
       title: 'read articles',
       onClick: () => navigate(RoutesEnum.ArticlesPage)
     },
     {
-      id: '3',
+      id: '2',
       title: 'do exercises'
     },
     {
-      id: '4',
+      id: '3',
       title: 'play blackjack',
       onClick: () => navigate(RoutesEnum.GamePage)
-    },
-    {
-      id: '5',
-      title: 'settings'
     }
   ];
   useEffect(() => {
@@ -50,9 +42,6 @@ const Navbar: FC = () => {
       <Content>
         <Hamburger id="hamburger" onClick={() => setIsOpen(!isOpen)} />
         <ChipIcon onClick={() => navigate(RoutesEnum.LandingPage)} />
-        <Button id="singin-navbar" variant="primary">
-          sing in
-        </Button>
       </Content>
       <Collapsible ref={collapsibleRef}>
         <Tabs>
@@ -63,10 +52,8 @@ const Navbar: FC = () => {
               </Button>
             );
           })}
+          <div style={{ height: '100px' }}></div>
         </Tabs>
-        <Button id="singin-collapsible" variant="primary">
-          sing in
-        </Button>
       </Collapsible>
     </StyledNavbar>
   );
