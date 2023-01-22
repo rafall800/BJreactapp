@@ -65,7 +65,7 @@ const HowToPlay: FC = () => {
           used in the most common blackjack game. In this simulator you can choose either 6, 7 or 8 deck shoe to be
           played. A blackjack game can be simplified to these steps:
         </Paragraph>
-        <ol>
+        <ul>
           <ListElement>
             <Paragraph>Each player places a bet.</Paragraph>
           </ListElement>
@@ -81,7 +81,7 @@ const HowToPlay: FC = () => {
           <ListElement>
             <Paragraph>Each hand outcome and payout is determined.</Paragraph>
           </ListElement>
-        </ol>
+        </ul>
         <Paragraph bold>The dealer hands out cards to the players.</Paragraph>
         <Paragraph>
           After every player placed a bet, dealer will deal 1 card, face up, to each player, ending on himself. Then the
@@ -99,40 +99,40 @@ const HowToPlay: FC = () => {
           want to play your hand if neither YOU nor the dealer has a blackjack. You have five options for how to play
           your hand:
         </Paragraph>
-        <ParagraphsRow>
-          <Paragraph bold>Stand</Paragraph>
-          <Paragraph> - You can stand, and the dealer will move on to the next player.</Paragraph>
-        </ParagraphsRow>
-        <ParagraphsRow>
-          <Paragraph bold>Hit</Paragraph>
-          <Paragraph>
-            - The dealer will deal you one additional card. You can take as many cards as you want, with the exception
-            of exceeding the 21 total.
-          </Paragraph>
-        </ParagraphsRow>
-        <ParagraphsRow>
-          <Paragraph bold>Double Down</Paragraph>
-          <Paragraph>
-            - You can double your initial bet, and the dealer will only deal you one additional card.
-          </Paragraph>
-        </ParagraphsRow>
-        <ParagraphsRow>
-          <Paragraph bold>Split</Paragraph>
-          <Paragraph>
-            - If you are dealt a pair (two cards of the same value), you have the option to place a second bet, and the
-            dealer will divide the two cards in such a way that each card becomes the first card on two new hands. Face
-            cards are also subject to this. Even though they are not actually a pair, a hand with a King and a Jack can
-            be split because they both have the same value.
-          </Paragraph>
-        </ParagraphsRow>
-        <ParagraphsRow>
-          <Paragraph bold>Surrender</Paragraph>
-          <Paragraph>
-            - If you don't like your first hand, you can give it up for half your original bet back.
-          </Paragraph>
-        </ParagraphsRow>
-      </TextBlock>
-      <TextBlock>
+        <div>
+          <ParagraphsRow>
+            <Paragraph bold>Stand</Paragraph>
+            <Paragraph> - You can stand, and the dealer will move on to the next player.</Paragraph>
+          </ParagraphsRow>
+          <ParagraphsRow>
+            <Paragraph bold>Hit</Paragraph>
+            <Paragraph>
+              - The dealer will deal you one additional card. You can take as many cards as you want, with the exception
+              of exceeding the 21 total.
+            </Paragraph>
+          </ParagraphsRow>
+          <ParagraphsRow>
+            <Paragraph bold>Double Down</Paragraph>
+            <Paragraph>
+              - You can double your initial bet, and the dealer will only deal you one additional card.
+            </Paragraph>
+          </ParagraphsRow>
+          <ParagraphsRow>
+            <Paragraph bold>Split</Paragraph>
+            <Paragraph>
+              - If you are dealt a pair (two cards of the same value), you have the option to place a second bet, and
+              the dealer will divide the two cards in such a way that each card becomes the first card on two new hands.
+              Face cards are also subject to this. Even though they are not actually a pair, a hand with a King and a
+              Jack can be split because they both have the same value.
+            </Paragraph>
+          </ParagraphsRow>
+          <ParagraphsRow>
+            <Paragraph bold>Surrender</Paragraph>
+            <Paragraph>
+              - If you don't like your first hand, you can give it up for half your original bet back.
+            </Paragraph>
+          </ParagraphsRow>
+        </div>
         <Paragraph bold>The dealer plays hand.</Paragraph>
         <Paragraph>
           It's time for the dealer to play their hand if you didn't surrender and your hand hasn't busted. First, the
@@ -145,8 +145,6 @@ const HowToPlay: FC = () => {
           7 (because an ace has a flexible value), giving the dealer more opportunities to get a better hand than 17. If
           the dealer stands on all 17s, the casino has a bigger advantage because of this.
         </Paragraph>
-      </TextBlock>
-      <TextBlock>
         <Paragraph bold>Each hand outcome and payout is determined.</Paragraph>
         <Paragraph>
           If the dealer busts, each hand that is still in play will receive two times its bet back. If the dealer draws
@@ -163,16 +161,12 @@ const HowToPlay: FC = () => {
           it another way, not all blackjack games are created equal in terms of their favorable odds and player
           advantages. A summary of some of the rules that will affect the game's odds is provided here.
         </Paragraph>
-      </TextBlock>
-      <TextBlock>
         <Paragraph bold>Doubling After Splitting (DAS)</Paragraph>
         <Paragraph>
           Simply put, this means that you can double down on a split hand. This rule is actually advantageous to the
           player and is accepted by most casinos. This rule is applied in this simulator.
         </Paragraph>
-      </TextBlock>
-      <TextBlock>
-        <Paragraph bold>Re-Splitting Aces (RSA))</Paragraph>
+        <Paragraph bold>Re-Splitting Aces (RSA)</Paragraph>
         <Paragraph>
           After splitting a pair of aces, some casinos let players re-split their aces. This means that if you split a
           pair of aces and get another ace as your next card, you can split to a third hand for a maximum of four hands.
@@ -182,8 +176,6 @@ const HowToPlay: FC = () => {
           in which the player has an advantage, knowing that the Ace is the most powerful card. In this simulator
           splitting aces works as splitting any other pair.
         </Paragraph>
-      </TextBlock>
-      <TextBlock>
         <Paragraph bold>Early Surrender</Paragraph>
         <Paragraph>
           Since the 1970s, casinos in the United States have not enforced this outdated rule. The Early Surrender rule
@@ -191,9 +183,7 @@ const HowToPlay: FC = () => {
           around, it was very good for the player. Without counting cards, a good basic strategy player could have a
           small advantage. Because of that, it died out. This simulator does not support Early Surrender.
         </Paragraph>
-      </TextBlock>
-      <TextBlock>
-        <Paragraph bold>Deck/Shoe Penetration (PEN))</Paragraph>
+        <Paragraph bold>Deck/Shoe Penetration (PEN)</Paragraph>
         <Paragraph>
           The percentage of cards actually dealt out of the shoe. In most cases, a cut card is inserted toward the back
           of the cards that will be dealt into the shoe. During the course of the game, when the cut card is dealt out,

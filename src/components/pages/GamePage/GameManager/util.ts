@@ -246,6 +246,16 @@ export function findLastIndex<T>(array: Array<T>, predicate: (value: T, index?: 
   return -1;
 }
 
+export const getCards = (cardsToGet: string[]): WithIdCard[] => {
+  const searchedCards = cards.filter((card) => {
+    return cardsToGet.includes(card.symbol);
+  });
+  const withIdSearchedCards: WithIdCard[] = searchedCards.map((card, index) => {
+    return { ...card, _id: index.toString() };
+  });
+  return withIdSearchedCards;
+};
+
 //BS
 export const BASIC_STRATEGY_SPLITS = {
   A: { '2': 'y', '3': 'y', '4': 'y', '5': 'y', '6': 'y', '7': 'y', '8': 'y', '9': 'y', '10': 'y', A: 'y' },
