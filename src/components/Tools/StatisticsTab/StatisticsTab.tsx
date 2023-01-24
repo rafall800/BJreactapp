@@ -3,6 +3,7 @@ import { BlackJackGameContext } from '../../pages/GamePage/GameManager/GameProvi
 import { initialData } from '../../pages/GamePage/GameManager/util';
 import { Header3 } from '../../textStyles/Header3.styles';
 import {
+  ButtonWrapper,
   Chart,
   ChartLegend,
   ChartsBox,
@@ -11,12 +12,17 @@ import {
   LegendElement,
   StyledStatisticsTab
 } from './StatisticsTab.styles';
-import SoftChart from '../../../assets/charts/Soft.png';
-import HardChart from '../../../assets/charts/Hard.png';
-import PairsChart from '../../../assets/charts/Pairs.png';
-import SurChart from '../../../assets/charts/Sur.png';
+import SoftDChart from '../../../assets/charts/Deviations/Soft-D.png';
+import HardDChart from '../../../assets/charts/Deviations/Hard-D.png';
+import PairsDChart from '../../../assets/charts/Deviations/Splits-D.png';
+import SurrDChart from '../../../assets/charts/Deviations/Surr-D.png';
+import SoftChart from '../../../assets/charts/BS/Soft.png';
+import HardChart from '../../../assets/charts/BS/Hard.png';
+import PairsChart from '../../../assets/charts/BS/Splits.png';
+import SurrChart from '../../../assets/charts/BS/Surr.png';
 import Backdrop from '../../Backdrop/Backdrop';
 import { TableTab } from '../../textStyles/TableTab.styles';
+import Button from '../../Button/Button';
 
 interface StatisticsTabProps {
   title: string;
@@ -24,6 +30,7 @@ interface StatisticsTabProps {
 
 const StatisticsTab: FC<StatisticsTabProps> = () => {
   const [openBackdrop, setOpenBackdrop] = useState<boolean>(false);
+  const [chartType, setChartType] = useState<boolean>(false);
   const [imageToShow, setImageToShow] = useState<string>('');
   const handleOpenImage = (image: string) => {
     setOpenBackdrop(true);
@@ -72,22 +79,47 @@ const StatisticsTab: FC<StatisticsTabProps> = () => {
       </table>
       <ChartsBox>
         <Chart>
-          <Header3>hard values chart</Header3>
-          <img alt="hard values chart" src={HardChart} loading="lazy" onClick={() => handleOpenImage(HardChart)} />
+          <Header3>pairs chart</Header3>
+          <img
+            alt="pairs chart"
+            src={chartType ? PairsDChart : PairsChart}
+            loading="lazy"
+            onClick={() => handleOpenImage(chartType ? PairsDChart : PairsChart)}
+          />
         </Chart>
         <Chart>
           <Header3>soft values chart</Header3>
-          <img alt="soft values chart" src={SoftChart} loading="lazy" onClick={() => handleOpenImage(SoftChart)} />
-        </Chart>
-        <Chart>
-          <Header3>pairs chart</Header3>
-          <img alt="pairs chart" src={PairsChart} loading="lazy" onClick={() => handleOpenImage(PairsChart)} />
+          <img
+            alt="soft values chart"
+            src={chartType ? SoftDChart : SoftChart}
+            loading="lazy"
+            onClick={() => handleOpenImage(chartType ? SoftDChart : SoftChart)}
+          />
         </Chart>
         <Chart>
           <Header3>surrender chart</Header3>
-          <img alt="surrender chart" src={SurChart} loading="lazy" onClick={() => handleOpenImage(SurChart)} />
+          <img
+            alt="surrender chart"
+            src={chartType ? SurrDChart : SurrChart}
+            loading="lazy"
+            onClick={() => handleOpenImage(chartType ? SurrDChart : SurrChart)}
+          />
+        </Chart>
+        <Chart>
+          <Header3>hard values chart</Header3>
+          <img
+            alt="hard values chart"
+            src={chartType ? HardDChart : HardChart}
+            loading="lazy"
+            onClick={() => handleOpenImage(chartType ? HardDChart : HardChart)}
+          />
         </Chart>
       </ChartsBox>
+      <ButtonWrapper isActive={chartType}>
+        <Button variant="primary" onClick={() => setChartType((prevValue) => !prevValue)}>
+          switch charts
+        </Button>
+      </ButtonWrapper>
       <Legend>
         <ChartLegend>
           <LegendElement>
@@ -124,20 +156,18 @@ const StatisticsTab: FC<StatisticsTabProps> = () => {
           <TableTab>SUR - Surrender if possible</TableTab>
         </LegendElement>
       </Legend>
-      <LegendElement>
-        <ColoredSquare color={'#ffff00'} />
-        <TableTab>Examples: </TableTab>
-      </LegendElement>
-      <Legend>
-        <ChartLegend>
-          <TableTab>{'H/+3->S - If true count is 3 or more Stay else Hit '} </TableTab>
-          <TableTab>{'S/-0->H - If running count is negative Hit else Stay'} </TableTab>
-        </ChartLegend>
-        <ChartLegend>
-          <TableTab>{'S/-1->H - If true count is 1 or less Hit else Stay '} </TableTab>
-          <TableTab>{'+1->SUR - If true count is 1 or more Surrender'} </TableTab>
-        </ChartLegend>
-      </Legend>
+      {chartType && (
+        <>
+          <LegendElement>
+            <ColoredSquare color={'#ffff00'} />
+            <TableTab>Examples: </TableTab>
+          </LegendElement>
+          <Legend style={{ gap: 80 }}>
+            <TableTab>{'3+ S - If true count is 3 or more Stay else use BS'} </TableTab>
+            <TableTab>{'-1- H - If running count is -1 or less Hit else use BS'} </TableTab>
+          </Legend>
+        </>
+      )}
       <Backdrop open={openBackdrop}>
         <img onClick={handleCloseImage} src={imageToShow} alt="Bigger chart" />
       </Backdrop>

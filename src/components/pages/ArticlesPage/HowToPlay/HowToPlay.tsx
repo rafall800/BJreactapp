@@ -1,10 +1,34 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { ListElement } from '../../../LandingPageContent/LandingPageContent.styles';
+import { Header2 } from '../../../textStyles/Header2.styles';
 import { Header3 } from '../../../textStyles/Header3.styles';
 import { Paragraph } from '../../../textStyles/Paragrapsh.styles';
+import {
+  ChartsBox,
+  Chart,
+  ChartLegend,
+  ColoredSquare,
+  Legend,
+  LegendElement
+} from '../../../Tools/StatisticsTab/StatisticsTab.styles';
 import { FlexBox, ParagraphsRow, TextBlock } from './HowToPlay.styles';
+import SoftChart from '../../../../assets/charts/BS/Soft.png';
+import HardChart from '../../../../assets/charts/BS/Hard.png';
+import PairsChart from '../../../../assets/charts/BS/Splits.png';
+import SurrChart from '../../../../assets/charts/BS/Surr.png';
+import Backdrop from '../../../Backdrop/Backdrop';
+import { TableTab } from '../../../textStyles/TableTab.styles';
 
 const HowToPlay: FC = () => {
+  const [openBackdrop, setOpenBackdrop] = useState<boolean>(false);
+  const [imageToShow, setImageToShow] = useState<string>('');
+  const handleOpenImage = (image: string) => {
+    setOpenBackdrop(true);
+    setImageToShow(image);
+  };
+  const handleCloseImage = () => {
+    setOpenBackdrop(false);
+  };
   return (
     <FlexBox>
       <TextBlock>
@@ -155,6 +179,71 @@ const HowToPlay: FC = () => {
         </Paragraph>
       </TextBlock>
       <TextBlock>
+        <Header3>Basic Strategy</Header3>
+        <Paragraph>
+          For maximum performance you want to play the best moves possible. These moves are called "Basic Strategy" and
+          are often presented in form of charts. These charts consist of every possible situation you will encounter
+          whilst playing BlackJack and are divided by "Pairs" - hands that are allowed to split. "Soft values" - hands
+          consisting of Ace, "Surrender" - hands that are allowed to surrender and "Hard values" - hands like 6 and 7 or
+          J and 5. These charts should be considered in order: Pairs - Soft - Surrender - Hard. Top row (2-A) represents
+          dealers visible card value and accordingly left-side column represents players hand value.
+        </Paragraph>
+        <ChartsBox>
+          <Chart>
+            <Header2>pairs chart</Header2>
+            <img alt="pairs chart" src={PairsChart} loading="lazy" onClick={() => handleOpenImage(PairsChart)} />
+          </Chart>
+          <Chart>
+            <Header2>soft values chart</Header2>
+            <img alt="soft values chart" src={SoftChart} loading="lazy" onClick={() => handleOpenImage(SoftChart)} />
+          </Chart>
+          <Chart>
+            <Header2>surrender chart</Header2>
+            <img alt="surrender chart" src={SurrChart} loading="lazy" onClick={() => handleOpenImage(SurrChart)} />
+          </Chart>
+          <Chart>
+            <Header2>hard values chart</Header2>
+            <img alt="hard values chart" src={HardChart} loading="lazy" onClick={() => handleOpenImage(HardChart)} />
+          </Chart>
+        </ChartsBox>
+        <Legend style={{ marginLeft: 50 }}>
+          <ChartLegend>
+            <LegendElement>
+              <ColoredSquare color={'#00b050'} />
+              <TableTab>Y - Split</TableTab>
+            </LegendElement>
+            <LegendElement>
+              <ColoredSquare color={'#fff'} />
+              <TableTab>N - Don't split</TableTab>
+            </LegendElement>
+          </ChartLegend>
+          <ChartLegend>
+            <LegendElement>
+              <ColoredSquare color={'#ffc000'} />
+              <TableTab>S - Stay</TableTab>
+            </LegendElement>{' '}
+            <LegendElement>
+              <ColoredSquare color={'#9bc2e6'} />
+              <TableTab>Ds - Double if possible, else stay</TableTab>
+            </LegendElement>
+          </ChartLegend>
+          <ChartLegend>
+            <LegendElement>
+              <ColoredSquare color={'#00b050'} />
+              <TableTab>D - Double if possible, else hit</TableTab>
+            </LegendElement>
+            <LegendElement>
+              <ColoredSquare color={'#fff'} />
+              <TableTab>H - Hit</TableTab>
+            </LegendElement>
+          </ChartLegend>
+          <LegendElement>
+            <ColoredSquare color={'#00b050'} />
+            <TableTab>SUR - Surrender if possible</TableTab>
+          </LegendElement>
+        </Legend>
+      </TextBlock>
+      <TextBlock>
         <Header3>Variations in the Blackjack Rules</Header3>
         <Paragraph>
           There are a lot of different rules and conditions that can change how the game of Blackjack is played. To put
@@ -193,6 +282,9 @@ const HowToPlay: FC = () => {
           penetration can make or break a blackjack game for a card counter. This simulator has set PEN at 75%.
         </Paragraph>
       </TextBlock>
+      <Backdrop open={openBackdrop}>
+        <img onClick={handleCloseImage} src={imageToShow} alt="Bigger chart" />
+      </Backdrop>
     </FlexBox>
   );
 };

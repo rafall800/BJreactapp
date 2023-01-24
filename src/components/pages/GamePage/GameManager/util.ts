@@ -28,7 +28,7 @@ export interface Card {
 
 export type WithIdCard = WithIdRaw<Card>;
 
-export type Options = 'hit' | 'stand' | 'split' | 'doubleDown' | 'surrender';
+export type Options = 'hit' | 'stand' | 'split' | 'doubleDown' | 'surrender' | '';
 
 export type Softs = '20' | '19' | '18' | '17' | '16' | '15' | '14' | '13';
 
@@ -256,8 +256,49 @@ export const getCards = (cardsToGet: string[]): WithIdCard[] => {
   return withIdSearchedCards;
 };
 
+export const checkDeviation = (chart: any, dealerVal: string, playerVal: string, trueCount: number): Options => {
+  let option = '';
+  let bestOption: Options = '';
+  if (!(playerVal in chart)) {
+    return '';
+  }
+  if (!(dealerVal in chart[playerVal])) {
+    return '';
+  }
+  const split = chart[playerVal][dealerVal].split(' ');
+  const sign = split[0].slice(-1);
+  const trueCountTreshold = split[0].slice(0, -1);
+  if (sign === '+') {
+    trueCount >= Number(trueCountTreshold) ? (option = split[1]) : (option = '');
+  } else if (sign === '-') {
+    trueCount <= Number(trueCountTreshold) ? (option = split[1]) : (option = '');
+  }
+  switch (option) {
+    case 'y':
+      bestOption = 'split';
+      break;
+    case 'D':
+      bestOption = 'doubleDown';
+      break;
+    case 's':
+      bestOption = 'stand';
+      break;
+    case 'h':
+      bestOption = 'hit';
+      break;
+    case 'sur':
+      bestOption = 'surrender';
+      break;
+    default:
+      bestOption = '';
+      break;
+  }
+  console.log(bestOption);
+  return bestOption;
+};
+
 //BS
-export const BASIC_STRATEGY_SPLITS = {
+export const BASIC_STRATEGY_SPLITS: any = {
   A: { '2': 'y', '3': 'y', '4': 'y', '5': 'y', '6': 'y', '7': 'y', '8': 'y', '9': 'y', '10': 'y', A: 'y' },
   '10': { '2': 'n', '3': 'n', '4': 'n', '5': 'n', '6': 'n', '7': 'n', '8': 'n', '9': 'n', '10': 'n', A: 'n' },
   '9': { '2': 'y', '3': 'y', '4': 'y', '5': 'y', '6': 'y', '7': 'n', '8': 'y', '9': 'y', '10': 'n', A: 'n' },
@@ -300,4 +341,45 @@ export const BASIC_STRATEGY_HARD: any = {
   '7': { '2': 'h', '3': 'h', '4': 'h', '5': 'h', '6': 'h', '7': 'h', '8': 'h', '9': 'h', '10': 'h', A: 'h' },
   '6': { '2': 'h', '3': 'h', '4': 'h', '5': 'h', '6': 'h', '7': 'h', '8': 'h', '9': 'h', '10': 'h', A: 'h' },
   '5': { '2': 'h', '3': 'h', '4': 'h', '5': 'h', '6': 'h', '7': 'h', '8': 'h', '9': 'h', '10': 'h', A: 'h' }
+};
+
+//BS Deviations
+
+export const BASIC_STRATEGY_SPLITS_D: any = {
+  '10': {
+    '4': '6+ y',
+    '5': '5+ y',
+    '6': '4+ y'
+  }
+};
+
+export const BASIC_STRATEGY_SOFT_D: any = {
+  '19': {
+    '4': '3+ D',
+    '5': '1+ D',
+    '6': '0- s'
+  },
+  '17': { '2': '1+ D' }
+};
+
+export const BASIC_STRATEGY_HARD_D: any = {
+  '16': { '9': '4+ s', '10': '0+ s', A: '3+ s' },
+  '15': { '10': '4+ s', A: '5+ s' },
+  '13': { '2': '-1- h' },
+  '12': {
+    '2': '3+ s',
+    '3': '2+ s',
+    '4': '0- h'
+  },
+  '10': {
+    '10': '4+ D',
+    A: '3+ D'
+  },
+  '9': { '2': '1+ D', '7': '3+ D' },
+  '8': { '6': '2+ D' }
+};
+
+export const BASIC_STRATEGY_SURR_D: any = {
+  '16': { '8': '4+ sur', '9': '-1- h' },
+  '15': { '9': '2+ sur', '10': '0- h', A: '-1+ sur' }
 };

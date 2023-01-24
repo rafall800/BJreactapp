@@ -4,7 +4,7 @@ import { theme } from '../../theme';
 export const StyledAnaliticsTab = styled.div`
   display: flex;
   flex-direction: column;
-  height: 400px;
+  height: 500px;
   margin: 40px 20px;
   padding: 20px;
   background-color: ${theme.colorStyles.Gray6};

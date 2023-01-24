@@ -43,9 +43,11 @@ const CollapisbleDeal: FC<Props> = ({ deal, dealNumber, open }) => {
         </DealOutcome>
       </CollapsibleHeader>
       <CollapsibleContent {...getCollapseProps()}>
-        {deal.map((hand, index) => {
-          return <CollapsibleHand key={`hand${index}`} hand={hand} open={index === 0} />;
-        })}
+        {deal
+          .map((hand, index) => {
+            return <CollapsibleHand key={`hand${index}`} hand={hand} open={index === 0} />;
+          })
+          .reverse()}
       </CollapsibleContent>
     </StyledCollapsible>
   );

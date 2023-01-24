@@ -7,7 +7,7 @@ export const StyledTools = styled.div`
   flex-direction: column;
   width: 100%;
   max-width: 860px;
-  height: 600px;
+  height: 700px;
   background-color: ${theme.colorStyles.Gray4};
   margin-top: 100px;
   h1 {

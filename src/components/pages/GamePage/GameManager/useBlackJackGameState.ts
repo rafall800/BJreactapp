@@ -8,7 +8,12 @@ import {
   Options,
   BASIC_STRATEGY_SOFT,
   BASIC_STRATEGY_HARD,
-  getCardCount
+  getCardCount,
+  BASIC_STRATEGY_SPLITS_D,
+  checkDeviation,
+  BASIC_STRATEGY_SOFT_D,
+  BASIC_STRATEGY_SURR_D,
+  BASIC_STRATEGY_HARD_D
 } from './util';
 
 export type Player = {
@@ -117,20 +122,24 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
   //adds data of most recent move to gameData
   const handleAddGameData = useCallback(
     (player: Player, dealerHand: WithIdCard[], count: number, cardsLeft: number, option: Options) => {
+      const decsLeft = Math.round(cardsLeft / 52);
+      const trueCount = Math.round((count / decsLeft) * 100) / 100;
       const dealer = dealerHand[0]!;
       let bestOption: Options | '' = '';
-      if (player.canSurrender) {
-        //surrender
-        if (countHandValue(player.hand) === 17 && dealer.value === 'A') bestOption = 'surrender';
-        if (countHandValue(player.hand) === 16 && ['9', '10', 'A'].includes(dealer.value)) bestOption = 'surrender';
-        if (countHandValue(player.hand) === 15 && dealer.value === '10') bestOption = 'surrender';
-      }
-      if (!bestOption && player.hand.length === 2 && player.hand[0]!.value === player.hand[1]!.value) {
-        //split
+      //split
+      if (player.hand.length === 2 && player.hand[0]!.value === player.hand[1]!.value) {
         if (BASIC_STRATEGY_SPLITS[player.hand[0]!.value][dealer.value] === 'y') bestOption = 'split';
+        //deviation
+        const deviation = checkDeviation(
+          BASIC_STRATEGY_SPLITS_D,
+          dealer.value,
+          countHandValue(player.hand).toString(),
+          trueCount
+        );
+        if (deviation !== '') bestOption = deviation;
       }
+      //soft
       if (!bestOption && player.hand.find((card) => card.value === 'A')) {
-        //soft
         let AcesNumber = 0;
         let isAlternative = false;
 
@@ -168,9 +177,31 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
               break;
           }
         }
+        //deviation
+        const deviation = checkDeviation(
+          BASIC_STRATEGY_SOFT_D,
+          dealer.value,
+          countHandValue(player.hand).toString(),
+          trueCount
+        );
+        if (deviation !== '') bestOption = deviation;
       }
+      //surrender
+      if (!bestOption && player.canSurrender) {
+        if (countHandValue(player.hand) === 17 && dealer.value === 'A') bestOption = 'surrender';
+        if (countHandValue(player.hand) === 16 && ['9', '10', 'A'].includes(dealer.value)) bestOption = 'surrender';
+        if (countHandValue(player.hand) === 15 && dealer.value === '10') bestOption = 'surrender';
+        //deviation
+        const deviation = checkDeviation(
+          BASIC_STRATEGY_SURR_D,
+          dealer.value,
+          countHandValue(player.hand).toString(),
+          trueCount
+        );
+        if (deviation !== '') bestOption = deviation;
+      }
+      //hard
       if (!bestOption) {
-        //hard
         switch (BASIC_STRATEGY_HARD[countHandValue(player.hand).toString()][dealer.value]) {
           case 's':
             bestOption = 'stand';
@@ -189,9 +220,15 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
           default:
             break;
         }
+        //deviation
+        const deviation = checkDeviation(
+          BASIC_STRATEGY_HARD_D,
+          dealer.value,
+          countHandValue(player.hand).toString(),
+          trueCount
+        );
+        if (deviation !== '') bestOption = deviation;
       }
-      const decsLeft = Math.round(cardsLeft / 52);
-      const trueCount = Math.round((count / decsLeft) * 100) / 100;
       const newHandData = {
         playerHand: player.hand,
         dealerHand: dealer,

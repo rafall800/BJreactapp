@@ -6,10 +6,14 @@ interface LegendProps {
   color: string;
 }
 
+interface ButtonWrapperProps {
+  isActive: boolean;
+}
+
 export const StyledStatisticsTab = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 40px 20px;
+  margin: 30px 20px;
   table {
     border: 1px solid ${theme.colorStyles.Gray2};
   }
@@ -41,6 +45,7 @@ export const ChartsBox = styled.div`
   flex: 1;
   gap: 20px;
   margin: 20px 0 10px 0;
+  min-height: 250px;
 `;
 
 export const Chart = styled.div`
@@ -80,4 +85,26 @@ export const ColoredSquare = styled.div<LegendProps>`
   ${({ color }: LegendProps) => css`
     background-color: ${color};
   `};
+`;
+
+export const ButtonWrapper = styled.div<ButtonWrapperProps>`
+  align-self: flex-end;
+  margin: 20px 0;
+  button {
+    padding: 5px;
+    height: 100%;
+    border-radius: 20px;
+    ${({ isActive }: ButtonWrapperProps) => css`
+      ${isActive &&
+      css`
+        background-color: ${theme.colorStyles.Blue1};
+        :hover {
+          background-color: ${theme.colorStyles.Blue2};
+        }
+      `};
+    `};
+    :hover {
+      opacity: 0.75;
+    }
+  }
 `;

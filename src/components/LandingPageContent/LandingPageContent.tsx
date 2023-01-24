@@ -12,7 +12,7 @@ import {
   TextBlock2
 } from './LandingPageContent.styles';
 import CardCountingPreview from '../../assets/previews/CountingCards.png';
-import Hard from '../../assets/charts/Hard.png';
+import Hard from '../../assets/charts/Deviations/Hard-D.png';
 import BJGamePreview from '../../assets/previews/BJGamePreview.png';
 import Button from '../Button/Button';
 import { useNavigate } from 'react-router-dom';

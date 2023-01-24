@@ -23,6 +23,9 @@ export const Speeds = styled.div`
   align-items: center;
   gap: 10px;
   padding: 10px;
+`;
+
+export const ButtonWrapper = styled.div<ButtonWrapperProps>`
   button {
     padding: 5px;
     height: 100%;
@@ -32,9 +35,6 @@ export const Speeds = styled.div`
       background-color: ${theme.colorStyles.Blue1};
     }
   }
-`;
-
-export const ButtonWrapper = styled.div<ButtonWrapperProps>`
   ${({ isActive }: ButtonWrapperProps) => css`
     ${isActive &&
     css`
