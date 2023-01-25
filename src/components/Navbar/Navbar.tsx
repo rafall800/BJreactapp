@@ -4,7 +4,7 @@ import Hamburger from './Hamburger/Hamburger';
 import { Collapsible, Content, StyledNavbar, Tabs } from './Navbar.styles';
 import { ReactComponent as ChipIcon } from '../../assets/CasinoChip.svg';
 import { useNavigate } from 'react-router-dom';
-import RoutesEnum from '../../routes/routes';
+import RoutesEnum from '../../utils/routes';
 
 interface TabProps {
   id: string;

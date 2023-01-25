@@ -1,4 +1,4 @@
-import { theme } from './../theme';
+import { theme } from '../theme';
 import styled from '@emotion/styled';
 
 export const Header2 = styled.h2`

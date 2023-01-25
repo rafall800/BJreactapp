@@ -1,4 +1,4 @@
-import { theme } from './../theme';
+import { theme } from '../theme';
 import { primaryButtonStyle } from './primaryButton.styles';
 import { css } from '@emotion/react';
 
