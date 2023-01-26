@@ -50,7 +50,7 @@ const LandingPageContent: FC = () => {
         </Button>
       </TextBlock2>
       <PreviewBlock>
-        <Title>How does it work?</Title>
+        <Title>How does it look?</Title>
         <PreviewItem>
           <Header2>practice counting</Header2>
           <img alt="preview" src={CardCountingPreview} loading="lazy" />

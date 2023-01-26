@@ -7,6 +7,7 @@ export const StyledDecisionMakingExercise = styled.div`
   justify-content: center;
   max-width: 1440px;
   min-height: 850px;
+  margin-top: 20px;
 `;
 
 export const Hud = styled.div`
@@ -14,4 +15,9 @@ export const Hud = styled.div`
   justify-content: center;
   width: 100%;
   margin-top: 100px;
+`;
+
+export const HandBox = styled.div`
+  display: flex;
+  flex-direction: column;
 `;

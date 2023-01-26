@@ -17,7 +17,7 @@ const Header: FC = () => {
       <CardBorderBox>
         <CardBorder>
           <Button variant="transparent" onClick={() => navigate(RoutesEnum.GamePage)}>
-            start playing
+            play blackjack
           </Button>
         </CardBorder>
         <CardBorder>
@@ -27,7 +27,7 @@ const Header: FC = () => {
         </CardBorder>
         <CardBorder>
           <Button variant="transparent" onClick={() => navigate(RoutesEnum.ExercisesPage)}>
-            do exercise
+            do exercises
           </Button>
         </CardBorder>
       </CardBorderBox>

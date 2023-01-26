@@ -12,33 +12,54 @@ interface AlertInterface {
 }
 
 const CardCountingExercise: FC = () => {
-  const [cards, setCards] = useState<WithIdCard[]>(shuffleCards(1));
+  const [cards, setCards] = useState<WithIdCard[]>(shuffleCards(1).slice(0, 3));
   const [gameRunning, setGameRunning] = useState<boolean>(false);
   const [currentCard, setCurrentCard] = useState<WithIdCard>();
-  const [alert, setAlert] = useState<AlertInterface>({ isVisible: false, message: '', variant: 'bad' });
+  const [counter, setCounter] = useState<number>(0);
+  const [alert, setAlert] = useState<AlertInterface>({
+    isVisible: true,
+    message: `Correct answers: ${counter}`,
+    variant: 'good'
+  });
 
   const handleStartGame = () => {
-    setAlert({ isVisible: false, message: '', variant: 'bad' });
+    setCounter(0);
+    setAlert({
+      isVisible: true,
+      message: `Correct answers: ${counter}`,
+      variant: 'good'
+    });
     setCurrentCard(cards.pop());
     setCards([...cards]);
     setGameRunning((prevValue) => !prevValue);
   };
 
+  // useEffect(() => {
+  //   if (cards.length === 0) {
+  //     setAlert({ isVisible: true, message: 'Well done!', variant: 'good' });
+  //     setCards(shuffleCards(1));
+  //     setTimeout(() => {
+  //       setCurrentCard(undefined);
+  //       setGameRunning((prevValue) => !prevValue);
+  //     }, 3000);
+  //   }
+  // }, [cards, currentCard, counter]);
+
   useEffect(() => {
-    if (cards.length === 0) {
-      setAlert({ isVisible: true, message: 'Well done!', variant: 'good' });
-      setCards(shuffleCards(1));
-      setTimeout(() => {
-        setAlert({ isVisible: false, message: '', variant: 'bad' });
-        setCurrentCard(undefined);
-        setGameRunning((prevValue) => !prevValue);
-      }, 3000);
-    }
-  }, [cards, currentCard]);
+    if (gameRunning) setAlert({ isVisible: true, message: `Correct answers: ${counter}`, variant: 'good' });
+  }, [counter, gameRunning]);
 
   const handleGuessValue = (choosenValue: number) => {
     if (!currentCard) return;
     if (choosenValue === getCardCount(currentCard)) {
+      setCounter((prevValue) => prevValue + 1);
+      if (cards.length === 0) {
+        setAlert({ isVisible: true, message: 'Well done!', variant: 'good' });
+        setCards(shuffleCards(1));
+        setCurrentCard(undefined);
+        setGameRunning((prevValue) => !prevValue);
+        return;
+      }
       setCurrentCard(cards.pop());
       setCards([...cards]);
     } else {
@@ -54,7 +75,7 @@ const CardCountingExercise: FC = () => {
 
   return (
     <StyledCardCountingExercise>
-      {alert.isVisible && currentCard && <Alert variant={alert.variant}>{alert.message}</Alert>}
+      {alert.isVisible && <Alert variant={alert.variant}>{alert.message}</Alert>}
       <SingleCardPlaceholder>
         {currentCard && <Card key={Math.random()} card={currentCard} number={0} />}
       </SingleCardPlaceholder>

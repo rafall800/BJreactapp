@@ -10,9 +10,14 @@ import {
 } from '../../../utils/functions';
 import { WithIdCard, Options } from '../../../utils/types';
 import { Alert } from '../../CardCountingPage/CardCountingExercise/CardCountingExercise.styles';
-import { StyledCardsBox, CardPlaceholder } from '../../GamePage/Game/CardPlaceholder/CardsBox.styles';
+import {
+  StyledCardsBox,
+  CardPlaceholder,
+  HandCountBox,
+  HandCount
+} from '../../GamePage/Game/CardPlaceholder/CardsBox.styles';
 import { DecisionOptions, Decisions, FlexBox } from '../../GamePage/Game/Hud/Hud.styles';
-import { Hud, StyledDecisionMakingExercise } from './DecisionMakingExercise.styles';
+import { HandBox, Hud, StyledDecisionMakingExercise } from './DecisionMakingExercise.styles';
 interface AlertInterface {
   isVisible: boolean;
   message: string;
@@ -150,6 +155,24 @@ const DecisionMakingExercise: FC = () => {
       setGameRunning((prevValue) => !prevValue);
     }
   };
+  const countDealerValue = (cards: WithIdCard[]): number => {
+    if (cards.length === 2 && ['10', 'A'].includes(cards[0]!.value)) {
+      let handCount = 0;
+      cards.forEach((card) => {
+        if (card.value === 'A') handCount += 11;
+        else handCount += Number(card.value);
+      });
+      if (handCount === 21) return 21;
+    }
+    if (
+      cards.length === 2 &&
+      cards.find((card) => card.value.includes('A')) &&
+      cards.find((card) => card.value.includes('6'))
+    ) {
+      return 7;
+    }
+    return countHandValue(cards);
+  };
 
   useEffect(() => {
     if (cards.length === 0) {
@@ -175,17 +198,27 @@ const DecisionMakingExercise: FC = () => {
   return (
     <StyledDecisionMakingExercise>
       {alert.isVisible && <Alert variant={alert.variant}>{alert.message}</Alert>}
-      <StyledCardsBox>
-        <CardPlaceholder handsNumber={2} dealSpeed={0.5} currentHand={1}>
-          {dealer.map((card, index) => {
-            return <Card key={`card${index}-${Math.random()}`} card={card} number={index} />;
-          })}
-        </CardPlaceholder>
-        <CardPlaceholder handsNumber={2} dealSpeed={0.5} currentHand={0}>
-          {player.hand.map((card, index) => {
-            return <Card key={`card${index}-${Math.random()}`} card={card} number={index} />;
-          })}
-        </CardPlaceholder>
+      <StyledCardsBox style={{ marginTop: 20 }}>
+        <HandBox>
+          <HandCountBox>
+            <HandCount>{countDealerValue(dealer)}</HandCount>
+          </HandCountBox>
+          <CardPlaceholder handsNumber={2} dealSpeed={0.5} currentHand={1}>
+            {dealer.map((card, index) => {
+              return <Card key={`card${index}-${Math.random()}`} card={card} number={index} />;
+            })}
+          </CardPlaceholder>
+        </HandBox>
+        <HandBox>
+          <HandCountBox>
+            <HandCount>{countHandValue(player.hand)}</HandCount>
+          </HandCountBox>
+          <CardPlaceholder handsNumber={2} dealSpeed={0.5} currentHand={0}>
+            {player.hand.map((card, index) => {
+              return <Card key={`card${index}-${Math.random()}`} card={card} number={index} />;
+            })}
+          </CardPlaceholder>
+        </HandBox>
       </StyledCardsBox>
       <Hud>
         {!gameRunning && (
