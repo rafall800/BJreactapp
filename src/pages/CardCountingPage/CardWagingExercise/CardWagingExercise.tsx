@@ -3,7 +3,7 @@ import Button from '../../../components/Button/Button';
 import Card from '../../../components/Card/Card';
 import { shuffleCards, getCardCount } from '../../../utils/functions';
 import { WithIdCard } from '../../../utils/types';
-import { Alert, ButtonBox, SingleCardPlaceholder, StyledCardCountingExercise } from './CardCountingExercise.styles';
+import { Alert, ButtonBox, SingleCardPlaceholder, StyledCardCountingExercise } from './CardWagingExercise.styles';
 
 interface AlertInterface {
   isVisible: boolean;
@@ -11,7 +11,7 @@ interface AlertInterface {
   variant: 'good' | 'bad';
 }
 
-const CardCountingExercise: FC = () => {
+const CardWagingExercise: FC = () => {
   const [cards, setCards] = useState<WithIdCard[]>(shuffleCards(1).slice(0, 3));
   const [gameRunning, setGameRunning] = useState<boolean>(false);
   const [currentCard, setCurrentCard] = useState<WithIdCard>();
@@ -101,4 +101,4 @@ const CardCountingExercise: FC = () => {
   );
 };
 
-export default CardCountingExercise;
+export default CardWagingExercise;

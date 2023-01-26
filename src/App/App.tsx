@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { GlobalStyles } from '../globalStyles';
 import GamePage from '../pages/GamePage/GamePage';
 import ExercisesPage from '../pages/ExercisesPage/ExercisesPage';
-import CardCountingPage from '../pages/CardCountingPage/CardCountingPage.';
+import CardCountingPage from '../pages/CardCountingPage/CardWagingPage.';
 import DecisionMakingPage from '../pages/DecisionMakingPage/DecisionMakingPage';
 import ArticlesPage from '../pages/ArticlesPage/ArticlesPage';
 import HowToPlay from '../pages/ArticlesPage/HowToPlay/HowToPlay';

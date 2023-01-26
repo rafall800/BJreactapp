@@ -9,7 +9,7 @@ import {
   BASIC_STRATEGY_HARD
 } from '../../../utils/functions';
 import { WithIdCard, Options } from '../../../utils/types';
-import { Alert } from '../../CardCountingPage/CardCountingExercise/CardCountingExercise.styles';
+import { Alert } from '../../CardCountingPage/CardWagingExercise/CardWagingExercise.styles';
 import {
   StyledCardsBox,
   CardPlaceholder,

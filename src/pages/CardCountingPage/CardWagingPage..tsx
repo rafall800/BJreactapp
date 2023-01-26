@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import { RelativeBox, GameTable } from '../GamePage/Game/Game.styles';
-import CardCountingExercise from './CardCountingExercise/CardCountingExercise';
-import { StyledCardCountingPage } from './CardCountingPage.styles';
+import CardWagingExercise from './CardWagingExercise/CardWagingExercise';
+import { StyledCardCountingPage } from './CardWagingPage.styles';
 
 const CardCountingPage: FC = () => {
   return (
@@ -11,7 +11,7 @@ const CardCountingPage: FC = () => {
       <RelativeBox>
         <GameTable />
       </RelativeBox>
-      <CardCountingExercise />
+      <CardWagingExercise />
     </StyledCardCountingPage>
   );
 };

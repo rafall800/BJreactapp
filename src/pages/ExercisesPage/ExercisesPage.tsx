@@ -14,7 +14,7 @@ const ExercisesPage: FC = () => {
       <Navbar />
       <ExercisesBox>
         <Exercise>
-          <Header1>cards counting</Header1>
+          <Header1>cards waging</Header1>
           <img
             alt="cards counting preview"
             src={CountingCardsPreview}
