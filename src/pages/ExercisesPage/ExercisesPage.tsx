@@ -16,10 +16,10 @@ const ExercisesPage: FC = () => {
         <Exercise>
           <Header1>cards waging</Header1>
           <img
-            alt="cards counting preview"
+            alt="cards waging preview"
             src={CountingCardsPreview}
             loading="lazy"
-            onClick={() => navigate(RoutesEnum.CardCountingExercise)}
+            onClick={() => navigate(RoutesEnum.CardsWagingExercise)}
           />
         </Exercise>
         <Exercise>
@@ -29,6 +29,15 @@ const ExercisesPage: FC = () => {
             src={DecisionMakingPreview}
             loading="lazy"
             onClick={() => navigate(RoutesEnum.DecisionMakingExercise)}
+          />
+        </Exercise>
+        <Exercise>
+          <Header1>cards counting</Header1>
+          <img
+            alt="cards counting preview"
+            src={CountingCardsPreview}
+            loading="lazy"
+            onClick={() => navigate(RoutesEnum.KeepingCountExercise)}
           />
         </Exercise>
       </ExercisesBox>

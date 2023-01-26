@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const StyledDecisionMakingPage = styled.div`
+export const StyledKeepingCountPage = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

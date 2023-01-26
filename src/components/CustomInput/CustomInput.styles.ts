@@ -5,6 +5,7 @@ import { theme } from '../theme';
 
 interface StyledCustomInputProps {
   isError: boolean;
+  spinOn: boolean;
 }
 
 export const StyledCustomInput = styled('div')<StyledCustomInputProps>`
@@ -80,13 +81,18 @@ export const StyledCustomInput = styled('div')<StyledCustomInputProps>`
     color: ${theme.colorStyles.Green5};
   }
 
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
+  ${({ spinOn }: StyledCustomInputProps) => css`
+    ${!spinOn &&
+    css`
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
 
-  input[type='number'] {
-    -moz-appearance: textfield;
-  }
+      input[type='number'] {
+        -moz-appearance: textfield;
+      }
+    `}
+  `};
 `;

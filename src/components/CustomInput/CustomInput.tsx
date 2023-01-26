@@ -8,12 +8,13 @@ interface CustomInputProps {
   value?: string | number | readonly string[] | undefined;
   errorMessage?: string[];
   id?: string;
+  spinOn?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-const CustomInput: FC<CustomInputProps> = ({ id, label, type, value, errorMessage, onChange }) => {
+const CustomInput: FC<CustomInputProps> = ({ id, label, type, value, errorMessage, spinOn, onChange }) => {
   return (
-    <StyledCustomInput isError={errorMessage ? true : false}>
+    <StyledCustomInput isError={errorMessage ? true : false} spinOn={spinOn ? true : false}>
       <input id={id} placeholder={label} type={type} value={value} onChange={onChange} required />
       <label>{label}</label>
       {errorMessage?.map((message) => {

@@ -1,9 +1,18 @@
 import { FC, useEffect, useState } from 'react';
+import About from '../../../components/About/About';
+import Alert from '../../../components/Alert/Alert';
 import Button from '../../../components/Button/Button';
 import Card from '../../../components/Card/Card';
+import { Paragraph } from '../../../components/textStyles/Paragrapsh.styles';
 import { shuffleCards, getCardCount } from '../../../utils/functions';
 import { WithIdCard } from '../../../utils/types';
-import { Alert, ButtonBox, SingleCardPlaceholder, StyledCardCountingExercise } from './CardWagingExercise.styles';
+import {
+  AlertGrid,
+  ButtonBox,
+  FillDiv,
+  SingleCardPlaceholder,
+  StyledCardCountingExercise
+} from './CardWagingExercise.styles';
 
 interface AlertInterface {
   isVisible: boolean;
@@ -12,7 +21,7 @@ interface AlertInterface {
 }
 
 const CardWagingExercise: FC = () => {
-  const [cards, setCards] = useState<WithIdCard[]>(shuffleCards(1).slice(0, 3));
+  const [cards, setCards] = useState<WithIdCard[]>(shuffleCards(1));
   const [gameRunning, setGameRunning] = useState<boolean>(false);
   const [currentCard, setCurrentCard] = useState<WithIdCard>();
   const [counter, setCounter] = useState<number>(0);
@@ -33,17 +42,6 @@ const CardWagingExercise: FC = () => {
     setCards([...cards]);
     setGameRunning((prevValue) => !prevValue);
   };
-
-  // useEffect(() => {
-  //   if (cards.length === 0) {
-  //     setAlert({ isVisible: true, message: 'Well done!', variant: 'good' });
-  //     setCards(shuffleCards(1));
-  //     setTimeout(() => {
-  //       setCurrentCard(undefined);
-  //       setGameRunning((prevValue) => !prevValue);
-  //     }, 3000);
-  //   }
-  // }, [cards, currentCard, counter]);
 
   useEffect(() => {
     if (gameRunning) setAlert({ isVisible: true, message: `Correct answers: ${counter}`, variant: 'good' });
@@ -75,7 +73,16 @@ const CardWagingExercise: FC = () => {
 
   return (
     <StyledCardCountingExercise>
-      {alert.isVisible && <Alert variant={alert.variant}>{alert.message}</Alert>}
+      <AlertGrid>
+        <About>
+          <Paragraph bold>
+            In this exercise you have to choose value assigned to each card base on Hi-Lo system. Shoe is 1 decks long.
+            Have fun!
+          </Paragraph>
+        </About>
+        {alert.isVisible && <Alert variant={alert.variant}>{alert.message}</Alert>}
+        <FillDiv />
+      </AlertGrid>
       <SingleCardPlaceholder>
         {currentCard && <Card key={Math.random()} card={currentCard} number={0} />}
       </SingleCardPlaceholder>

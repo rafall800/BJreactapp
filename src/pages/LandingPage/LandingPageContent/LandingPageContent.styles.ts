@@ -10,8 +10,11 @@ export const StyledContent = styled.div`
   width: 100%;
 
   padding: 0 20px 0 20px;
-  margin: 140px 0;
+  margin: 200px 0;
   gap: 50px;
+  @media (min-width: 1100px) {
+    margin: 140px 0;
+  }
 `;
 
 export const TextBlock1 = styled.div`

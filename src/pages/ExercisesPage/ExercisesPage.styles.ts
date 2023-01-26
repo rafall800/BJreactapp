@@ -7,6 +7,7 @@ export const StyledExercisesPage = styled.div`
   align-items: center;
   width: 100%;
   min-height: 100vh;
+  overflow: hidden;
 `;
 
 export const ExercisesBox = styled.div`
@@ -17,7 +18,9 @@ export const ExercisesBox = styled.div`
   width: 100%;
 
   padding: 0 20px 0 20px;
-  margin: 140px 0;
+  margin: 50px 0;
+  @media screen {
+  }
 `;
 
 export const Exercise = styled.div`

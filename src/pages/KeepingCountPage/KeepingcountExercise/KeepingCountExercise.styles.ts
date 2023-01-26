@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const StyledDecisionMakingExercise = styled.div`
+export const StyledKeepingCountExercise = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,14 +10,9 @@ export const StyledDecisionMakingExercise = styled.div`
   margin-top: 20px;
 `;
 
-export const DecisionExerciseHud = styled.div`
+export const KeepingCountHud = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-top: 50px;
-`;
-
-export const HandBox = styled.div`
-  display: flex;
-  flex-direction: column;
+  margin-top: 30px;
 `;

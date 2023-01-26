@@ -7,7 +7,7 @@ export const ArticleBox = styled.article`
   display: flex;
   flex-direction: column;
   gap: 50px;
-  padding: 20px 50px;
+  padding: 20px 20px;
   h3 {
     color: ${theme.colorStyles.Black};
   }

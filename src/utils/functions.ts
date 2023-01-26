@@ -12,6 +12,11 @@ import { WithIdCard, Card, Options } from './types';
 
 // bug jeśli 1 gracz i ma natural bj - za duzo dodaje kasy bo nie zdąża zmienić stanu balance
 // bug nie da się zmienić ilości talii
+export const getRandomIntInclusive = (min: number, max: number): number => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
 
 export const shuffleCards = (decksNumber: number): WithIdCard[] => {
   return Array(decksNumber)

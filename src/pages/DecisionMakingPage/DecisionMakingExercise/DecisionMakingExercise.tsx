@@ -1,6 +1,9 @@
 import { FC, useEffect, useState } from 'react';
+import About from '../../../components/About/About';
+import Alert from '../../../components/Alert/Alert';
 import Button from '../../../components/Button/Button';
 import Card from '../../../components/Card/Card';
+import { Paragraph } from '../../../components/textStyles/Paragrapsh.styles';
 import {
   shuffleCards,
   countHandValue,
@@ -8,8 +11,8 @@ import {
   BASIC_STRATEGY_SOFT,
   BASIC_STRATEGY_HARD
 } from '../../../utils/functions';
-import { WithIdCard, Options } from '../../../utils/types';
-import { Alert } from '../../CardCountingPage/CardWagingExercise/CardWagingExercise.styles';
+import { WithIdCard, Options, ExercisePlayer } from '../../../utils/types';
+import { AlertGrid, FillDiv } from '../../CardWagingPage/CardWagingExercise/CardWagingExercise.styles';
 import {
   StyledCardsBox,
   CardPlaceholder,
@@ -17,18 +20,11 @@ import {
   HandCount
 } from '../../GamePage/Game/CardPlaceholder/CardsBox.styles';
 import { DecisionOptions, Decisions, FlexBox } from '../../GamePage/Game/Hud/Hud.styles';
-import { HandBox, Hud, StyledDecisionMakingExercise } from './DecisionMakingExercise.styles';
+import { HandBox, DecisionExerciseHud, StyledDecisionMakingExercise } from './DecisionMakingExercise.styles';
 interface AlertInterface {
   isVisible: boolean;
   message: string;
   variant: 'good' | 'bad';
-}
-
-interface Player {
-  hand: WithIdCard[];
-  canSplit: boolean;
-  canSurrender: boolean;
-  canDoubledown: boolean;
 }
 
 const DecisionMakingExercise: FC = () => {
@@ -39,7 +35,7 @@ const DecisionMakingExercise: FC = () => {
     message: `Correct answers: ${counter}`,
     variant: 'good'
   });
-  const [player, setPlayer] = useState<Player>({
+  const [player, setPlayer] = useState<ExercisePlayer>({
     hand: [],
     canSplit: false,
     canDoubledown: false,
@@ -155,24 +151,6 @@ const DecisionMakingExercise: FC = () => {
       setGameRunning((prevValue) => !prevValue);
     }
   };
-  const countDealerValue = (cards: WithIdCard[]): number => {
-    if (cards.length === 2 && ['10', 'A'].includes(cards[0]!.value)) {
-      let handCount = 0;
-      cards.forEach((card) => {
-        if (card.value === 'A') handCount += 11;
-        else handCount += Number(card.value);
-      });
-      if (handCount === 21) return 21;
-    }
-    if (
-      cards.length === 2 &&
-      cards.find((card) => card.value.includes('A')) &&
-      cards.find((card) => card.value.includes('6'))
-    ) {
-      return 7;
-    }
-    return countHandValue(cards);
-  };
 
   useEffect(() => {
     if (cards.length === 0) {
@@ -197,11 +175,20 @@ const DecisionMakingExercise: FC = () => {
 
   return (
     <StyledDecisionMakingExercise>
-      {alert.isVisible && <Alert variant={alert.variant}>{alert.message}</Alert>}
+      <AlertGrid>
+        <About>
+          <Paragraph bold>
+            In this exercise you have to choose the best possible option for set hands. The abilty to surr and
+            doubleDown is given randomly to each hand. Shoe is 3 decks long. Have fun!
+          </Paragraph>
+        </About>
+        {alert.isVisible && <Alert variant={alert.variant}>{alert.message}</Alert>}
+        <FillDiv />
+      </AlertGrid>
       <StyledCardsBox style={{ marginTop: 20 }}>
         <HandBox>
           <HandCountBox>
-            <HandCount>{countDealerValue(dealer)}</HandCount>
+            <HandCount>{dealer[0]?.value ? dealer[0]?.value : 0}</HandCount>
           </HandCountBox>
           <CardPlaceholder handsNumber={2} dealSpeed={0.5} currentHand={1}>
             {dealer.map((card, index) => {
@@ -220,7 +207,7 @@ const DecisionMakingExercise: FC = () => {
           </CardPlaceholder>
         </HandBox>
       </StyledCardsBox>
-      <Hud>
+      <DecisionExerciseHud>
         {!gameRunning && (
           <Button variant="primary" onClick={handleStartGame}>
             start
@@ -259,7 +246,7 @@ const DecisionMakingExercise: FC = () => {
             </Decisions>
           </DecisionOptions>
         )}
-      </Hud>
+      </DecisionExerciseHud>
     </StyledDecisionMakingExercise>
   );
 };

@@ -11,13 +11,18 @@ interface SwitchChartsButtonProps {
 }
 
 export const ChartsBox = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 130px);
+  grid-template-rows: repeat(2, 130px);
+  gap: 10px;
   align-items: center;
   justify-content: center;
-  flex: 1;
-  gap: 20px;
-  margin: 20px 0 10px 0;
-  min-height: 250px;
+  @media (min-width: 1100px) {
+    display: flex;
+    flex: 1;
+    gap: 20px;
+    margin: 20px 0 10px 0;
+  }
 `;
 
 export const Chart = styled.div`
@@ -27,22 +32,32 @@ export const Chart = styled.div`
   justify-content: center;
   gap: 15px;
   width: 100%;
+  height: 100%;
   img {
     width: 100%;
+    height: 100%;
     cursor: pointer;
   }
 `;
 
 export const Legend = styled.div`
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  gap: 10px;
   margin-bottom: 10px;
+  @media (min-width: 1100px) {
+    flex-direction: row;
+    gap: 20px;
+  }
 `;
 
 export const ChartLegend = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 10px;
+  @media (min-width: 1100px) {
+    flex-direction: column;
+  }
 `;
 
 export const LegendElement = styled.div`

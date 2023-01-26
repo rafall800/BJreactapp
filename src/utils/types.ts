@@ -15,3 +15,10 @@ export type WithIdCard = WithIdRaw<Card>;
 export type Options = 'hit' | 'stand' | 'split' | 'doubleDown' | 'surrender' | '';
 
 export type Softs = '20' | '19' | '18' | '17' | '16' | '15' | '14' | '13';
+
+export type ExercisePlayer = {
+  hand: WithIdCard[];
+  canSplit: boolean;
+  canSurrender: boolean;
+  canDoubledown: boolean;
+};

@@ -3,8 +3,9 @@ enum RoutesEnum {
   GamePage = 'blackjack',
   ExercisesPage = 'exercises',
   ArticlesPage = 'articles',
-  CardCountingExercise = '/card-counting',
+  CardsWagingExercise = '/cards-waging',
   DecisionMakingExercise = '/decision-making',
+  KeepingCountExercise = '/keeping-count',
   HowToPlay = 'how-to-play',
   HowToCountCards = 'how-to-count-cards'
 }

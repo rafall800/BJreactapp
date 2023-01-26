@@ -1,10 +1,4 @@
 import styled from '@emotion/styled';
-import { css } from '@emotion/react';
-import { theme } from '../../../components/theme';
-
-interface AlerProps {
-  variant: 'good' | 'bad';
-}
 
 export const StyledCardCountingExercise = styled.div`
   display: flex;
@@ -39,24 +33,14 @@ export const ButtonBox = styled.div`
   gap: 20px;
 `;
 
-export const Alert = styled.div<AlerProps>`
-  display: flex;
+export const AlertGrid = styled.div`
+  display: grid;
+  grid-column-gap: 10px;
+  margin: 0 30px;
+  grid-template-columns: repeat(3, 1fr);
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  width: 250px;
-  height: 70px;
-  ${({ variant }: AlerProps) => css`
-    ${variant === 'bad' &&
-    css`
-      background-color: ${theme.colorStyles.Red2};
-    `};
-    ${variant === 'good' &&
-    css`
-      background-color: ${theme.colorStyles.Green1};
-    `};
-  `};
-  color: ${theme.colorStyles.White};
-  font-size: ${theme.fontSize.H2};
-  border-radius: 25px;
+`;
+
+export const FillDiv = styled.div`
+  width: 50px;
 `;

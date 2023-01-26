@@ -89,7 +89,7 @@ const Charts: FC<ChartsProps> = ({ defaultView }) => {
           <LegendElement>
             <ColoredSquare color={'#ffc000'} />
             <TableTab>S - Stay</TableTab>
-          </LegendElement>{' '}
+          </LegendElement>
           <LegendElement>
             <ColoredSquare color={'#9bc2e6'} />
             <TableTab>Ds - Double if possible, else stay</TableTab>
@@ -116,7 +116,7 @@ const Charts: FC<ChartsProps> = ({ defaultView }) => {
             <ColoredSquare color={'#ffff00'} />
             <TableTab>Examples: </TableTab>
           </LegendElement>
-          <Legend style={{ gap: 80 }}>
+          <Legend>
             <TableTab>{'3+ S - If true count is 3 or more Stay else use BS'} </TableTab>
             <TableTab>{'-1- H - If running count is -1 or less Hit else use BS'} </TableTab>
           </Legend>
