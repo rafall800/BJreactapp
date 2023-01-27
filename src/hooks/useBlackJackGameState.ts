@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { useState, useMemo, useCallback } from 'react';
 import {
   countHandValue,
@@ -97,6 +98,7 @@ export interface BlackJackGameInterface {
 }
 
 export const useBlackJackGameState = (initialValue: BlackJackGameInterface): BlackJackGameInterface => {
+  const navigate = useNavigate();
   const [gameRunning, setGameRunning] = useState<boolean>(initialValue.gameRunning);
   const [isNewGame, setIsNewGame] = useState<boolean>(initialValue.isNewGame);
   const [dealSpeed, setDealSpeed] = useState<number>(initialValue.dealSpeed);
@@ -417,6 +419,7 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
         });
       }
     });
+    if (newBalance < 5) navigate(0);
     setBalance(newBalance);
     setPlayers([...players]);
     setDealer([...dealer]);
@@ -459,6 +462,7 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
     gameRules,
     gameData,
     runningCount,
+    navigate,
     dealCard,
     handleSetupPlayers,
     countDealerValue,
@@ -820,9 +824,17 @@ export const useBlackJackGameState = (initialValue: BlackJackGameInterface): Bla
     setBalance((prevValue) => prevValue - bet);
     players[currentPlayerIndex]!.bet = bet;
     players[currentPlayerIndex]!.isPlaying = false;
-    setPlayers([...players]);
-    betNextHand(currentPlayerIndex);
-  }, [bet, players, betNextHand]);
+    if (balance - bet > 5) {
+      setPlayers([...players]);
+      betNextHand(currentPlayerIndex);
+    } else {
+      players.forEach((player, index) => {
+        if (index > currentPlayerIndex) player.seatTaken = false;
+      });
+      betNextHand(currentPlayerIndex);
+      setPlayers([...players]);
+    }
+  }, [bet, balance, players, betNextHand]);
 
   return useMemo(
     () => ({

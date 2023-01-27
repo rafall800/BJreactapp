@@ -36,7 +36,6 @@ export const ButtonBox = styled.div`
 export const AlertGrid = styled.div`
   display: grid;
   grid-column-gap: 10px;
-  margin: 0 30px;
   grid-template-columns: repeat(3, 1fr);
   align-items: center;
 `;

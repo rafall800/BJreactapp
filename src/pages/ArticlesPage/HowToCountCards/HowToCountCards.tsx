@@ -44,8 +44,8 @@ const HowToCountCards: FC = () => {
         </ul>
         <Paragraph bold> 1: Assign A Value To Every Card</Paragraph>
         <Paragraph>
-          The most system for counting cards is Hi-Lo. In this system low cards are counted as +1, middle value cards
-          are 0, and high cards are -1.
+          The most popular system for counting cards is Hi-Lo. In this system low cards are counted as +1, middle value
+          cards are 0, and high cards are -1.
         </Paragraph>
         <Row>
           <Row>
@@ -89,7 +89,8 @@ const HowToCountCards: FC = () => {
           can do this by dividing our “Running Count” by the estimate number of decks remaining in the shoe.
         </Paragraph>
         <Paragraph>
-          For example our “Running Count” is 5 and decks remaining is 2,5. In this case our “True Count” = 5/2,5 = 2.
+          For example our “Running Count” is 5 and decks remaining is 2 and a half. In this case our “True Count” =
+          5/2,5 = 2.
         </Paragraph>
         <Paragraph bold>4. Change your play accordingly to your “True Count”</Paragraph>
         <Paragraph>

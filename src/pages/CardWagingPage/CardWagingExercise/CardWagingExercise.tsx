@@ -63,7 +63,7 @@ const CardWagingExercise: FC = () => {
     } else {
       setAlert({
         isVisible: true,
-        message: `Oops! The correct value was ${getCardCount(currentCard)}`,
+        message: `Oops! The correct wage was ${getCardCount(currentCard)}`,
         variant: 'bad'
       });
       setCards(shuffleCards(1));
@@ -76,7 +76,7 @@ const CardWagingExercise: FC = () => {
       <AlertGrid>
         <About>
           <Paragraph bold>
-            In this exercise you have to choose value assigned to each card base on Hi-Lo system. Shoe is 1 decks long.
+            In this exercise you have to choose wage assigned to each card based on Hi-Lo system. Shoe is 1 decks long.
             Have fun!
           </Paragraph>
         </About>

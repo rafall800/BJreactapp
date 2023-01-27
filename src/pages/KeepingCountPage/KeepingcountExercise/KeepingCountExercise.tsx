@@ -107,6 +107,9 @@ const KeepingCountExercise: FC = () => {
         canDoubledown: false,
         canSurrender: false
       });
+      const newCount = getRandomIntInclusive(-10, 10);
+      setRunningCount(newCount);
+      setUserRunningCount(newCount);
       setGameRunning((prevValue) => !prevValue);
     }
   };

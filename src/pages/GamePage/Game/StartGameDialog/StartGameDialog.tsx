@@ -29,12 +29,8 @@ const StartGameDialog: FC = () => {
       ],
       decksNumber: [
         {
-          isValid: (decks) => decks >= 6,
-          message: 'Needs to be over 5!'
-        },
-        {
-          isValid: (decks) => decks <= 8,
-          message: 'Needs to be under 9 !'
+          isValid: (decks) => Number(decks) === 6 || Number(decks) === 8,
+          message: 'Needs to be equal to 6 or 8!'
         }
       ]
     },
@@ -112,7 +108,7 @@ const StartGameDialog: FC = () => {
         }
       ]);
       setBalance(form.balance);
-      gameRules.decksNumber = form.decksNumber;
+      gameRules.decksNumber = Number(form.decksNumber);
       gameRules.soft17 = form.soft17Rule;
       setGameRules({ ...gameRules });
       startGame();

@@ -94,7 +94,7 @@ const Hud: FC = () => {
               CLEAR
             </Button>
           </Stakes>
-          <Button variant="primary" onClick={() => handleBet()}>
+          <Button variant="primary" onClick={() => handleBet()} disabled={balance < bet}>
             bet
           </Button>
         </BetOptions>

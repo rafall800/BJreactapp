@@ -11,7 +11,7 @@ import { WithIdCard, Card, Options } from './types';
 // - info jaki jest running count -> rozdanie kart -> podejmowanie decyzji deviacje
 
 // bug jeśli 1 gracz i ma natural bj - za duzo dodaje kasy bo nie zdąża zmienić stanu balance
-// bug nie da się zmienić ilości talii
+
 export const getRandomIntInclusive = (min: number, max: number): number => {
   min = Math.ceil(min);
   max = Math.floor(max);

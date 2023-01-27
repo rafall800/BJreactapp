@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Exercise, ExercisesBox, StyledExercisesPage } from './ExercisesPage.styles';
 import CountingCardsPreview from '../../assets/previews/CountingCards.png';
+import CardsWagingPreview from '../../assets/previews/CardsWaging.png';
 import DecisionMakingPreview from '../../assets/previews/DecisionMaking.png';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar/Navbar';
@@ -17,18 +18,9 @@ const ExercisesPage: FC = () => {
           <Header1>cards waging</Header1>
           <img
             alt="cards waging preview"
-            src={CountingCardsPreview}
+            src={CardsWagingPreview}
             loading="lazy"
             onClick={() => navigate(RoutesEnum.CardsWagingExercise)}
-          />
-        </Exercise>
-        <Exercise>
-          <Header1>decision making</Header1>
-          <img
-            alt="decision making preview"
-            src={DecisionMakingPreview}
-            loading="lazy"
-            onClick={() => navigate(RoutesEnum.DecisionMakingExercise)}
           />
         </Exercise>
         <Exercise>
@@ -38,6 +30,15 @@ const ExercisesPage: FC = () => {
             src={CountingCardsPreview}
             loading="lazy"
             onClick={() => navigate(RoutesEnum.KeepingCountExercise)}
+          />
+        </Exercise>
+        <Exercise>
+          <Header1>decision making</Header1>
+          <img
+            alt="decision making preview"
+            src={DecisionMakingPreview}
+            loading="lazy"
+            onClick={() => navigate(RoutesEnum.DecisionMakingExercise)}
           />
         </Exercise>
       </ExercisesBox>

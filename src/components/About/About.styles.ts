@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 export const StyledAbout = styled.div`
   position: relative;
   cursor: pointer;
+  margin-left: 50px;
 `;
 
 export const Popup = styled.div`

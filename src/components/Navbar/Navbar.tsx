@@ -24,7 +24,8 @@ const Navbar: FC = () => {
     },
     {
       id: '2',
-      title: 'do exercises'
+      title: 'do exercises',
+      onClick: () => navigate(RoutesEnum.ExercisesPage)
     },
     {
       id: '3',
