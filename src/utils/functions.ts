@@ -1,17 +1,6 @@
 import { cards } from './consts';
 import { WithIdCard, Card, Options } from './types';
 
-//TODO:
-
-//zliczanie kart:
-// - zliczanie rąk -> klikanie next/timer i na koniec pytanie jaki był running count
-// - info jaki jest running count, ile deckowa gra, -> zliczanie rąk -> klikanie nex i pytanie jaki true count
-
-//podejmowanie decyzji:
-// - info jaki jest running count -> rozdanie kart -> podejmowanie decyzji deviacje
-
-// bug jeśli 1 gracz i ma natural bj - za duzo dodaje kasy bo nie zdąża zmienić stanu balance
-
 export const getRandomIntInclusive = (min: number, max: number): number => {
   min = Math.ceil(min);
   max = Math.floor(max);
