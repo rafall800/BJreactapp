@@ -4,7 +4,7 @@ import Button from '../../../../components/Button/Button';
 import CustomDialog from '../../../../components/CustomDialog/CustomDialog';
 import CustomInput from '../../../../components/CustomInput/CustomInput';
 import { BlackJackGameContext } from '../../../../contexts/GameProvider';
-import { useForm } from '../../../../hooks/useForm';
+import { useForm } from '../../../../hooks/UseForm';
 import RoutesEnum from '../../../../utils/routes';
 import { ButtonBox, CheckboxBox } from './StartGameDialog.styles';
 

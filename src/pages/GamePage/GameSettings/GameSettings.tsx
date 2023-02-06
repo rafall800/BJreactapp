@@ -3,7 +3,7 @@ import Button from '../../../components/Button/Button';
 import { Header2 } from '../../../components/textStyles/Header2.styles';
 import { Paragraph } from '../../../components/textStyles/Paragrapsh.styles';
 import { BlackJackGameContext } from '../../../contexts/GameProvider';
-import { useDialog } from '../../../hooks/useDialog';
+import { useDialog } from '../../../hooks/UseDialog';
 import { ButtonWrapper, Speeds, StyledGameSettings } from './GameSettings.styles';
 import ResetGameDialog from './ResetGameDialog/ResetGameDialog';
 
