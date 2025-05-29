@@ -1,31 +1,66 @@
-# BlackJack webapp
+# Blackjack Trainer App
 
-This application allows to learn basics of card counting technique in the BlackJack game.
+[![React Version](https://img.shields.io/badge/React-18.2.0-blue)](https://reactjs.org/)
+[![TypeScript Version](https://img.shields.io/badge/TypeScript-4.9.5-blue)](https://www.typescriptlang.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green)]()
 
-It consists of:
+A Polish-language Blackjack training application for learning card counting and basic strategy.
 
-- Articles
-- Training drills
-- BlackJack simulator with calculator
+## Features
 
-## To run app:
+- **Blackjack Simulator** - Realistic gameplay with accurate rules
+- **Card Counting Drills** - Practice keeping track of the count
+- **Strategy Trainer** - Learn basic strategy and deviations
+- **Educational Content** - Articles about Blackjack techniques
+- **Mobile Responsive** - Works on all device sizes
+- **Game Statistics** - Track your progress and improvement
 
-To run app:
+## Technologies
 
-In the project directory, you have to run:
+- React 18 with TypeScript
+- Emotion for CSS-in-JS styling
+- React Router v6 for navigation
+- React Query for state management
+- Custom game engine implementation
 
-To install dependencies:
-npm i --force
+## Getting Started
 
-To run local server:
+### Prerequisites
+
+- Node.js v16+
+- npm v8+
+
+### Installation
+
+```bash
+# Clone repository
+git clone https://github.com/your-repo/BJreactapp.git
+
+# Install dependencies
+cd BJreactapp
+npm install
+
+# Start development server
 npm start
+```
 
-## Scripts:
+## Project Structure
 
-### `npm start`
+```
+src/
+├── assets/       # Images and icons
+├── components/   # Reusable UI components
+├── contexts/     # State management
+├── hooks/        # Custom hooks
+├── pages/        # Application screens
+├── utils/        # Helper functions
+└── App.tsx       # Root component
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Screenshots
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+![Game Screen](src/assets/previews/BJGamePreview.png)  
+_Main game interface_
+
+![Counting Drill](src/assets/previews/CountingCards.png)  
+_Card counting exercise_
